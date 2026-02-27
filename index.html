@@ -136,6 +136,10 @@ body {
 .dot-mood { background: var(--accent-blue); }
 .dot-sleep { background: #8e7ab5; }
 .dot-dairy { background: #b5a07a; }
+.dot-water { background: #5ab4c4; }
+.dot-caffeine { background: #c4a55a; }
+.label-water { color: #5ab4c4; }
+.label-caffeine { color: #c4a55a; }
 
 .event-body { flex: 1; }
 .event-type-label {
@@ -565,6 +569,14 @@ body {
           Had dairy
           <span class="type-sub">lactose brute force</span>
         </button>
+        <button class="type-btn" onclick="selectType('water', this)">
+          Water
+          <span class="type-sub">glasses drunk</span>
+        </button>
+        <button class="type-btn" onclick="selectType('caffeine', this)">
+          Caffeine
+          <span class="type-sub">coffee / tea / energy</span>
+        </button>
         <button class="type-btn" onclick="selectType('mood', this)">
           Mood / stress
           <span class="type-sub">mental state</span>
@@ -626,6 +638,7 @@ async function ghPutFile(cfg, content, sha) {
 
 // In-memory sha cache so we don't refetch on every write
 let _ghSha = null;
+let _syncTimer = null;
 
 async function syncPull() {
   const cfg = getCfg();
@@ -637,10 +650,8 @@ async function syncPull() {
       _ghSha = file.sha;
       const decoded = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
       const remoteDB = JSON.parse(decoded);
-      // Merge remote into local — remote wins on conflict (last write wins per day)
       const localDB = getLocalDB();
       const merged = { ...localDB, ...remoteDB };
-      // But keep any local days not in remote
       Object.keys(localDB).forEach(k => { if (!remoteDB[k]) merged[k] = localDB[k]; });
       saveLocalDB(merged);
     }
@@ -654,23 +665,38 @@ async function syncPull() {
 async function syncPush() {
   const cfg = getCfg();
   if (!cfg?.token) return;
-  setSyncState('syncing', 'saving...');
-  try {
-    // If we don't have sha yet, fetch it first
-    if (!_ghSha) {
+  // Debounce — wait 1.5s after last event before pushing
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(async () => {
+    setSyncState('syncing', 'saving...');
+    try {
+      // Always fetch latest SHA before writing to avoid conflicts
       const file = await ghGetFile(cfg);
       if (file) _ghSha = file.sha;
+      const db = getLocalDB();
+      await ghPutFile(cfg, db, _ghSha);
+      // Update SHA after successful write
+      const updated = await ghGetFile(cfg);
+      if (updated) _ghSha = updated.sha;
+      setSyncState('synced', `synced`);
+    } catch(e) {
+      // If it's a SHA conflict (422), refetch and retry once
+      if (e.message?.includes('422') || e.message?.includes('conflict')) {
+        try {
+          const file = await ghGetFile(cfg);
+          if (file) _ghSha = file.sha;
+          const db = getLocalDB();
+          await ghPutFile(cfg, db, _ghSha);
+          setSyncState('synced', 'synced');
+        } catch(e2) {
+          setSyncState('error', 'sync failed — retry soon');
+        }
+      } else {
+        setSyncState('error', 'sync failed — check connection');
+      }
+      console.error('Sync push error:', e);
     }
-    const db = getLocalDB();
-    await ghPutFile(cfg, db, _ghSha);
-    // Refresh sha after write
-    const updated = await ghGetFile(cfg);
-    if (updated) _ghSha = updated.sha;
-    setSyncState('synced', `synced`);
-  } catch(e) {
-    setSyncState('error', 'sync failed — check connection');
-    console.error('Sync push error:', e);
-  }
+  }, 1500);
 }
 
 function setSyncState(state, label) {
@@ -909,6 +935,14 @@ function renderEventCard(e) {
     body = `<div class="event-detail" style="color:var(--text3);font-size:11px">lactose brute force logged</div>`;
   }
 
+  if (e.type === 'water') {
+    body = `<div class="event-detail">Glasses: <strong style="color:#5ab4c4">${e.glasses || '—'}</strong></div>`;
+  }
+
+  if (e.type === 'caffeine') {
+    body = `<div class="event-detail">${e.cups || '—'}${e.caftype ? ` · ${e.caftype}` : ''}</div>`;
+  }
+
   return `<div class="event-card">
     <div class="event-type-dot ${dotClass}"></div>
     <div class="event-body">
@@ -950,7 +984,7 @@ function renderModalStep2(type) {
   let html = `<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
     <button onclick="backToStep1()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text2);cursor:pointer;padding:4px 10px;font-size:12px;font-family:'DM Mono',monospace">back</button>
     <div class="modal-title" style="margin-bottom:0">${
-      type==='meal'?'Log a meal':type==='poop'?'Log a poop':type==='symptom'?'Log symptoms':type==='dairy'?'Dairy logged':type==='mood'?'Log mood/stress':'Log sleep'
+      type==='meal'?'Log a meal':type==='poop'?'Log a poop':type==='symptom'?'Log symptoms':type==='dairy'?'Dairy logged':type==='mood'?'Log mood/stress':type==='water'?'Log water':type==='caffeine'?'Log caffeine':'Log sleep'
     }</div>
   </div>`;
 
@@ -1015,6 +1049,31 @@ function renderModalStep2(type) {
     <div class="scale-row">
       ${[['poor','r'],['okay','a'],['good','g']].map(([v,c]) =>
         `<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="sleep" data-val="${v}" onclick="pickScale(this)">${v}</button>`
+      ).join('')}
+    </div>`;
+  }
+
+  if (type === 'water') {
+    html += `<div class="section-hdr">Glasses of water today</div>
+    <div class="scale-row">
+      ${['1','2','3','4','5','6','7','8+'].map(v =>
+        `<button class="scale-opt sel-green" data-field="glasses" data-val="${v}" onclick="pickScale(this)" style="font-size:13px;font-weight:600">${v}</button>`
+      ).join('')}
+    </div>
+    <div style="font-size:10px;color:var(--text3);margin-top:8px">target: 6–8 glasses / day</div>`;
+  }
+
+  if (type === 'caffeine') {
+    html += `<div class="section-hdr">What did you have?</div>
+    <div class="scale-row">
+      ${[['none','g'],['1 cup','a'],['2 cups','a'],['3+ cups','r']].map(([v,c]) =>
+        `<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="cups" data-val="${v}" onclick="pickScale(this)">${v}</button>`
+      ).join('')}
+    </div>
+    <div class="scale-label" style="margin-top:14px">Type</div>
+    <div class="scale-row">
+      ${['coffee','tea','energy drink','other'].map(v =>
+        `<button class="scale-opt sel-amber" data-field="caftype" data-val="${v}" onclick="pickScale(this)">${v}</button>`
       ).join('')}
     </div>`;
   }
@@ -1095,6 +1154,17 @@ function calcDayScore(events) {
       else if (e.sleep === 'poor') score -= 12;
     }
     if (e.type === 'dairy') score -= 6;
+    if (e.type === 'water') {
+      const g = parseInt(e.glasses) || 0;
+      if (g >= 6) score += 10;
+      else if (g >= 3) score += 4;
+      else score -= 6;
+    }
+    if (e.type === 'caffeine') {
+      if (e.cups === '3+ cups') score -= 10;
+      else if (e.cups === '2 cups') score -= 4;
+      else if (e.cups === 'none') score += 3;
+    }
   });
   return Math.min(100, Math.max(0, Math.round(score)));
 }
@@ -1102,7 +1172,8 @@ function calcDayScore(events) {
 // ─── TRENDS ────────────────────────────────────────────────────────────────────
 function allDaysWithEvents() {
   const db = getDB();
-  return Object.keys(db).filter(k => db[k]?.length > 0).sort();
+  const today = todayKey();
+  return Object.keys(db).filter(k => db[k]?.length > 0 && k !== today).sort();
 }
 
 function renderTrends() {
@@ -1133,7 +1204,11 @@ function renderTrends() {
     const badSymptom = symptoms.some(e =>
       e.bloating === 'bad' || e.pain === 'bad' || e.pain === 'moderate' || e.gas === 'lots'
     );
-    return { key: k, score, poops, avgBristol, hasDairy, stress: stressEvt?.stress, sleep: sleepEvt?.sleep, highFiber, irritants, badSymptom, allFoods };
+    const waterEvt = events.find(e => e.type === 'water');
+    const cafEvt = events.find(e => e.type === 'caffeine');
+    const glasses = waterEvt ? (parseInt(waterEvt.glasses) || 0) : null;
+    const highCaffeine = cafEvt?.cups === '3+ cups';
+    return { key: k, score, poops, avgBristol, hasDairy, stress: stressEvt?.stress, sleep: sleepEvt?.sleep, highFiber, irritants, badSymptom, allFoods, glasses, highCaffeine };
   });
 
   // ── STREAK ──
@@ -1355,6 +1430,30 @@ function deepAnalysis(summaries, db) {
       type: pct >= 60 ? 'bad' : 'warn',
       title: 'Combo trigger: dairy + irritant food',
       body: `Dairy + spicy/fast food on same day: <span class="corr-pct ${pct>=60?'r':'a'}">${pct}%</span> ended badly. The double-hit combo is harsher than either alone. ${comboDays.length} combo days logged.`
+    });
+  }
+
+  // 6. LOW WATER → constipation
+  const lowWaterDays = summaries.filter(s => s.glasses !== null && s.glasses <= 3);
+  if (lowWaterDays.length >= 2) {
+    const constipated = lowWaterDays.filter(s => s.avgBristol && s.avgBristol <= 2).length;
+    const pct = Math.round((constipated / lowWaterDays.length) * 100);
+    insights.push({
+      type: pct >= 40 ? 'warn' : 'info',
+      title: 'Low water → constipation',
+      body: `On days with 3 or fewer glasses: <span class="corr-pct ${pct>=40?'a':'g'}">${pct}%</span> had hard stool (bristol 1–2). Colon needs water to move things. Based on ${lowWaterDays.length} low-hydration days.`
+    });
+  }
+
+  // 7. HIGH CAFFEINE → loose stools
+  const highCafDays = summaries.filter(s => s.highCaffeine);
+  if (highCafDays.length >= 2) {
+    const loose = highCafDays.filter(s => s.avgBristol && s.avgBristol >= 5).length;
+    const pct = Math.round((loose / highCafDays.length) * 100);
+    insights.push({
+      type: pct >= 40 ? 'warn' : 'info',
+      title: '3+ caffeine cups → loose stool',
+      body: `On heavy caffeine days: <span class="corr-pct ${pct>=40?'a':'g'}">${pct}%</span> had loose stool (bristol 5+). Caffeine stimulates gut motility — too much accelerates transit. Based on ${highCafDays.length} high-caffeine days.`
     });
   }
 
