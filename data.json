@@ -11,6 +11,12 @@
       "type": "sleep",
       "sleep": "good",
       "id": 1772186904932
+    },
+    {
+      "type": "cycle",
+      "phase": "menstrual",
+      "cycleday": "1-5",
+      "id": 1772186915622
     }
   ],
   "2026-02-26": [],
