@@ -304,22 +304,24 @@ function syncPush(){
   setSyncState('syncing','saving...');
   // Chain onto the queue — each write waits for the previous to fully finish
   _syncQueue=_syncQueue.then(async()=>{
-    const doWrite=async()=>{
-      const f=await ghGet(cfg);if(f)_sha=f.sha; else _sha=null;
-      await ghPut(cfg,getLocalDB(),_sha);
-      const f2=await ghGet(cfg);if(f2)_sha=f2.sha;
-    };
-    try{
-      await doWrite();
-      setSyncState('synced','synced');
-    }catch(e){
-      // Any SHA mismatch (409/422) — refetch and retry once
-      if(e.message?.includes('409')||e.message?.includes('422')||e.message?.includes('does not match')||e.message?.includes('conflict')){
-        try{await doWrite();setSyncState('synced','synced');}
-        catch(e2){setSyncState('error','sync failed — '+e2.message);}
-      }else{
-        setSyncState('error','sync failed — '+e.message);
-        console.error('syncPush:',e);
+    let attempts=0;
+    while(attempts<3){
+      attempts++;
+      try{
+        // Always get fresh SHA before every attempt
+        const f=await ghGet(cfg);
+        _sha=f?f.sha:null;
+        await ghPut(cfg,getLocalDB(),_sha);
+        const f2=await ghGet(cfg);if(f2)_sha=f2.sha;
+        setSyncState('synced','synced');
+        return; // success
+      }catch(e){
+        console.warn(`syncPush attempt ${attempts} failed:`,e.message);
+        if(attempts>=3){
+          setSyncState('error','sync failed — '+e.message);
+        }
+        // brief pause before retry
+        await new Promise(r=>setTimeout(r,500));
       }
     }
   });
