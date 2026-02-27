@@ -47,9 +47,18 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
 
 .timeline-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 .timeline-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;}
-.gut-score-badge{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--text2);}
+.gut-score-badge{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--text2);cursor:pointer;transition:all 0.15s;}
+.gut-score-badge:hover{border-color:var(--border2);}
 .gut-score-badge span{font-weight:500;}
 .timeline-empty{text-align:center;padding:50px 20px;color:var(--text3);font-size:13px;line-height:1.8;}
+
+.score-breakdown{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px;display:none;}
+.score-breakdown.open{display:block;}
+.sb-title{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;}
+.sb-row{display:flex;align-items:center;justify-content:space-between;padding:3px 0;font-size:11px;}
+.sb-label{color:var(--text2);}
+.sb-val{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;}
+.sb-val.pos{color:var(--green);} .sb-val.neg{color:var(--red);} .sb-val.neutral{color:var(--text3);}
 
 .event-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;position:relative;}
 .event-card:hover{border-color:var(--border2);}
@@ -64,6 +73,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
 .label-mood{color:var(--blue);} .label-sleep{color:#8e7ab5;} .label-dairy{color:#b5a07a;}
 .label-water{color:var(--teal);} .label-caffeine{color:var(--gold);}
 .label-cycle{color:var(--pink);} .label-exercise{color:var(--mint);} .label-meds{color:var(--purple);}
+.event-time{font-size:9px;color:var(--text3);margin-left:8px;font-weight:300;letter-spacing:0.5px;}
 .event-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
 .tag{padding:3px 9px;border-radius:20px;font-size:11px;background:var(--surface2);color:var(--text2);border:1px solid var(--border);}
 .event-detail{font-size:12px;color:var(--text2);line-height:1.5;}
@@ -74,7 +84,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
 .bristol-num-big{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;}
 .bristol-desc-small{font-size:10px;color:var(--text2);max-width:130px;line-height:1.3;}
 
-/* FAB — truly centered on viewport, never clipped */
 .fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);width:52px;height:52px;border-radius:50%;background:var(--green);border:none;cursor:pointer;font-size:26px;color:#0f0d0b;box-shadow:0 4px 24px rgba(122,158,90,0.45);transition:box-shadow 0.2s,transform 0.15s;display:flex;align-items:center;justify-content:center;z-index:90;line-height:1;}
 .fab:hover{box-shadow:0 6px 30px rgba(122,158,90,0.55);transform:translateX(-50%) scale(1.07);}
 .fab:active{transform:translateX(-50%) scale(0.96);}
@@ -160,7 +169,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
 .report-key{font-size:11px;color:var(--text2);}
 .report-val{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;}
 
-/* CALENDAR */
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 .cal-month{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;}
 .cal-nav{background:none;border:1px solid var(--border);border-radius:8px;color:var(--text2);cursor:pointer;padding:4px 10px;font-size:14px;transition:all 0.15s;}
@@ -180,7 +188,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
 .cal-detail-date{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:10px;}
 .cal-detail-empty{font-size:12px;color:var(--text3);}
 
-/* SETUP */
 .setup-overlay{position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;}
 .setup-overlay.hidden{display:none;}
 .setup-box{width:100%;max-width:400px;}
@@ -199,9 +206,16 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
 .setup-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .setup-error{color:var(--red);font-size:11px;margin-top:10px;text-align:center;min-height:16px;}
 .setup-skip{background:none;border:none;cursor:pointer;color:var(--text3);font-size:11px;font-family:'DM Mono',monospace;text-align:center;width:100%;margin-top:10px;text-decoration:underline;padding:4px;}
+.setup-branch{margin-top:8px;}
+
+.export-bar{display:flex;gap:6px;margin-top:6px;}
+.export-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text2);cursor:pointer;padding:6px 12px;font-family:'DM Mono',monospace;font-size:10px;transition:all 0.15s;flex:1;text-align:center;}
+.export-btn:hover{border-color:var(--border2);color:var(--text);}
+.export-btn input[type="file"]{display:none;}
 
 .toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%) translateY(30px);background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:10px 20px;border-radius:20px;font-size:12px;z-index:300;opacity:0;transition:all 0.3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.4);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.error{border-color:var(--red);color:var(--red);}
 </style>
 </head>
 <body>
@@ -212,7 +226,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
     <div class="setup-sub">Connect your GitHub repo. Logs are committed automatically as <code style="color:var(--green)">data.json</code>.</div>
     <div class="setup-field"><label class="setup-label">GitHub username</label><input class="setup-input" id="cfg-user" placeholder="e.g. aryan" autocomplete="off" autocorrect="off" autocapitalize="off"></div>
     <div class="setup-field"><label class="setup-label">Repo name</label><input class="setup-input" id="cfg-repo" placeholder="e.g. gut-journal" autocomplete="off" autocorrect="off" autocapitalize="off"><div class="setup-hint">Same repo as your index.html. data.json created automatically.</div></div>
-    <div class="setup-field"><label class="setup-label">Personal Access Token (PAT)</label><input class="setup-input" id="cfg-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off"><div class="setup-hint">Generate at <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens</a> → repo scope → no expiry.</div></div>
+    <div class="setup-field"><label class="setup-label">Branch</label><input class="setup-input" id="cfg-branch" placeholder="main" autocomplete="off" autocorrect="off" autocapitalize="off" value="main"><div class="setup-hint">Default: main. Change if your repo uses master or another branch.</div></div>
+    <div class="setup-field"><label class="setup-label">Personal Access Token (PAT)</label><input class="setup-input" id="cfg-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off"><div class="setup-hint">Generate at <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens</a> → <strong>repo</strong> scope → no expiry.<br>For fine-grained tokens: Contents read/write permission.</div></div>
     <button class="setup-btn" id="setup-btn" onclick="setupGitHub()">Connect & start logging</button>
     <div class="setup-error" id="setup-error"></div>
     <button class="setup-skip" onclick="skipSetup()">Use local storage only</button>
@@ -233,6 +248,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
   <span id="sync-label">not connected</span>
   <span style="color:var(--border2)">|</span>
   <button class="sync-settings-btn" onclick="openSettings()">settings</button>
+  <span style="color:var(--border2)">|</span>
+  <button class="sync-settings-btn" onclick="exportData()">export</button>
+  <button class="sync-settings-btn" onclick="document.getElementById('import-file').click()">import</button>
+  <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
 </div>
 
 <div id="view-today">
@@ -244,8 +263,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
   <div class="view">
     <div class="timeline-header">
       <div class="timeline-label">Events</div>
-      <div class="gut-score-badge" id="day-score-badge">day score: <span>—</span></div>
+      <div class="gut-score-badge" id="day-score-badge" onclick="toggleScoreBreakdown()">day score: <span>—</span></div>
     </div>
+    <div class="score-breakdown" id="score-breakdown"></div>
     <div id="timeline-feed"></div>
   </div>
 </div>
@@ -287,373 +307,808 @@ const FOOD_TAGS=[{id:'salad',label:'Salad / greens'},{id:'sandwich_veg',label:'S
 const HIGH_FIBER=['salad','sandwich_veg','home_cooked','fruits','nuts_seeds','soup_stew','rice_lentils'];
 const IRRITANTS=['spicy','fast_food','pizza_takeaway','alcohol','sugary'];
 
-// ─── GITHUB ──────────────────────────────────────────────────────────────────
-const GH_FILE='data.json';
-function getCfg(){try{return JSON.parse(localStorage.getItem('gj_cfg')||'null');}catch(e){return null;}}
-function saveCfg(c){localStorage.setItem('gj_cfg',JSON.stringify(c));}
-function ghH(t){return{'Authorization':`token ${t}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};}
-async function ghGet(cfg){const r=await fetch(`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${GH_FILE}`,{headers:ghH(cfg.token)});if(r.status===404)return null;if(!r.ok)throw new Error(`gh ${r.status}`);return r.json();}
-async function ghPut(cfg,data,sha){const body={message:`gut sync ${new Date().toISOString().split('T')[0]}`,content:btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2)))),branch:'main'};if(sha)body.sha=sha;const r=await fetch(`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${GH_FILE}`,{method:'PUT',headers:ghH(cfg.token),body:JSON.stringify(body)});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||`gh write ${r.status}`);}return r.json();}
-let _sha=null,_syncTimer=null;
-async function syncPull(){const cfg=getCfg();if(!cfg?.token)return;setSyncState('syncing','pulling...');try{const f=await ghGet(cfg);if(f){_sha=f.sha;const remote=JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\n/g,'')))));const local=getLocalDB();saveLocalDB({...local,...remote,...Object.fromEntries(Object.keys(local).filter(k=>!remote[k]).map(k=>[k,local[k]]))});}setSyncState('synced','synced');}catch(e){setSyncState('error','pull failed');}}
-async function syncPush(){const cfg=getCfg();if(!cfg?.token)return;clearTimeout(_syncTimer);_syncTimer=setTimeout(async()=>{setSyncState('syncing','saving...');try{const f=await ghGet(cfg);if(f)_sha=f.sha;await ghPut(cfg,getLocalDB(),_sha);const f2=await ghGet(cfg);if(f2)_sha=f2.sha;setSyncState('synced','synced');}catch(e){if(e.message?.includes('422')||e.message?.includes('conflict')){try{const f=await ghGet(cfg);if(f)_sha=f.sha;await ghPut(cfg,getLocalDB(),_sha);setSyncState('synced','synced');}catch(e2){setSyncState('error','sync failed');}}else setSyncState('error','sync failed');}},1500);}
-function setSyncState(s,l){document.getElementById('sync-dot').className='sync-dot '+s;document.getElementById('sync-label').textContent=l;}
-async function setupGitHub(){const user=document.getElementById('cfg-user').value.trim(),repo=document.getElementById('cfg-repo').value.trim(),token=document.getElementById('cfg-token').value.trim(),errEl=document.getElementById('setup-error'),btn=document.getElementById('setup-btn');errEl.textContent='';if(!user||!repo||!token){errEl.textContent='All fields required.';return;}btn.disabled=true;btn.textContent='Connecting...';try{const r=await fetch(`https://api.github.com/repos/${user}/${repo}`,{headers:ghH(token)});if(r.status===404)throw new Error(`Repo "${user}/${repo}" not found.`);if(r.status===401)throw new Error('Token invalid or expired.');if(!r.ok)throw new Error(`GitHub error: ${r.status}`);saveCfg({user,repo,token});document.getElementById('sync-bar').style.display='flex';document.getElementById('setup-overlay').classList.add('hidden');await syncPull();renderDateBar();renderTimeline();toast('Connected');}catch(e){errEl.textContent=e.message;btn.disabled=false;btn.textContent='Connect & start logging';}}
-function skipSetup(){saveCfg({local:true});document.getElementById('setup-overlay').classList.add('hidden');renderDateBar();renderTimeline();}
-function openSettings(){const cfg=getCfg();if(cfg&&!cfg.local){document.getElementById('cfg-user').value=cfg.user||'';document.getElementById('cfg-repo').value=cfg.repo||'';document.getElementById('cfg-token').value=cfg.token||'';}document.getElementById('setup-overlay').classList.remove('hidden');}
+// ─── PROPER UTF-8 BASE64 ────────────────────────────────────────────────────
+function utf8ToBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
+}
+function base64ToUtf8(b64) {
+  const binary = atob(b64.replace(/\n/g, ''));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+// ─── GITHUB SYNC (FIXED) ────────────────────────────────────────────────────
+const GH_FILE = 'data.json';
+let _sha = null;
+let _syncLock = false;     // mutex to prevent concurrent writes
+let _syncTimer = null;
+let _retryCount = 0;
+const MAX_RETRIES = 3;
+
+function getCfg() { try { return JSON.parse(localStorage.getItem('gj_cfg') || 'null'); } catch (e) { return null; } }
+function saveCfg(c) { localStorage.setItem('gj_cfg', JSON.stringify(c)); }
+
+function ghHeaders(token) {
+  return {
+    'Authorization': `token ${token}`,
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+    'X-GitHub-Api-Version': '2022-11-28'
+  };
+}
+
+function ghApiUrl(cfg) {
+  return `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${GH_FILE}${cfg.branch ? `?ref=${cfg.branch}` : ''}`;
+}
+
+function ghPutUrl(cfg) {
+  return `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${GH_FILE}`;
+}
+
+async function ghGet(cfg) {
+  const r = await fetch(ghApiUrl(cfg), { headers: ghHeaders(cfg.token) });
+  if (r.status === 404) return null;
+  if (r.status === 401) throw new Error('AUTH: Token invalid or expired. Update in settings.');
+  if (r.status === 403) {
+    const body = await r.json().catch(() => ({}));
+    if (body.message?.includes('rate limit')) throw new Error('RATE_LIMIT: GitHub rate limit hit. Wait a minute.');
+    throw new Error(`FORBIDDEN: Check token permissions (needs Contents read/write). ${body.message || ''}`);
+  }
+  if (!r.ok) throw new Error(`GitHub GET error: ${r.status}`);
+  return r.json();
+}
+
+async function ghPut(cfg, data, sha) {
+  const body = {
+    message: `gut sync ${new Date().toISOString().split('T')[0]}`,
+    content: utf8ToBase64(JSON.stringify(data, null, 2)),
+    branch: cfg.branch || 'main'
+  };
+  if (sha) body.sha = sha;
+  const r = await fetch(ghPutUrl(cfg), {
+    method: 'PUT',
+    headers: ghHeaders(cfg.token),
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) {
+    const e = await r.json().catch(() => ({}));
+    throw new Error(e.message || `GitHub PUT error: ${r.status}`);
+  }
+  return r.json();
+}
+
+// Deep merge: remote wins for existing keys, local additions preserved
+function mergeDBs(local, remote) {
+  const merged = {};
+  const allKeys = new Set([...Object.keys(local), ...Object.keys(remote)]);
+  for (const key of allKeys) {
+    const loc = local[key] || [];
+    const rem = remote[key] || [];
+    if (!loc.length) { merged[key] = rem; continue; }
+    if (!rem.length) { merged[key] = loc; continue; }
+    // Merge by event id — union of both, remote wins on conflict
+    const byId = new Map();
+    for (const e of loc) byId.set(e.id, e);
+    for (const e of rem) byId.set(e.id, e);  // remote overwrites
+    merged[key] = [...byId.values()].sort((a, b) => (a.id || 0) - (b.id || 0));
+  }
+  return merged;
+}
+
+async function syncPull() {
+  const cfg = getCfg();
+  if (!cfg?.token) return;
+  setSyncState('syncing', 'pulling...');
+  try {
+    const f = await ghGet(cfg);
+    if (f) {
+      _sha = f.sha;
+      const remote = JSON.parse(base64ToUtf8(f.content));
+      const local = getLocalDB();
+      const merged = mergeDBs(local, remote);
+      saveLocalDB(merged);
+    }
+    _retryCount = 0;
+    setSyncState('synced', 'synced');
+  } catch (e) {
+    console.error('syncPull:', e);
+    const msg = e.message.startsWith('AUTH:') ? 'auth failed — check token'
+      : e.message.startsWith('FORBIDDEN:') ? 'token needs repo scope'
+      : e.message.startsWith('RATE_LIMIT:') ? 'rate limited'
+      : 'pull failed';
+    setSyncState('error', msg);
+    toast(msg, true);
+  }
+}
+
+async function syncPush() {
+  const cfg = getCfg();
+  if (!cfg?.token) return;
+
+  // Debounce: reset timer on rapid calls
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(async () => {
+    // Mutex: if already pushing, queue another attempt
+    if (_syncLock) {
+      _retryCount++;
+      if (_retryCount < MAX_RETRIES) syncPush();
+      return;
+    }
+    _syncLock = true;
+    setSyncState('syncing', 'saving...');
+
+    try {
+      // Always fetch latest sha before writing to avoid conflicts
+      const f = await ghGet(cfg);
+      if (f) {
+        _sha = f.sha;
+        // Merge remote with local before pushing
+        const remote = JSON.parse(base64ToUtf8(f.content));
+        const local = getLocalDB();
+        const merged = mergeDBs(local, remote);
+        saveLocalDB(merged);  // update local with merged
+        const result = await ghPut(cfg, merged, _sha);
+        _sha = result.content?.sha || _sha;
+      } else {
+        // File doesn't exist yet — create it
+        const result = await ghPut(cfg, getLocalDB(), null);
+        _sha = result.content?.sha || null;
+      }
+      _retryCount = 0;
+      setSyncState('synced', 'synced');
+    } catch (e) {
+      console.error('syncPush:', e);
+      // On 409/422 conflict, retry once with fresh sha
+      if ((e.message?.includes('409') || e.message?.includes('422') || e.message?.includes('conflict')) && _retryCount < MAX_RETRIES) {
+        _retryCount++;
+        _syncLock = false;
+        syncPush();
+        return;
+      }
+      setSyncState('error', 'sync failed');
+      toast('Sync failed — data saved locally', true);
+    } finally {
+      _syncLock = false;
+    }
+  }, 1200);
+}
+
+function setSyncState(s, l) {
+  document.getElementById('sync-dot').className = 'sync-dot ' + s;
+  document.getElementById('sync-label').textContent = l;
+}
+
+async function setupGitHub() {
+  const user = document.getElementById('cfg-user').value.trim();
+  const repo = document.getElementById('cfg-repo').value.trim();
+  const branch = document.getElementById('cfg-branch').value.trim() || 'main';
+  const token = document.getElementById('cfg-token').value.trim();
+  const errEl = document.getElementById('setup-error');
+  const btn = document.getElementById('setup-btn');
+  errEl.textContent = '';
+
+  if (!user || !repo || !token) { errEl.textContent = 'All fields required.'; return; }
+
+  // Validate token format
+  if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
+    errEl.textContent = 'Token should start with ghp_ (classic) or github_pat_ (fine-grained).';
+    return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Connecting...';
+  try {
+    // 1. Verify repo access
+    const r = await fetch(`https://api.github.com/repos/${user}/${repo}`, { headers: ghHeaders(token) });
+    if (r.status === 404) throw new Error(`Repo "${user}/${repo}" not found. Check spelling and that the token has access.`);
+    if (r.status === 401) throw new Error('Token invalid or expired. Generate a new one.');
+    if (r.status === 403) {
+      const body = await r.json().catch(() => ({}));
+      throw new Error(`Forbidden: ${body.message || 'Token needs repo scope.'}`);
+    }
+    if (!r.ok) throw new Error(`GitHub error: ${r.status}`);
+
+    const repoData = await r.json();
+
+    // 2. Verify write permission
+    if (!repoData.permissions?.push) {
+      throw new Error('Token has read-only access. Needs write permission (repo scope for classic, Contents read/write for fine-grained).');
+    }
+
+    // 3. Verify branch exists
+    const branchR = await fetch(`https://api.github.com/repos/${user}/${repo}/branches/${branch}`, { headers: ghHeaders(token) });
+    if (branchR.status === 404) throw new Error(`Branch "${branch}" not found. Check branch name.`);
+
+    saveCfg({ user, repo, token, branch });
+    document.getElementById('sync-bar').style.display = 'flex';
+    document.getElementById('setup-overlay').classList.add('hidden');
+    await syncPull();
+    renderDateBar(); renderTimeline();
+    toast('Connected');
+  } catch (e) {
+    errEl.textContent = e.message;
+    btn.disabled = false; btn.textContent = 'Connect & start logging';
+  }
+}
+
+function skipSetup() {
+  saveCfg({ local: true });
+  document.getElementById('setup-overlay').classList.add('hidden');
+  document.getElementById('sync-bar').style.display = 'flex'; // show for export/import
+  setSyncState('', 'local only');
+  renderDateBar(); renderTimeline();
+}
+
+function openSettings() {
+  const cfg = getCfg();
+  if (cfg && !cfg.local) {
+    document.getElementById('cfg-user').value = cfg.user || '';
+    document.getElementById('cfg-repo').value = cfg.repo || '';
+    document.getElementById('cfg-branch').value = cfg.branch || 'main';
+    document.getElementById('cfg-token').value = cfg.token || '';
+  }
+  document.getElementById('setup-error').textContent = '';
+  document.getElementById('setup-btn').disabled = false;
+  document.getElementById('setup-btn').textContent = 'Connect & start logging';
+  document.getElementById('setup-overlay').classList.remove('hidden');
+}
+
+// ─── EXPORT / IMPORT ─────────────────────────────────────────────────────────
+function exportData() {
+  const db = getLocalDB();
+  const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `gut-journal-${fmtKey(new Date())}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Exported');
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (typeof imported !== 'object' || Array.isArray(imported)) throw new Error('Invalid format');
+      const local = getLocalDB();
+      const merged = mergeDBs(local, imported);
+      saveLocalDB(merged);
+      const cfg = getCfg();
+      if (cfg?.token) syncPush();
+      renderDateBar(); renderTimeline();
+      toast(`Imported ${Object.keys(imported).length} days`);
+    } catch (err) {
+      toast('Invalid JSON file', true);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = ''; // reset so same file can be re-imported
+}
 
 // ─── DB ──────────────────────────────────────────────────────────────────────
-function getLocalDB(){try{return JSON.parse(localStorage.getItem('gj_events')||'{}');}catch(e){return{};}}
-function saveLocalDB(db){localStorage.setItem('gj_events',JSON.stringify(db));}
-function getDB(){return getLocalDB();}
-function saveDB(db){saveLocalDB(db);const cfg=getCfg();if(cfg?.token)syncPush();}
-function todayKey(){return fmtKey(new Date());}
-function fmtKey(d){return d.toISOString().split('T')[0];}
-function getEvents(k){return getDB()[k]||[];}
-function addEvent(k,evt){const db=getDB();if(!db[k])db[k]=[];db[k].push({...evt,id:Date.now()});saveDB(db);}
-function deleteEvent(k,id){const db=getDB();if(!db[k])return;db[k]=db[k].filter(e=>e.id!==id);saveDB(db);}
+function getLocalDB() { try { return JSON.parse(localStorage.getItem('gj_events') || '{}'); } catch (e) { return {}; } }
+function saveLocalDB(db) { localStorage.setItem('gj_events', JSON.stringify(db)); }
+function getDB() { return getLocalDB(); }
+function saveDB(db) { saveLocalDB(db); const cfg = getCfg(); if (cfg?.token) syncPush(); }
+function todayKey() { return fmtKey(new Date()); }
+function fmtKey(d) { return d.toISOString().split('T')[0]; }
+function getEvents(k) { return getDB()[k] || []; }
+function addEvent(k, evt) {
+  const db = getDB();
+  if (!db[k]) db[k] = [];
+  // FIX: Add timestamp to every event
+  db[k].push({ ...evt, id: Date.now(), time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) });
+  saveDB(db);
+}
+// FIX: deleteEvent takes explicit dateKey parameter
+function deleteEvent(dateKey, id) {
+  const db = getDB();
+  if (!db[dateKey]) return;
+  db[dateKey] = db[dateKey].filter(e => e.id !== id);
+  if (db[dateKey].length === 0) delete db[dateKey];
+  saveDB(db);
+}
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
-let currentDay=new Date(),selectedType=null,formState={};
-let calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),calSelected=null;
-function currentKey(){return fmtKey(currentDay);}
+let currentDay = new Date(), selectedType = null, formState = {};
+let calYear = new Date().getFullYear(), calMonth = new Date().getMonth(), calSelected = null;
+function currentKey() { return fmtKey(currentDay); }
 
 // ─── TABS ────────────────────────────────────────────────────────────────────
-function switchTab(tab,btn){
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
-  document.getElementById('view-today').classList.toggle('hidden',tab!=='today');
-  document.getElementById('view-trends').classList.toggle('hidden',tab!=='trends');
-  document.getElementById('view-calendar').classList.toggle('hidden',tab!=='calendar');
-  document.getElementById('fab').style.display=tab==='today'?'flex':'none';
-  if(tab==='trends')renderTrends();
-  if(tab==='calendar')renderCalendar();
+function switchTab(tab, btn) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active')); btn.classList.add('active');
+  document.getElementById('view-today').classList.toggle('hidden', tab !== 'today');
+  document.getElementById('view-trends').classList.toggle('hidden', tab !== 'trends');
+  document.getElementById('view-calendar').classList.toggle('hidden', tab !== 'calendar');
+  document.getElementById('fab').style.display = tab === 'today' ? 'flex' : 'none';
+  if (tab === 'trends') renderTrends();
+  if (tab === 'calendar') renderCalendar();
 }
 
 // ─── DATE ────────────────────────────────────────────────────────────────────
-function changeDay(d){currentDay.setDate(currentDay.getDate()+d);renderDateBar();renderTimeline();}
-function renderDateBar(){const today=new Date();today.setHours(0,0,0,0);const cd=new Date(currentDay);cd.setHours(0,0,0,0);const diff=Math.round((cd-today)/86400000);document.getElementById('date-main').textContent=diff===0?'Today':diff===-1?'Yesterday':currentDay.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});document.getElementById('date-day').textContent=currentDay.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}
+function changeDay(d) { currentDay.setDate(currentDay.getDate() + d); renderDateBar(); renderTimeline(); }
+function renderDateBar() {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const cd = new Date(currentDay); cd.setHours(0, 0, 0, 0);
+  const diff = Math.round((cd - today) / 86400000);
+  document.getElementById('date-main').textContent = diff === 0 ? 'Today' : diff === -1 ? 'Yesterday' : currentDay.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+  document.getElementById('date-day').textContent = currentDay.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+// ─── SCORE BREAKDOWN ─────────────────────────────────────────────────────────
+function calcDayScoreDetailed(events) {
+  if (!events?.length) return { total: null, parts: [] };
+  const hasOutput = events.some(e => e.type === 'poop' || e.type === 'symptom');
+  if (!hasOutput) return { total: null, parts: [] };
+
+  let score = 50;
+  const parts = [{ label: 'Base', val: 50 }];
+
+  events.forEach(e => {
+    if (e.type === 'poop') {
+      if (e.bristol >= 3 && e.bristol <= 4) { score += 25; parts.push({ label: `Bristol ${e.bristol} (ideal)`, val: +25 }); }
+      else if (e.bristol && (e.bristol <= 2 || e.bristol >= 6)) { score -= 25; parts.push({ label: `Bristol ${e.bristol} (off)`, val: -25 }); }
+      if (e.bloating === 'bad') { score -= 8; parts.push({ label: 'Bloating (bad)', val: -8 }); }
+      if (e.gas === 'lots') { score -= 5; parts.push({ label: 'Gas (lots)', val: -5 }); }
+    }
+    if (e.type === 'meal') {
+      const hf = e.foods?.filter(f => HIGH_FIBER.includes(f)).length || 0;
+      const ir = e.foods?.filter(f => IRRITANTS.includes(f)).length || 0;
+      if (hf) { score += hf * 4; parts.push({ label: `Fiber ×${hf}`, val: +(hf * 4) }); }
+      if (ir) { score -= ir * 5; parts.push({ label: `Irritant ×${ir}`, val: -(ir * 5) }); }
+    }
+    if (e.type === 'symptom') {
+      if (e.bloating === 'bad') { score -= 10; parts.push({ label: 'Bloating (bad)', val: -10 }); }
+      else if (e.bloating === 'mild') { score -= 5; parts.push({ label: 'Bloating (mild)', val: -5 }); }
+      if (e.pain === 'bad') { score -= 15; parts.push({ label: 'Pain (bad)', val: -15 }); }
+      else if (e.pain === 'moderate') { score -= 8; parts.push({ label: 'Pain (moderate)', val: -8 }); }
+      if (e.gas === 'lots') { score -= 6; parts.push({ label: 'Gas (lots)', val: -6 }); }
+    }
+    if (e.type === 'mood') {
+      if (e.stress === 'chill') { score += 8; parts.push({ label: 'Mood (chill)', val: +8 }); }
+      else if (e.stress === 'stressed') { score -= 8; parts.push({ label: 'Mood (stressed)', val: -8 }); }
+      else if (e.stress === 'chaos') { score -= 14; parts.push({ label: 'Mood (chaos)', val: -14 }); }
+    }
+    if (e.type === 'sleep') {
+      if (e.sleep === 'good') { score += 8; parts.push({ label: 'Sleep (good)', val: +8 }); }
+      else if (e.sleep === 'poor') { score -= 12; parts.push({ label: 'Sleep (poor)', val: -12 }); }
+    }
+    if (e.type === 'dairy') { score -= 6; parts.push({ label: 'Dairy', val: -6 }); }
+    if (e.type === 'water') {
+      const g = parseInt(e.glasses) || 0;
+      if (g >= 6) { score += 10; parts.push({ label: `Water ${g}+ glasses`, val: +10 }); }
+      else if (g >= 3) { score += 4; parts.push({ label: `Water ${g} glasses`, val: +4 }); }
+      else { score -= 6; parts.push({ label: `Water ${g} glasses`, val: -6 }); }
+    }
+    if (e.type === 'caffeine') {
+      if (e.cups === '3+ cups') { score -= 10; parts.push({ label: 'Caffeine (3+)', val: -10 }); }
+      else if (e.cups === '2 cups') { score -= 4; parts.push({ label: 'Caffeine (2)', val: -4 }); }
+      else if (e.cups === 'none') { score += 3; parts.push({ label: 'No caffeine', val: +3 }); }
+    }
+    if (e.type === 'exercise') {
+      if (e.intensity === 'light' || e.intensity === 'moderate') { score += 8; parts.push({ label: `Exercise (${e.intensity})`, val: +8 }); }
+      else if (e.intensity === 'intense') { score += 4; parts.push({ label: 'Exercise (intense)', val: +4 }); }
+      else if (e.intensity === 'none') { score -= 4; parts.push({ label: 'No exercise', val: -4 }); }
+    }
+    if (e.type === 'cycle') {
+      if (e.phase === 'luteal') { score -= 5; parts.push({ label: 'Luteal phase', val: -5 }); }
+      if (e.phase === 'menstrual') { score -= 8; parts.push({ label: 'Menstrual phase', val: -8 }); }
+    }
+    if (e.type === 'meds') {
+      if (e.items?.includes('probiotic')) { score += 6; parts.push({ label: 'Probiotic', val: +6 }); }
+      if (e.items?.includes('ibuprofen')) { score -= 5; parts.push({ label: 'Ibuprofen', val: -5 }); }
+      if (e.items?.includes('antibiotic')) { score -= 12; parts.push({ label: 'Antibiotic', val: -12 }); }
+    }
+  });
+
+  return { total: Math.min(100, Math.max(0, Math.round(score))), parts };
+}
+
+function calcDayScore(events) {
+  return calcDayScoreDetailed(events).total;
+}
+
+function toggleScoreBreakdown() {
+  const el = document.getElementById('score-breakdown');
+  const isOpen = el.classList.contains('open');
+  if (isOpen) { el.classList.remove('open'); return; }
+
+  const events = getEvents(currentKey());
+  const { total, parts } = calcDayScoreDetailed(events);
+  if (total === null) { el.classList.remove('open'); return; }
+
+  let html = `<div class="sb-title">Score breakdown</div>`;
+  parts.forEach(p => {
+    const cls = p.label === 'Base' ? 'neutral' : p.val > 0 ? 'pos' : p.val < 0 ? 'neg' : 'neutral';
+    html += `<div class="sb-row"><div class="sb-label">${p.label}</div><div class="sb-val ${cls}">${p.val > 0 ? '+' : ''}${p.val}</div></div>`;
+  });
+  html += `<div class="sb-row" style="border-top:1px solid var(--border);margin-top:6px;padding-top:6px"><div class="sb-label" style="font-weight:500;color:var(--text)">Total (clamped 0–100)</div><div class="sb-val" style="color:${total >= 70 ? 'var(--green)' : total >= 45 ? 'var(--amber)' : 'var(--red)'}"><strong>${total}</strong></div></div>`;
+  el.innerHTML = html;
+  el.classList.add('open');
+}
 
 // ─── TIMELINE ────────────────────────────────────────────────────────────────
-function renderTimeline(){
-  const events=getEvents(currentKey()),feed=document.getElementById('timeline-feed');
-  if(!events.length){feed.innerHTML=`<div class="timeline-empty">No events yet.<br>Tap + to log something.</div>`;document.querySelector('#day-score-badge span').textContent='—';document.getElementById('day-score-badge').style.borderColor='';return;}
-  const score=calcDayScore(events);
-  const sc=score===null?'unscored':score+'/100';
-  const scColor=score===null?'var(--border)':score>=70?'var(--green)':score>=45?'var(--amber)':'var(--red)';
-  document.querySelector('#day-score-badge span').textContent=sc;
-  document.getElementById('day-score-badge').style.borderColor=scColor;
-  const allDays=allDaysExcludeToday();
-  let zBlurb='';
-  if(allDays.length>=5&&score!==null){const db=getDB();const scores=allDays.map(k=>calcDayScore(db[k]||[])).filter(s=>s!==null);const z=calcZScore(score,scores);if(z!==null)zBlurb=`<div style="font-size:10px;color:var(--text3);margin-bottom:12px;">z-score vs your baseline: <strong style="color:${Math.abs(z)>1?'var(--amber)':'var(--text2)'}">${z>0?'+':''}${z.toFixed(2)}σ</strong> ${z>=1.5?' — unusually good':z<=-1.5?' — unusually rough':''}</div>`;}
-  feed.innerHTML=zBlurb+events.map(e=>renderEventCard(e)).join('');
+function renderTimeline() {
+  const events = getEvents(currentKey()), feed = document.getElementById('timeline-feed');
+  document.getElementById('score-breakdown').classList.remove('open');
+
+  if (!events.length) {
+    feed.innerHTML = `<div class="timeline-empty">No events yet.<br>Tap + to log something.</div>`;
+    document.querySelector('#day-score-badge span').textContent = '—';
+    document.getElementById('day-score-badge').style.borderColor = '';
+    return;
+  }
+
+  const score = calcDayScore(events);
+  const sc = score === null ? 'unscored' : score + '/100';
+  const scColor = score === null ? 'var(--border)' : score >= 70 ? 'var(--green)' : score >= 45 ? 'var(--amber)' : 'var(--red)';
+  document.querySelector('#day-score-badge span').textContent = sc;
+  document.getElementById('day-score-badge').style.borderColor = scColor;
+
+  const allDays = allDaysExcludeToday();
+  let zBlurb = '';
+  if (allDays.length >= 5 && score !== null) {
+    const db = getDB();
+    const scores = allDays.map(k => calcDayScore(db[k] || [])).filter(s => s !== null);
+    const z = calcZScore(score, scores);
+    if (z !== null) zBlurb = `<div style="font-size:10px;color:var(--text3);margin-bottom:12px;">z-score vs your baseline: <strong style="color:${Math.abs(z) > 1 ? 'var(--amber)' : 'var(--text2)'}">${z > 0 ? '+' : ''}${z.toFixed(2)}σ</strong> ${z >= 1.5 ? ' — unusually good' : z <= -1.5 ? ' — unusually rough' : ''}</div>`;
+  }
+
+  // Sort by time if available
+  const sorted = [...events].sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+  feed.innerHTML = zBlurb + sorted.map(e => renderEventCard(e, currentKey())).join('');
 }
 
-function renderEventCard(e){
-  const typeLabel=e.type==='dairy'?'DAIRY':e.type.toUpperCase();
-  let body='';
-  if(e.type==='meal'&&e.foods?.length)body=`<div class="event-tags">${e.foods.map(f=>{const t=FOOD_TAGS.find(x=>x.id===f);return t?`<span class="tag">${t.label}</span>`:''}).join('')}</div>`;
-  if(e.type==='poop'){const b=e.bristol,bi=BRISTOL[b];const bc=bi?.cat==='ideal'?'var(--green)':bi?.cat==='hard'?'var(--amber)':'var(--red)';body=`<div class="bristol-display"><div class="bristol-num-big" style="color:${bc}">${b||'—'}</div><div class="bristol-desc-small">${bi?bi.label:'not recorded'}</div></div>`;if(e.bloating&&e.bloating!=='none'||e.gas&&e.gas!=='none')body+=`<div class="event-tags" style="margin-top:6px">${e.bloating&&e.bloating!=='none'?`<span class="tag">bloat: ${e.bloating}</span>`:''}${e.gas&&e.gas!=='none'?`<span class="tag">gas: ${e.gas}</span>`:''}</div>`;}
-  if(e.type==='symptom'){const parts=[];if(e.bloating&&e.bloating!=='none')parts.push(`bloat: ${e.bloating}`);if(e.gas&&e.gas!=='none')parts.push(`gas: ${e.gas}`);if(e.pain&&e.pain!=='none')parts.push(`pain: ${e.pain}`);body=`<div class="event-tags">${parts.map(p=>`<span class="tag">${p}</span>`).join('')}</div>`;}
-  if(e.type==='mood')body=`<div class="event-detail">Stress: <strong>${e.stress}</strong></div>`;
-  if(e.type==='sleep')body=`<div class="event-detail">Sleep: <strong>${e.sleep}</strong></div>`;
-  if(e.type==='dairy')body=`<div class="event-detail" style="color:var(--text3);font-size:11px">lactose brute force logged</div>`;
-  if(e.type==='water')body=`<div class="event-detail">Glasses: <strong style="color:var(--teal)">${e.glasses||'—'}</strong></div>`;
-  if(e.type==='caffeine')body=`<div class="event-detail">${e.cups||'—'}${e.caftype?` · ${e.caftype}`:''}</div>`;
-  if(e.type==='cycle')body=`<div class="event-detail">Phase: <strong style="color:var(--pink)">${e.phase||'—'}</strong>${e.cycleday?` · day ${e.cycleday}`:''}</div>`;
-  if(e.type==='exercise')body=`<div class="event-detail"><strong style="color:var(--mint)">${e.intensity||'—'}</strong>${e.extype?` · ${e.extype}`:''}</div>`;
-  if(e.type==='meds')body=`<div class="event-tags">${(e.items||[]).map(m=>`<span class="tag">${m}</span>`).join('')}</div>`;
-  return `<div class="event-card"><div class="event-type-dot dot-${e.type}"></div><div class="event-body"><div class="event-type-label label-${e.type}">${typeLabel}</div>${body}</div><button class="event-delete" onclick="removeEvent(${e.id})">✕</button></div>`;
+function renderEventCard(e, dateKey) {
+  const typeLabel = e.type === 'dairy' ? 'DAIRY' : e.type.toUpperCase();
+  const timeStr = e.time ? `<span class="event-time">${e.time}</span>` : '';
+  let body = '';
+
+  if (e.type === 'meal' && e.foods?.length)
+    body = `<div class="event-tags">${e.foods.map(f => { const t = FOOD_TAGS.find(x => x.id === f); return t ? `<span class="tag">${t.label}</span>` : ''; }).join('')}</div>`;
+
+  if (e.type === 'poop') {
+    const b = e.bristol, bi = BRISTOL[b];
+    const bc = bi?.cat === 'ideal' ? 'var(--green)' : bi?.cat === 'hard' ? 'var(--amber)' : 'var(--red)';
+    body = `<div class="bristol-display"><div class="bristol-num-big" style="color:${bc}">${b || '—'}</div><div class="bristol-desc-small">${bi ? bi.label : 'not recorded'}</div></div>`;
+    if ((e.bloating && e.bloating !== 'none') || (e.gas && e.gas !== 'none'))
+      body += `<div class="event-tags" style="margin-top:6px">${e.bloating && e.bloating !== 'none' ? `<span class="tag">bloat: ${e.bloating}</span>` : ''}${e.gas && e.gas !== 'none' ? `<span class="tag">gas: ${e.gas}</span>` : ''}</div>`;
+  }
+
+  if (e.type === 'symptom') {
+    const parts = [];
+    if (e.bloating && e.bloating !== 'none') parts.push(`bloat: ${e.bloating}`);
+    if (e.gas && e.gas !== 'none') parts.push(`gas: ${e.gas}`);
+    if (e.pain && e.pain !== 'none') parts.push(`pain: ${e.pain}`);
+    body = `<div class="event-tags">${parts.map(p => `<span class="tag">${p}</span>`).join('')}</div>`;
+  }
+
+  if (e.type === 'mood') body = `<div class="event-detail">Stress: <strong>${e.stress}</strong></div>`;
+  if (e.type === 'sleep') body = `<div class="event-detail">Sleep: <strong>${e.sleep}</strong></div>`;
+  if (e.type === 'dairy') body = `<div class="event-detail" style="color:var(--text3);font-size:11px">lactose brute force logged</div>`;
+  if (e.type === 'water') body = `<div class="event-detail">Glasses: <strong style="color:var(--teal)">${e.glasses || '—'}</strong></div>`;
+  if (e.type === 'caffeine') body = `<div class="event-detail">${e.cups || '—'}${e.caftype ? ` · ${e.caftype}` : ''}</div>`;
+  if (e.type === 'cycle') body = `<div class="event-detail">Phase: <strong style="color:var(--pink)">${e.phase || '—'}</strong>${e.cycleday ? ` · day ${e.cycleday}` : ''}</div>`;
+  if (e.type === 'exercise') body = `<div class="event-detail"><strong style="color:var(--mint)">${e.intensity || '—'}</strong>${e.extype ? ` · ${e.extype}` : ''}</div>`;
+  if (e.type === 'meds') body = `<div class="event-tags">${(e.items || []).map(m => `<span class="tag">${m}</span>`).join('')}</div>`;
+
+  // FIX: pass dateKey so calendar deletes work correctly
+  return `<div class="event-card"><div class="event-type-dot dot-${e.type}"></div><div class="event-body"><div class="event-type-label label-${e.type}">${typeLabel}${timeStr}</div>${body}</div><button class="event-delete" onclick="removeEvent('${dateKey}',${e.id})">✕</button></div>`;
 }
-function removeEvent(id){deleteEvent(currentKey(),id);renderTimeline();toast('Removed');}
+
+// FIX: removeEvent now takes dateKey parameter
+function removeEvent(dateKey, id) {
+  deleteEvent(dateKey, id);
+  renderTimeline();
+  if (calSelected) renderCalendar();
+  toast('Removed');
+}
 
 // ─── MODAL ───────────────────────────────────────────────────────────────────
-function openModal(){selectedType=null;formState={};document.getElementById('modal-step2').style.display='none';document.getElementById('modal-step1').style.display='block';document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));document.getElementById('modal-overlay').classList.add('open');}
-function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
-function closeModalOutside(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
-function selectType(type,btn){selectedType=type;formState={type};document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');document.getElementById('modal-step1').style.display='none';renderModalStep2(type);document.getElementById('modal-step2').style.display='block';}
+function openModal() { selectedType = null; formState = {}; document.getElementById('modal-step2').style.display = 'none'; document.getElementById('modal-step1').style.display = 'block'; document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected')); document.getElementById('modal-overlay').classList.add('open'); }
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+function selectType(type, btn) { selectedType = type; formState = { type }; document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); document.getElementById('modal-step1').style.display = 'none'; renderModalStep2(type); document.getElementById('modal-step2').style.display = 'block'; }
 
-function renderModalStep2(type){
-  const el=document.getElementById('modal-step2');
-  const titles={meal:'Log a meal',poop:'Log a poop',symptom:'Log symptoms',dairy:'Had dairy',water:'Log water',caffeine:'Log caffeine',mood:'Log mood/stress',sleep:'Log sleep',cycle:'Log cycle',exercise:'Log exercise',meds:'Log meds/supps'};
-  let html=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px"><button onclick="backToStep1()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text2);cursor:pointer;padding:4px 10px;font-size:12px;font-family:'DM Mono',monospace">back</button><div class="modal-title" style="margin-bottom:0">${titles[type]||type}</div></div>`;
-  if(type==='meal')html+=`<div class="section-hdr">What did you have?</div><div class="food-tags-grid">${FOOD_TAGS.map(t=>`<button class="food-tag" data-id="${t.id}" onclick="toggleFoodTag(this)">${t.label}</button>`).join('')}</div>`;
-  if(type==='poop'){html+=`<div class="section-hdr">Bristol stool scale</div><div class="bristol-grid">${[1,2,3,4,5,6,7].map(n=>{const cat=BRISTOL[n].cat;const cls=cat==='ideal'?'b-ideal':cat==='hard'?'b-hard':'b-loose';return`<button class="b-btn ${cls}" data-b="${n}" onclick="selectBristol(this,${n})"><span class="b-num">${n}</span><span class="b-type">${n<=2?'hard':n<=4?'ok':n<=6?'soft':'liq'}</span></button>`;}).join('')}</div><div class="bristol-hint" id="b-hint">tap a number</div>`;html+=`<div class="section-hdr">Symptoms with it?</div><div class="scale-label">Bloating</div><div class="scale-row">${['none','mild','bad'].map(v=>`<button class="scale-opt sel-red" data-field="bloating" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Gas/cramps</div><div class="scale-row">${['none','some','lots'].map(v=>`<button class="scale-opt sel-red" data-field="gas" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;}
-  if(type==='symptom'){html+=`<div class="section-hdr">What's going on?</div><div class="scale-label">Bloating</div><div class="scale-row">${['none','mild','bad'].map(v=>`<button class="scale-opt sel-red" data-field="bloating" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Gas/cramps</div><div class="scale-row">${['none','some','lots'].map(v=>`<button class="scale-opt sel-red" data-field="gas" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Stomach pain</div><div class="scale-row">${['none','mild','moderate','bad'].map(v=>`<button class="scale-opt sel-red" data-field="pain" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;}
-  if(type==='water')html+=`<div class="section-hdr">Glasses today</div><div class="scale-row">${['1','2','3','4','5','6','7','8+'].map(v=>`<button class="scale-opt sel-green" data-field="glasses" data-val="${v}" onclick="pickScale(this)" style="font-size:13px;font-weight:600">${v}</button>`).join('')}</div><div style="font-size:10px;color:var(--text3);margin-top:8px">target: 6–8 glasses/day</div>`;
-  if(type==='caffeine'){html+=`<div class="section-hdr">Amount</div><div class="scale-row">${[['none','g'],['1 cup','a'],['2 cups','a'],['3+ cups','r']].map(([v,c])=>`<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="cups" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Type</div><div class="scale-row">${['coffee','tea','energy drink','other'].map(v=>`<button class="scale-opt sel-amber" data-field="caftype" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;}
-  if(type==='mood')html+=`<div class="section-hdr">Stress level</div><div class="scale-row">${[['chill','g'],['mild','a'],['stressed','a'],['chaos','r']].map(([v,c])=>`<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="stress" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;
-  if(type==='sleep')html+=`<div class="section-hdr">Quality (last night)</div><div class="scale-row">${[['poor','r'],['okay','a'],['good','g']].map(([v,c])=>`<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="sleep" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;
-  if(type==='cycle'){html+=`<div class="section-hdr">Phase</div><div class="scale-row">${['menstrual','follicular','ovulation','luteal'].map(v=>`<button class="scale-opt sel-pink" data-field="phase" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Cycle day (optional)</div><div class="scale-row">${['1-5','6-10','11-15','16-20','21-25','26-30'].map(v=>`<button class="scale-opt sel-pink" data-field="cycleday" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;}
-  if(type==='exercise'){html+=`<div class="section-hdr">Intensity</div><div class="scale-row">${[['none','r'],['light','g'],['moderate','g'],['intense','a']].map(([v,c])=>`<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="intensity" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Type (optional)</div><div class="scale-row">${['walk','run','gym','yoga','swim','other'].map(v=>`<button class="scale-opt sel-green" data-field="extype" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;}
-  if(type==='meds')html+=`<div class="section-hdr">What did you take?</div><div class="food-tags-grid">${['probiotic','prebiotic','ibuprofen','antibiotic','antacid','laxative','iron supplement','vitamin D','magnesium','other'].map(m=>`<button class="food-tag" data-id="${m}" onclick="toggleFoodTag(this)">${m}</button>`).join('')}</div>`;
-  if(type==='dairy')html+=`<div style="color:var(--text2);font-size:13px;line-height:1.7;margin-bottom:10px">Dairy logged for today. Tracked against symptoms over time.</div>`;
-  html+=`<button class="modal-add-btn" onclick="submitEvent()">Add entry</button>`;
-  el.innerHTML=html;
+function renderModalStep2(type) {
+  const el = document.getElementById('modal-step2');
+  const titles = { meal: 'Log a meal', poop: 'Log a poop', symptom: 'Log symptoms', dairy: 'Had dairy', water: 'Log water', caffeine: 'Log caffeine', mood: 'Log mood/stress', sleep: 'Log sleep', cycle: 'Log cycle', exercise: 'Log exercise', meds: 'Log meds/supps' };
+  let html = `<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px"><button onclick="backToStep1()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text2);cursor:pointer;padding:4px 10px;font-size:12px;font-family:'DM Mono',monospace">back</button><div class="modal-title" style="margin-bottom:0">${titles[type] || type}</div></div>`;
+
+  if (type === 'meal') html += `<div class="section-hdr">What did you have?</div><div class="food-tags-grid">${FOOD_TAGS.map(t => `<button class="food-tag" data-id="${t.id}" onclick="toggleFoodTag(this)">${t.label}</button>`).join('')}</div>`;
+
+  if (type === 'poop') {
+    html += `<div class="section-hdr">Bristol stool scale</div><div class="bristol-grid">${[1, 2, 3, 4, 5, 6, 7].map(n => { const cat = BRISTOL[n].cat; const cls = cat === 'ideal' ? 'b-ideal' : cat === 'hard' ? 'b-hard' : 'b-loose'; return `<button class="b-btn ${cls}" data-b="${n}" onclick="selectBristol(this,${n})"><span class="b-num">${n}</span><span class="b-type">${n <= 2 ? 'hard' : n <= 4 ? 'ok' : n <= 6 ? 'soft' : 'liq'}</span></button>`; }).join('')}</div><div class="bristol-hint" id="b-hint">tap a number</div>`;
+    html += `<div class="section-hdr">Symptoms with it?</div><div class="scale-label">Bloating</div><div class="scale-row">${['none', 'mild', 'bad'].map(v => `<button class="scale-opt sel-red" data-field="bloating" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Gas/cramps</div><div class="scale-row">${['none', 'some', 'lots'].map(v => `<button class="scale-opt sel-red" data-field="gas" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;
+  }
+
+  if (type === 'symptom') {
+    html += `<div class="section-hdr">What's going on?</div><div class="scale-label">Bloating</div><div class="scale-row">${['none', 'mild', 'bad'].map(v => `<button class="scale-opt sel-red" data-field="bloating" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Gas/cramps</div><div class="scale-row">${['none', 'some', 'lots'].map(v => `<button class="scale-opt sel-red" data-field="gas" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Stomach pain</div><div class="scale-row">${['none', 'mild', 'moderate', 'bad'].map(v => `<button class="scale-opt sel-red" data-field="pain" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;
+  }
+
+  if (type === 'water') html += `<div class="section-hdr">Glasses today</div><div class="scale-row">${['1', '2', '3', '4', '5', '6', '7', '8+'].map(v => `<button class="scale-opt sel-green" data-field="glasses" data-val="${v}" onclick="pickScale(this)" style="font-size:13px;font-weight:600">${v}</button>`).join('')}</div><div style="font-size:10px;color:var(--text3);margin-top:8px">target: 6–8 glasses/day</div>`;
+
+  if (type === 'caffeine') {
+    html += `<div class="section-hdr">Amount</div><div class="scale-row">${[['none', 'g'], ['1 cup', 'a'], ['2 cups', 'a'], ['3+ cups', 'r']].map(([v, c]) => `<button class="scale-opt sel-${c === 'g' ? 'green' : c === 'a' ? 'amber' : 'red'}" data-field="cups" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Type</div><div class="scale-row">${['coffee', 'tea', 'energy drink', 'other'].map(v => `<button class="scale-opt sel-amber" data-field="caftype" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;
+  }
+
+  if (type === 'mood') html += `<div class="section-hdr">Stress level</div><div class="scale-row">${[['chill', 'g'], ['mild', 'a'], ['stressed', 'a'], ['chaos', 'r']].map(([v, c]) => `<button class="scale-opt sel-${c === 'g' ? 'green' : c === 'a' ? 'amber' : 'red'}" data-field="stress" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;
+
+  if (type === 'sleep') html += `<div class="section-hdr">Quality (last night)</div><div class="scale-row">${[['poor', 'r'], ['okay', 'a'], ['good', 'g']].map(([v, c]) => `<button class="scale-opt sel-${c === 'g' ? 'green' : c === 'a' ? 'amber' : 'red'}" data-field="sleep" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;
+
+  if (type === 'cycle') {
+    html += `<div class="section-hdr">Phase</div><div class="scale-row">${['menstrual', 'follicular', 'ovulation', 'luteal'].map(v => `<button class="scale-opt sel-pink" data-field="phase" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Cycle day (optional)</div><div class="scale-row">${['1-5', '6-10', '11-15', '16-20', '21-25', '26-30'].map(v => `<button class="scale-opt sel-pink" data-field="cycleday" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;
+  }
+
+  if (type === 'exercise') {
+    html += `<div class="section-hdr">Intensity</div><div class="scale-row">${[['none', 'r'], ['light', 'g'], ['moderate', 'g'], ['intense', 'a']].map(([v, c]) => `<button class="scale-opt sel-${c === 'g' ? 'green' : c === 'a' ? 'amber' : 'red'}" data-field="intensity" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Type (optional)</div><div class="scale-row">${['walk', 'run', 'gym', 'yoga', 'swim', 'other'].map(v => `<button class="scale-opt sel-green" data-field="extype" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;
+  }
+
+  if (type === 'meds') html += `<div class="section-hdr">What did you take?</div><div class="food-tags-grid">${['probiotic', 'prebiotic', 'ibuprofen', 'antibiotic', 'antacid', 'laxative', 'iron supplement', 'vitamin D', 'magnesium', 'other'].map(m => `<button class="food-tag" data-id="${m}" onclick="toggleFoodTag(this)">${m}</button>`).join('')}</div>`;
+
+  if (type === 'dairy') html += `<div style="color:var(--text2);font-size:13px;line-height:1.7;margin-bottom:10px">Dairy logged for today. Tracked against symptoms over time.</div>`;
+
+  html += `<button class="modal-add-btn" onclick="submitEvent()">Add entry</button>`;
+  el.innerHTML = html;
 }
 
-function backToStep1(){document.getElementById('modal-step2').style.display='none';document.getElementById('modal-step1').style.display='block';document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));}
-function toggleFoodTag(btn){btn.classList.toggle('selected');}
-function selectBristol(btn,n){document.querySelectorAll('.b-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');formState.bristol=n;document.getElementById('b-hint').textContent=`Type ${n} — ${BRISTOL[n].label}`;}
-function pickScale(btn){const f=btn.dataset.field;document.querySelectorAll(`.scale-opt[data-field="${f}"]`).forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');formState[f]=btn.dataset.val;}
-function submitEvent(){const evt={...formState};if(evt.type==='meal')evt.foods=[...document.querySelectorAll('.food-tag.selected')].map(b=>b.dataset.id);if(evt.type==='meds')evt.items=[...document.querySelectorAll('.food-tag.selected')].map(b=>b.dataset.id);addEvent(currentKey(),evt);closeModal();renderTimeline();toast('Logged');}
-
-// ─── SCORING ─────────────────────────────────────────────────────────────────
-function calcDayScore(events){
-  if(!events?.length)return null;
-  const hasOutput=events.some(e=>e.type==='poop'||e.type==='symptom');
-  if(!hasOutput)return null;
-  let score=50;
-  events.forEach(e=>{
-    if(e.type==='poop'){if(e.bristol>=3&&e.bristol<=4)score+=25;else if(e.bristol&&(e.bristol<=2||e.bristol>=6))score-=25;if(e.bloating==='bad')score-=8;if(e.gas==='lots')score-=5;}
-    if(e.type==='meal'){const hf=e.foods?.filter(f=>HIGH_FIBER.includes(f)).length||0;const ir=e.foods?.filter(f=>IRRITANTS.includes(f)).length||0;score+=hf*4;score-=ir*5;}
-    if(e.type==='symptom'){if(e.bloating==='bad')score-=10;else if(e.bloating==='mild')score-=5;if(e.pain==='bad')score-=15;else if(e.pain==='moderate')score-=8;if(e.gas==='lots')score-=6;}
-    if(e.type==='mood'){if(e.stress==='chill')score+=8;else if(e.stress==='stressed')score-=8;else if(e.stress==='chaos')score-=14;}
-    if(e.type==='sleep'){if(e.sleep==='good')score+=8;else if(e.sleep==='poor')score-=12;}
-    if(e.type==='dairy')score-=6;
-    if(e.type==='water'){const g=parseInt(e.glasses)||0;if(g>=6)score+=10;else if(g>=3)score+=4;else score-=6;}
-    if(e.type==='caffeine'){if(e.cups==='3+ cups')score-=10;else if(e.cups==='2 cups')score-=4;else if(e.cups==='none')score+=3;}
-    if(e.type==='exercise'){if(e.intensity==='light'||e.intensity==='moderate')score+=8;else if(e.intensity==='intense')score+=4;else if(e.intensity==='none')score-=4;}
-    if(e.type==='cycle'){if(e.phase==='luteal')score-=5;if(e.phase==='menstrual')score-=8;}
-    if(e.type==='meds'){if(e.items?.includes('probiotic'))score+=6;if(e.items?.includes('ibuprofen'))score-=5;if(e.items?.includes('antibiotic'))score-=12;}
-  });
-  return Math.min(100,Math.max(0,Math.round(score)));
-}
+function backToStep1() { document.getElementById('modal-step2').style.display = 'none'; document.getElementById('modal-step1').style.display = 'block'; document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected')); }
+function toggleFoodTag(btn) { btn.classList.toggle('selected'); }
+function selectBristol(btn, n) { document.querySelectorAll('.b-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); formState.bristol = n; document.getElementById('b-hint').textContent = `Type ${n} — ${BRISTOL[n].label}`; }
+function pickScale(btn) { const f = btn.dataset.field; document.querySelectorAll(`.scale-opt[data-field="${f}"]`).forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); formState[f] = btn.dataset.val; }
+function submitEvent() { const evt = { ...formState }; if (evt.type === 'meal') evt.foods = [...document.querySelectorAll('.food-tag.selected')].map(b => b.dataset.id); if (evt.type === 'meds') evt.items = [...document.querySelectorAll('.food-tag.selected')].map(b => b.dataset.id); addEvent(currentKey(), evt); closeModal(); renderTimeline(); toast('Logged'); }
 
 // ─── STATISTICS ──────────────────────────────────────────────────────────────
-function rankArray(arr){const sorted=[...arr].map((v,i)=>({v,i})).sort((a,b)=>a.v-b.v);const ranks=new Array(arr.length);let i=0;while(i<sorted.length){let j=i;while(j<sorted.length&&sorted[j].v===sorted[i].v)j++;const r=(i+j-1)/2+1;for(let k=i;k<j;k++)ranks[sorted[k].i]=r;i=j;}return ranks;}
-function spearman(xs,ys){if(xs.length!==ys.length||xs.length<5)return null;const rx=rankArray(xs),ry=rankArray(ys);const n=xs.length;const d2=rx.reduce((s,r,i)=>s+Math.pow(r-ry[i],2),0);return 1-(6*d2)/(n*(n*n-1));}
-function isSignificant(rho,n){if(!rho||n<5)return false;const t=Math.abs(rho)*Math.sqrt((n-2)/(1-rho*rho));const tc=n>=30?2.0:n>=20?2.09:n>=14?2.18:n>=10?2.31:2.57;return t>tc;}
-function calcZScore(val,pop){if(pop.length<5)return null;const m=avg(pop),sd=stddev(pop);return sd===0?0:(val-m)/sd;}
-function lagSpearman(summaries,xFn,yFn,maxLag=3){const results=[];for(let lag=1;lag<=maxLag;lag++){const pairs=[];for(let i=lag;i<summaries.length;i++){const x=xFn(summaries[i-lag]),y=yFn(summaries[i]);if(x!==null&&x!==undefined&&y!==null&&y!==undefined)pairs.push({x,y});}if(pairs.length<5){results.push(null);continue;}const rho=spearman(pairs.map(p=>p.x),pairs.map(p=>p.y));results.push({rho,n:pairs.length,sig:isSignificant(rho,pairs.length)});}return results;}
+function rankArray(arr) { const sorted = [...arr].map((v, i) => ({ v, i })).sort((a, b) => a.v - b.v); const ranks = new Array(arr.length); let i = 0; while (i < sorted.length) { let j = i; while (j < sorted.length && sorted[j].v === sorted[i].v) j++; const r = (i + j - 1) / 2 + 1; for (let k = i; k < j; k++) ranks[sorted[k].i] = r; i = j; } return ranks; }
+function spearman(xs, ys) { if (xs.length !== ys.length || xs.length < 5) return null; const rx = rankArray(xs), ry = rankArray(ys); const n = xs.length; const d2 = rx.reduce((s, r, i) => s + Math.pow(r - ry[i], 2), 0); return 1 - (6 * d2) / (n * (n * n - 1)); }
+function isSignificant(rho, n) { if (!rho || n < 5) return false; const t = Math.abs(rho) * Math.sqrt((n - 2) / (1 - rho * rho)); const tc = n >= 30 ? 2.0 : n >= 20 ? 2.09 : n >= 14 ? 2.18 : n >= 10 ? 2.31 : 2.57; return t > tc; }
+function calcZScore(val, pop) { if (pop.length < 5) return null; const m = avg(pop), sd = stddev(pop); return sd === 0 ? 0 : (val - m) / sd; }
+function lagSpearman(summaries, xFn, yFn, maxLag = 3) { const results = []; for (let lag = 1; lag <= maxLag; lag++) { const pairs = []; for (let i = lag; i < summaries.length; i++) { const x = xFn(summaries[i - lag]), y = yFn(summaries[i]); if (x !== null && x !== undefined && y !== null && y !== undefined) pairs.push({ x, y }); } if (pairs.length < 5) { results.push(null); continue; } const rho = spearman(pairs.map(p => p.x), pairs.map(p => p.y)); results.push({ rho, n: pairs.length, sig: isSignificant(rho, pairs.length) }); } return results; }
 
-function zSparkline(summaries){
-  const scores=summaries.map(s=>s.score).filter(s=>s!==null);
-  if(scores.length<5)return '';
-  const m=avg(scores),sd=stddev(scores);
-  if(sd===0)return '';
-  const last7=summaries.slice(-7);
-  const cols=last7.map(s=>{
-    const day=new Date(s.key).toLocaleDateString('en-GB',{weekday:'short'}).slice(0,2);
-    if(s.score===null)return`<div class="z-col"><div class="z-bar-wrap"><div style="width:100%;background:var(--border2);height:3px;border-radius:2px"></div></div><div class="z-day">${day}</div></div>`;
-    const z=(s.score-m)/sd,pct=Math.min(100,Math.abs(z)/2.5*100);
-    const bar=z>=0?`<div class="z-pos" style="width:${pct}%;max-width:100%;height:100%"></div>`:`<div class="z-neg" style="width:${pct}%;max-width:100%;height:100%"></div>`;
-    return`<div class="z-col"><div class="z-bar-wrap" style="justify-content:${z>=0?'flex-start':'flex-end'}">${bar}</div><div class="z-day">${day}</div></div>`;
+function zSparkline(summaries) {
+  const scores = summaries.map(s => s.score).filter(s => s !== null);
+  if (scores.length < 5) return '';
+  const m = avg(scores), sd = stddev(scores);
+  if (sd === 0) return '';
+  const last7 = summaries.slice(-7);
+  const cols = last7.map(s => {
+    const day = new Date(s.key).toLocaleDateString('en-GB', { weekday: 'short' }).slice(0, 2);
+    if (s.score === null) return `<div class="z-col"><div class="z-bar-wrap"><div style="width:100%;background:var(--border2);height:3px;border-radius:2px"></div></div><div class="z-day">${day}</div></div>`;
+    const z = (s.score - m) / sd, pct = Math.min(100, Math.abs(z) / 2.5 * 100);
+    const bar = z >= 0 ? `<div class="z-pos" style="width:${pct}%;max-width:100%;height:100%"></div>` : `<div class="z-neg" style="width:${pct}%;max-width:100%;height:100%"></div>`;
+    return `<div class="z-col"><div class="z-bar-wrap" style="justify-content:${z >= 0 ? 'flex-start' : 'flex-end'}">${bar}</div><div class="z-day">${day}</div></div>`;
   }).join('');
-  return`<div class="chart-card"><div class="chart-title">Z-score sparkline — deviation from your baseline (σ)</div><div class="z-row">${cols}</div><div style="font-size:10px;color:var(--text3);margin-top:8px">μ=${m.toFixed(1)} σ=${sd.toFixed(1)} &nbsp;|&nbsp; right = above baseline, left = below. Formula: z = (x − μ) / σ</div></div>`;
+  return `<div class="chart-card"><div class="chart-title">Z-score sparkline — deviation from your baseline (σ)</div><div class="z-row">${cols}</div><div style="font-size:10px;color:var(--text3);margin-top:8px">μ=${m.toFixed(1)} σ=${sd.toFixed(1)} &nbsp;|&nbsp; right = above baseline, left = below. Formula: z = (x − μ) / σ</div></div>`;
 }
 
 // ─── DATA PIPELINE ───────────────────────────────────────────────────────────
-function allDaysExcludeToday(){const db=getDB();const today=todayKey();return Object.keys(db).filter(k=>db[k]?.length>0&&k!==today).sort();}
-function buildSummaries(days){
-  const db=getDB();
-  return days.map(k=>{
-    const ev=db[k]||[];const score=calcDayScore(ev);
-    const poops=ev.filter(e=>e.type==='poop');const meals=ev.filter(e=>e.type==='meal');
-    const symptoms=ev.filter(e=>e.type==='symptom'||(e.type==='poop'&&(e.bloating||e.gas)));
-    const allFoods=meals.flatMap(m=>m.foods||[]);
-    const hasDairy=ev.some(e=>e.type==='dairy');
-    const stressEvt=ev.find(e=>e.type==='mood');const sleepEvt=ev.find(e=>e.type==='sleep');
-    const cycleEvt=ev.find(e=>e.type==='cycle');const waterEvt=ev.find(e=>e.type==='water');
-    const cafEvt=ev.find(e=>e.type==='caffeine');const exEvt=ev.find(e=>e.type==='exercise');
-    const medsEvt=ev.find(e=>e.type==='meds');
-    const avgBristol=poops.length?avg(poops.map(p=>p.bristol).filter(Boolean)):null;
-    const highFiber=allFoods.filter(f=>HIGH_FIBER.includes(f)).length;
-    const irritants=allFoods.filter(f=>IRRITANTS.includes(f)).length;
-    const badSymptom=symptoms.some(e=>e.bloating==='bad'||e.pain==='bad'||e.pain==='moderate'||e.gas==='lots');
-    const glasses=waterEvt?(parseInt(waterEvt.glasses)||0):null;
-    const highCaffeine=cafEvt?.cups==='3+ cups';
-    const stressed=stressEvt?.stress==='stressed'||stressEvt?.stress==='chaos';
-    const phase=cycleEvt?.phase||null;
-    const exercised=exEvt?.intensity==='light'||exEvt?.intensity==='moderate'||exEvt?.intensity==='intense';
-    const tookAntibiotic=medsEvt?.items?.includes('antibiotic');
-    const stressNum=stressEvt?{'chill':1,'mild':2,'stressed':3,'chaos':4}[stressEvt.stress]||null:null;
-    const sleepNum=sleepEvt?{'poor':1,'okay':2,'good':3}[sleepEvt.sleep]||null:null;
-    const cafNum=cafEvt?{'none':0,'1 cup':1,'2 cups':2,'3+ cups':3}[cafEvt.cups]??null:null;
-    return{key:k,score,poops,avgBristol,hasDairy,stress:stressEvt?.stress,sleep:sleepEvt?.sleep,highFiber,irritants,badSymptom,allFoods,glasses,highCaffeine,stressed,phase,exercised,tookAntibiotic,stressNum,sleepNum,cafNum};
+function allDaysExcludeToday() { const db = getDB(); const today = todayKey(); return Object.keys(db).filter(k => db[k]?.length > 0 && k !== today).sort(); }
+function buildSummaries(days) {
+  const db = getDB();
+  return days.map(k => {
+    const ev = db[k] || []; const score = calcDayScore(ev);
+    const poops = ev.filter(e => e.type === 'poop'); const meals = ev.filter(e => e.type === 'meal');
+    const symptoms = ev.filter(e => e.type === 'symptom' || (e.type === 'poop' && (e.bloating || e.gas)));
+    const allFoods = meals.flatMap(m => m.foods || []);
+    const hasDairy = ev.some(e => e.type === 'dairy');
+    const stressEvt = ev.find(e => e.type === 'mood'); const sleepEvt = ev.find(e => e.type === 'sleep');
+    const cycleEvt = ev.find(e => e.type === 'cycle'); const waterEvt = ev.find(e => e.type === 'water');
+    const cafEvt = ev.find(e => e.type === 'caffeine'); const exEvt = ev.find(e => e.type === 'exercise');
+    const medsEvt = ev.find(e => e.type === 'meds');
+    const avgBristol = poops.length ? avg(poops.map(p => p.bristol).filter(Boolean)) : null;
+    const highFiber = allFoods.filter(f => HIGH_FIBER.includes(f)).length;
+    const irritants = allFoods.filter(f => IRRITANTS.includes(f)).length;
+    const badSymptom = symptoms.some(e => e.bloating === 'bad' || e.pain === 'bad' || e.pain === 'moderate' || e.gas === 'lots');
+    const glasses = waterEvt ? (parseInt(waterEvt.glasses) || 0) : null;
+    const highCaffeine = cafEvt?.cups === '3+ cups';
+    const stressed = stressEvt?.stress === 'stressed' || stressEvt?.stress === 'chaos';
+    const phase = cycleEvt?.phase || null;
+    const exercised = exEvt?.intensity === 'light' || exEvt?.intensity === 'moderate' || exEvt?.intensity === 'intense';
+    const tookAntibiotic = medsEvt?.items?.includes('antibiotic');
+    const stressNum = stressEvt ? { 'chill': 1, 'mild': 2, 'stressed': 3, 'chaos': 4 }[stressEvt.stress] || null : null;
+    const sleepNum = sleepEvt ? { 'poor': 1, 'okay': 2, 'good': 3 }[sleepEvt.sleep] || null : null;
+    const cafNum = cafEvt ? { 'none': 0, '1 cup': 1, '2 cups': 2, '3+ cups': 3 }[cafEvt.cups] ?? null : null;
+    return { key: k, score, poops, avgBristol, hasDairy, stress: stressEvt?.stress, sleep: sleepEvt?.sleep, highFiber, irritants, badSymptom, allFoods, glasses, highCaffeine, stressed, phase, exercised, tookAntibiotic, stressNum, sleepNum, cafNum };
   });
 }
 
 // ─── TRENDS ──────────────────────────────────────────────────────────────────
-function renderTrends(){
-  const days=allDaysExcludeToday();const container=document.getElementById('trends-content');
-  if(days.length<3){container.innerHTML=`<div class="timeline-empty">Log at least 3 past days.<br><br>The gut has a story.<br>Give it time to tell it.</div>`;return;}
-  const recent14=days.slice(-14),summaries=buildSummaries(recent14);
-  const scoredDays=summaries.filter(s=>s.score!==null);
-  const avgScore=scoredDays.length?Math.round(avg(scoredDays.map(s=>s.score))):null;
-  const avgBristolAll=avg(summaries.map(s=>s.avgBristol).filter(Boolean));
-  const goodPoopDays=summaries.filter(s=>s.avgBristol>=3&&s.avgBristol<=4).length;
-  const streak=calcStreak(summaries);
-  let html='';
+function renderTrends() {
+  const days = allDaysExcludeToday(); const container = document.getElementById('trends-content');
+  if (days.length < 3) { container.innerHTML = `<div class="timeline-empty">Log at least 3 past days.<br><br>The gut has a story.<br>Give it time to tell it.</div>`; return; }
+  const recent14 = days.slice(-14), summaries = buildSummaries(recent14);
+  const scoredDays = summaries.filter(s => s.score !== null);
+  const avgScore = scoredDays.length ? Math.round(avg(scoredDays.map(s => s.score))) : null;
+  const avgBristolAll = avg(summaries.map(s => s.avgBristol).filter(Boolean));
+  const goodPoopDays = summaries.filter(s => s.avgBristol >= 3 && s.avgBristol <= 4).length;
+  const streak = calcStreak(summaries);
+  let html = '';
 
-  // STATS
-  html+=`<div class="stat-grid">
-    <div class="stat-card"><div class="stat-val ${avgScore>=70?'green':avgScore>=45?'amber':'red'}">${avgScore||'—'}</div><div class="stat-label">Avg gut score</div><div class="stat-sub">${avgScore>=70?'Solid 💪':avgScore>=45?'Room to grow':'Needs work'}</div></div>
-    <div class="stat-card"><div class="stat-val ${streak>=5?'green':streak>=2?'amber':'red'}">${streak}</div><div class="stat-label">Day streak</div><div class="stat-sub">consecutive scored days ≥60</div></div>
+  html += `<div class="stat-grid">
+    <div class="stat-card"><div class="stat-val ${avgScore >= 70 ? 'green' : avgScore >= 45 ? 'amber' : 'red'}">${avgScore || '—'}</div><div class="stat-label">Avg gut score</div><div class="stat-sub">${avgScore >= 70 ? 'Solid' : avgScore >= 45 ? 'Room to grow' : 'Needs work'}</div></div>
+    <div class="stat-card"><div class="stat-val ${streak >= 5 ? 'green' : streak >= 2 ? 'amber' : 'red'}">${streak}</div><div class="stat-label">Day streak</div><div class="stat-sub">consecutive scored days ≥60</div></div>
     <div class="stat-card"><div class="stat-val">${goodPoopDays}</div><div class="stat-label">Ideal stool days</div><div class="stat-sub">bristol 3–4 / ${summaries.length} days</div></div>
-    <div class="stat-card"><div class="stat-val ${avgBristolAll?(avgBristolAll>=3&&avgBristolAll<=4?'green':avgBristolAll<=2?'amber':'red'):''}">${avgBristolAll?avgBristolAll.toFixed(1):'—'}</div><div class="stat-label">Avg bristol</div><div class="stat-sub">target: 3.0–4.0</div></div>
+    <div class="stat-card"><div class="stat-val ${avgBristolAll ? (avgBristolAll >= 3 && avgBristolAll <= 4 ? 'green' : avgBristolAll <= 2 ? 'amber' : 'red') : ''}">${avgBristolAll ? avgBristolAll.toFixed(1) : '—'}</div><div class="stat-label">Avg bristol</div><div class="stat-sub">target: 3.0–4.0</div></div>
   </div>`;
 
-  // Z SPARKLINE
-  html+=zSparkline(summaries);
+  html += zSparkline(summaries);
 
-  // STREAK DOTS
-  html+=`<div class="chart-card"><div class="chart-title">Gut score history — ${summaries.length} days</div><div class="streak-bar">${summaries.map(s=>{const bg=s.score===null?'var(--border2)':s.score>=70?'var(--green)':s.score>=45?'var(--amber)':'var(--red)';return`<div class="streak-dot" style="background:${bg}" title="${s.key}: ${s.score!==null?s.score+'/100':'unscored'}"></div>`;}).join('')}</div><div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap"><span style="font-size:10px;color:var(--green)">● 70+ good</span><span style="font-size:10px;color:var(--amber)">● 45–69 ok</span><span style="font-size:10px;color:var(--red)">● <45 rough</span><span style="font-size:10px;color:var(--text3)">● unscored</span></div></div>`;
+  html += `<div class="chart-card"><div class="chart-title">Gut score history — ${summaries.length} days</div><div class="streak-bar">${summaries.map(s => { const bg = s.score === null ? 'var(--border2)' : s.score >= 70 ? 'var(--green)' : s.score >= 45 ? 'var(--amber)' : 'var(--red)'; return `<div class="streak-dot" style="background:${bg}" title="${s.key}: ${s.score !== null ? s.score + '/100' : 'unscored'}"></div>`; }).join('')}</div><div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap"><span style="font-size:10px;color:var(--green)">● 70+ good</span><span style="font-size:10px;color:var(--amber)">● 45–69 ok</span><span style="font-size:10px;color:var(--red)">● <45 rough</span><span style="font-size:10px;color:var(--text3)">● unscored</span></div></div>`;
 
-  // BRISTOL CHART
-  html+=`<div class="chart-card"><div class="chart-title">Bristol score (last 7 days)</div><div class="bar-row">${summaries.slice(-7).map(s=>{const v=s.avgBristol?Math.round(s.avgBristol):0;const pct=v?(v/7*100):0;const cls=v===0?'dim':v>=3&&v<=4?'g':v<=2?'a':'r';const day=new Date(s.key).toLocaleDateString('en-GB',{weekday:'short'}).slice(0,2);return`<div class="b-col"><div class="b-bar ${cls}" style="height:${pct}%"></div><div class="b-day">${day}</div></div>`;}).join('')}</div></div>`;
+  html += `<div class="chart-card"><div class="chart-title">Bristol score (last 7 days)</div><div class="bar-row">${summaries.slice(-7).map(s => { const v = s.avgBristol ? Math.round(s.avgBristol) : 0; const pct = v ? (v / 7 * 100) : 0; const cls = v === 0 ? 'dim' : v >= 3 && v <= 4 ? 'g' : v <= 2 ? 'a' : 'r'; const day = new Date(s.key).toLocaleDateString('en-GB', { weekday: 'short' }).slice(0, 2); return `<div class="b-col"><div class="b-bar ${cls}" style="height:${pct}%"></div><div class="b-day">${day}</div></div>`; }).join('')}</div></div>`;
 
-  // WEEKLY PATTERN
-  const wdd=buildWeekdayPattern(summaries);
-  html+=`<div class="chart-card"><div class="chart-title">Weekly pattern</div><div class="week-grid">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((wd,i)=>{const data=wdd[i+1]||[];const a=data.length?Math.round(avg(data)):null;const bg=a===null?'var(--surface2)':a>=70?'rgba(122,158,90,0.25)':a>=45?'rgba(196,135,90,0.25)':'rgba(196,90,90,0.25)';const col=a===null?'var(--text3)':a>=70?'var(--green)':a>=45?'var(--amber)':'var(--red)';return`<div class="wd-col"><div class="wd-label">${wd}</div><div class="wd-score" style="background:${bg};color:${col}">${a!==null?a:'—'}</div></div>`;}).join('')}</div><div style="font-size:10px;color:var(--text3);margin-top:10px;line-height:1.6">${getWeekdayInsight(wdd)}</div></div>`;
+  const wdd = buildWeekdayPattern(summaries);
+  html += `<div class="chart-card"><div class="chart-title">Weekly pattern</div><div class="week-grid">${['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((wd, i) => { const data = wdd[i + 1] || []; const a = data.length ? Math.round(avg(data)) : null; const bg = a === null ? 'var(--surface2)' : a >= 70 ? 'rgba(122,158,90,0.25)' : a >= 45 ? 'rgba(196,135,90,0.25)' : 'rgba(196,90,90,0.25)'; const col = a === null ? 'var(--text3)' : a >= 70 ? 'var(--green)' : a >= 45 ? 'var(--amber)' : 'var(--red)'; return `<div class="wd-col"><div class="wd-label">${wd}</div><div class="wd-score" style="background:${bg};color:${col}">${a !== null ? a : '—'}</div></div>`; }).join('')}</div><div style="font-size:10px;color:var(--text3);margin-top:10px;line-height:1.6">${getWeekdayInsight(wdd)}</div></div>`;
 
-  // SPEARMAN TABLE
-  html+=`<div class="section-hdr">Spearman ρ correlations</div>`;
-  html+=renderSpearmanTable(summaries);
+  html += `<div class="section-hdr">Spearman ρ correlations</div>`;
+  html += renderSpearmanTable(summaries);
 
-  // LAG-K
-  html+=`<div class="section-hdr">Lag-k analysis — what hits when?</div>`;
-  html+=renderLagAnalysis(summaries);
+  html += `<div class="section-hdr">Lag-k analysis — what hits when?</div>`;
+  html += renderLagAnalysis(summaries);
 
-  // PATTERN INSIGHTS
-  html+=`<div class="section-hdr">Pattern insights</div>`;
-  deepAnalysis(summaries).forEach(ins=>{html+=`<div class="insight ${ins.type}"><div class="insight-title">${ins.title}</div><div class="insight-body">${ins.body}</div></div>`;});
+  html += `<div class="section-hdr">Pattern insights</div>`;
+  deepAnalysis(summaries).forEach(ins => { html += `<div class="insight ${ins.type}"><div class="insight-title">${ins.title}</div><div class="insight-body">${ins.body}</div></div>`; });
 
-  // WEEKLY REPORT
-  const dow=new Date().getDay();
-  if(dow===6||days.length>=7){html+=`<div class="section-hdr">Weekly report</div>`;html+=renderWeeklyReport(summaries);}
+  const dow = new Date().getDay();
+  if (dow === 6 || days.length >= 7) { html += `<div class="section-hdr">Weekly report</div>`; html += renderWeeklyReport(summaries); }
 
-  container.innerHTML=html;
+  container.innerHTML = html;
 }
 
-function renderSpearmanTable(summaries){
-  const scored=summaries.filter(s=>s.score!==null);
-  if(scored.length<5)return`<div class="insight info"><div class="insight-body">Need 5+ scored days for Spearman correlations. (Days need a poop or symptom logged to be scored.)</div></div>`;
-  const ys=scored.map(s=>s.score);
-  const pairs=[
-    {label:'Fiber intake → gut score',xs:scored.map(s=>s.highFiber)},
-    {label:'Irritant foods → gut score',xs:scored.map(s=>s.irritants),inv:true},
-    {label:'Stress → gut score',xs:scored.map(s=>s.stressNum).filter((_,i)=>scored[i].stressNum!==null),ys_:scored.filter(s=>s.stressNum!==null).map(s=>s.score),inv:true},
-    {label:'Sleep → gut score',xs:scored.map(s=>s.sleepNum).filter((_,i)=>scored[i].sleepNum!==null),ys_:scored.filter(s=>s.sleepNum!==null).map(s=>s.score)},
-    {label:'Water intake → gut score',xs:scored.map(s=>s.glasses).filter((_,i)=>scored[i].glasses!==null),ys_:scored.filter(s=>s.glasses!==null).map(s=>s.score)},
-    {label:'Caffeine → gut score',xs:scored.map(s=>s.cafNum).filter((_,i)=>scored[i].cafNum!==null),ys_:scored.filter(s=>s.cafNum!==null).map(s=>s.score),inv:true},
+function renderSpearmanTable(summaries) {
+  const scored = summaries.filter(s => s.score !== null);
+  if (scored.length < 5) return `<div class="insight info"><div class="insight-body">Need 5+ scored days for Spearman correlations. (Days need a poop or symptom logged to be scored.)</div></div>`;
+  const ys = scored.map(s => s.score);
+  const pairs = [
+    { label: 'Fiber intake → gut score', xs: scored.map(s => s.highFiber) },
+    { label: 'Irritant foods → gut score', xs: scored.map(s => s.irritants), inv: true },
+    { label: 'Stress → gut score', xs: scored.map(s => s.stressNum).filter((_, i) => scored[i].stressNum !== null), ys_: scored.filter(s => s.stressNum !== null).map(s => s.score), inv: true },
+    { label: 'Sleep → gut score', xs: scored.map(s => s.sleepNum).filter((_, i) => scored[i].sleepNum !== null), ys_: scored.filter(s => s.sleepNum !== null).map(s => s.score) },
+    { label: 'Water intake → gut score', xs: scored.map(s => s.glasses).filter((_, i) => scored[i].glasses !== null), ys_: scored.filter(s => s.glasses !== null).map(s => s.score) },
+    { label: 'Caffeine → gut score', xs: scored.map(s => s.cafNum).filter((_, i) => scored[i].cafNum !== null), ys_: scored.filter(s => s.cafNum !== null).map(s => s.score), inv: true },
   ];
-  let html=`<div class="chart-card"><div class="chart-title">Variable → gut score (n=${scored.length} scored days)</div>`;
-  pairs.forEach(p=>{
-    const xs=p.xs,ys_=p.ys_||ys;
-    const valid=xs.map((x,i)=>({x,y:ys_[i]})).filter(v=>v.x!==null&&v.x!==undefined&&v.y!==null);
-    if(valid.length<5){html+=`<div class="report-row"><div class="report-key">${p.label}</div><div class="report-val" style="color:var(--text3)">n&lt;5</div></div>`;return;}
-    const rho=spearman(valid.map(v=>v.x),valid.map(v=>v.y));
-    if(rho===null){html+=`<div class="report-row"><div class="report-key">${p.label}</div><div class="report-val" style="color:var(--text3)">—</div></div>`;return;}
-    const sig=isSignificant(rho,valid.length);
-    const positive=(rho>0&&!p.inv)||(rho<0&&p.inv);
-    const col=Math.abs(rho)>0.3?(positive?'var(--green)':'var(--red)'):'var(--text2)';
-    html+=`<div class="report-row"><div class="report-key">${p.label}</div><div><div class="rho-badge" style="color:${col}">${rho>0?'↑':'↓'} ρ=${rho.toFixed(2)}<span class="conf-badge ${sig?'conf-sig':'conf-insig'}">${sig?'sig':'n.s.'}</span></div></div></div>`;
+  let html = `<div class="chart-card"><div class="chart-title">Variable → gut score (n=${scored.length} scored days)</div>`;
+  pairs.forEach(p => {
+    const xs = p.xs, ys_ = p.ys_ || ys;
+    const valid = xs.map((x, i) => ({ x, y: ys_[i] })).filter(v => v.x !== null && v.x !== undefined && v.y !== null);
+    if (valid.length < 5) { html += `<div class="report-row"><div class="report-key">${p.label}</div><div class="report-val" style="color:var(--text3)">n&lt;5</div></div>`; return; }
+    const rho = spearman(valid.map(v => v.x), valid.map(v => v.y));
+    if (rho === null) { html += `<div class="report-row"><div class="report-key">${p.label}</div><div class="report-val" style="color:var(--text3)">—</div></div>`; return; }
+    const sig = isSignificant(rho, valid.length);
+    const positive = (rho > 0 && !p.inv) || (rho < 0 && p.inv);
+    const col = Math.abs(rho) > 0.3 ? (positive ? 'var(--green)' : 'var(--red)') : 'var(--text2)';
+    html += `<div class="report-row"><div class="report-key">${p.label}</div><div><div class="rho-badge" style="color:${col}">${rho > 0 ? '↑' : '↓'} ρ=${rho.toFixed(2)}<span class="conf-badge ${sig ? 'conf-sig' : 'conf-insig'}">${sig ? 'sig' : 'n.s.'}</span></div></div></div>`;
   });
-  html+=`<div style="font-size:10px;color:var(--text3);margin-top:10px;line-height:1.7">Spearman ρ: rank-based correlation, robust to non-normal data. ρ∈[−1,+1]. <em>sig</em> = p&lt;0.05 via t-approximation. Minimum n=5 per variable.</div></div>`;
+  html += `<div style="font-size:10px;color:var(--text3);margin-top:10px;line-height:1.7">Spearman ρ: rank-based correlation, robust to non-normal data. ρ∈[−1,+1]. <em>sig</em> = p&lt;0.05 via t-approximation. Minimum n=5 per variable.</div></div>`;
   return html;
 }
 
-function renderLagAnalysis(summaries){
-  if(summaries.length<6)return`<div class="insight info"><div class="insight-body">Need 6+ days for lag analysis.</div></div>`;
-  const irritantLags=lagSpearman(summaries,s=>s.irritants,s=>s.score,3);
-  const fiberLags=lagSpearman(summaries,s=>s.highFiber,s=>s.score,3);
-  const bestIL=irritantLags.reduce((b,r,i)=>{if(!r)return b;if(b===null||Math.abs(r.rho)>Math.abs(irritantLags[b]?.rho||0))return i;return b;},null);
-  const bestFL=fiberLags.reduce((b,r,i)=>{if(!r)return b;if(b===null||Math.abs(r.rho)>Math.abs(fiberLags[b]?.rho||0))return i;return b;},null);
+function renderLagAnalysis(summaries) {
+  if (summaries.length < 6) return `<div class="insight info"><div class="insight-body">Need 6+ days for lag analysis.</div></div>`;
+  const irritantLags = lagSpearman(summaries, s => s.irritants, s => s.score, 3);
+  const fiberLags = lagSpearman(summaries, s => s.highFiber, s => s.score, 3);
+  const bestIL = irritantLags.reduce((b, r, i) => { if (!r) return b; if (b === null || Math.abs(r.rho) > Math.abs(irritantLags[b]?.rho || 0)) return i; return b; }, null);
+  const bestFL = fiberLags.reduce((b, r, i) => { if (!r) return b; if (b === null || Math.abs(r.rho) > Math.abs(fiberLags[b]?.rho || 0)) return i; return b; }, null);
 
-  const renderLagTable=(lags,best,color,label)=>{
-    let h=`<div class="chart-card"><div class="chart-title">${label} (lag 1–3 days, Spearman ρ)</div>`;
-    lags.forEach((r,i)=>{
-      if(!r){h+=`<div class="report-row"><div class="report-key">Lag ${i+1}d</div><div class="report-val" style="color:var(--text3)">n&lt;5</div></div>`;return;}
-      const isBest=i===best;
-      h+=`<div class="report-row" style="${isBest?`background:${color}0a;border-radius:6px;padding:8px;`:''}">`+
-        `<div class="report-key">T−${i+1} day${i>0?'s':''} ${isBest?'← strongest':''}</div>`+
-        `<div><div class="rho-badge" style="color:${Math.abs(r.rho)>0.3?color:'var(--text2)'}">ρ=${r.rho.toFixed(2)}<span class="conf-badge ${r.sig?'conf-sig':'conf-insig'}">${r.sig?'sig':'n.s.'}</span></div></div></div>`;
+  const renderLagTable = (lags, best, color, label) => {
+    let h = `<div class="chart-card"><div class="chart-title">${label} (lag 1–3 days, Spearman ρ)</div>`;
+    lags.forEach((r, i) => {
+      if (!r) { h += `<div class="report-row"><div class="report-key">Lag ${i + 1}d</div><div class="report-val" style="color:var(--text3)">n&lt;5</div></div>`; return; }
+      const isBest = i === best;
+      h += `<div class="report-row" style="${isBest ? `background:${color}0a;border-radius:6px;padding:8px;` : ''}">` +
+        `<div class="report-key">T−${i + 1} day${i > 0 ? 's' : ''} ${isBest ? '← strongest' : ''}</div>` +
+        `<div><div class="rho-badge" style="color:${Math.abs(r.rho) > 0.3 ? color : 'var(--text2)'}">ρ=${r.rho.toFixed(2)}<span class="conf-badge ${r.sig ? 'conf-sig' : 'conf-insig'}">${r.sig ? 'sig' : 'n.s.'}</span></div></div></div>`;
     });
-    if(best!==null&&lags[best]){const r=lags[best];h+=`<div style="font-size:10px;color:var(--text3);margin-top:8px;line-height:1.6">Strongest signal at T−${best+1}. This food impacts her gut most around <strong>${best+1} day${best>0?'s':''} later</strong>. ${r.sig?'Statistically significant.':'Not yet significant.'}</div>`;}
-    h+=`</div>`;return h;
+    // FIX: removed gendered "her gut" pronoun
+    if (best !== null && lags[best]) { const r = lags[best]; h += `<div style="font-size:10px;color:var(--text3);margin-top:8px;line-height:1.6">Strongest signal at T−${best + 1}. This food category impacts your gut most around <strong>${best + 1} day${best > 0 ? 's' : ''} later</strong>. ${r.sig ? 'Statistically significant.' : 'Not yet significant.'}</div>`; }
+    h += `</div>`; return h;
   };
-  return renderLagTable(irritantLags,bestIL,'rgba(196,90,90,1)','Irritant food → gut score lag-k')+renderLagTable(fiberLags,bestFL,'rgba(122,158,90,1)','Fiber intake → gut score lag-k');
+  return renderLagTable(irritantLags, bestIL, 'rgba(196,90,90,1)', 'Irritant food → gut score lag-k') + renderLagTable(fiberLags, bestFL, 'rgba(122,158,90,1)', 'Fiber intake → gut score lag-k');
 }
 
-function renderWeeklyReport(summaries){
-  const last7=summaries.slice(-7);
-  if(!last7.length)return'';
-  const scored=last7.filter(s=>s.score!==null);
-  const avgSc=scored.length?Math.round(avg(scored.map(s=>s.score))):null;
-  const avgBr=avg(last7.map(s=>s.avgBristol).filter(Boolean));
-  const dairyDays=last7.filter(s=>s.hasDairy).length;
-  const stressDays=last7.filter(s=>s.stressed).length;
-  const exDays=last7.filter(s=>s.exercised).length;
-  const goodWater=last7.filter(s=>s.glasses>=6).length;
-  const from=new Date(last7[0].key).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
-  const to=new Date(last7[last7.length-1].key).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
-  const col=s=>s>=70?'var(--green)':s>=45?'var(--amber)':'var(--red)';
-  return`<div class="report-card"><div class="report-title">${from} — ${to}</div>${avgSc!==null?`<div class="report-row"><div class="report-key">Avg gut score</div><div class="report-val" style="color:${col(avgSc)}">${avgSc}/100</div></div>`:''} ${avgBr?`<div class="report-row"><div class="report-key">Avg bristol</div><div class="report-val" style="color:${avgBr>=3&&avgBr<=4?'var(--green)':'var(--amber)'}">${avgBr.toFixed(1)}</div></div>`:''}<div class="report-row"><div class="report-key">Dairy days</div><div class="report-val" style="color:${dairyDays>3?'var(--red)':'var(--text2)'}">${dairyDays}/7</div></div><div class="report-row"><div class="report-key">Stressed days</div><div class="report-val" style="color:${stressDays>3?'var(--amber)':'var(--text2)'}">${stressDays}/7</div></div><div class="report-row"><div class="report-key">Exercise days</div><div class="report-val" style="color:${exDays>=4?'var(--green)':'var(--text2)'}">${exDays}/7</div></div><div class="report-row"><div class="report-key">Good hydration days (6+ glasses)</div><div class="report-val" style="color:${goodWater>=5?'var(--green)':'var(--text2)'}">${goodWater}/7</div></div></div>`;
+function renderWeeklyReport(summaries) {
+  const last7 = summaries.slice(-7);
+  if (!last7.length) return '';
+  const scored = last7.filter(s => s.score !== null);
+  const avgSc = scored.length ? Math.round(avg(scored.map(s => s.score))) : null;
+  const avgBr = avg(last7.map(s => s.avgBristol).filter(Boolean));
+  const dairyDays = last7.filter(s => s.hasDairy).length;
+  const stressDays = last7.filter(s => s.stressed).length;
+  const exDays = last7.filter(s => s.exercised).length;
+  const goodWater = last7.filter(s => s.glasses >= 6).length;
+  const from = new Date(last7[0].key).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  const to = new Date(last7[last7.length - 1].key).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  const col = s => s >= 70 ? 'var(--green)' : s >= 45 ? 'var(--amber)' : 'var(--red)';
+  return `<div class="report-card"><div class="report-title">${from} — ${to}</div>${avgSc !== null ? `<div class="report-row"><div class="report-key">Avg gut score</div><div class="report-val" style="color:${col(avgSc)}">${avgSc}/100</div></div>` : ''} ${avgBr ? `<div class="report-row"><div class="report-key">Avg bristol</div><div class="report-val" style="color:${avgBr >= 3 && avgBr <= 4 ? 'var(--green)' : 'var(--amber)'}">${avgBr.toFixed(1)}</div></div>` : ''}<div class="report-row"><div class="report-key">Dairy days</div><div class="report-val" style="color:${dairyDays > 3 ? 'var(--red)' : 'var(--text2)'}">${dairyDays}/7</div></div><div class="report-row"><div class="report-key">Stressed days</div><div class="report-val" style="color:${stressDays > 3 ? 'var(--amber)' : 'var(--text2)'}">${stressDays}/7</div></div><div class="report-row"><div class="report-key">Exercise days</div><div class="report-val" style="color:${exDays >= 4 ? 'var(--green)' : 'var(--text2)'}">${exDays}/7</div></div><div class="report-row"><div class="report-key">Good hydration days (6+ glasses)</div><div class="report-val" style="color:${goodWater >= 5 ? 'var(--green)' : 'var(--text2)'}">${goodWater}/7</div></div></div>`;
 }
 
 // ─── CALENDAR ────────────────────────────────────────────────────────────────
-function renderCalendar(){
-  const container=document.getElementById('calendar-content');const db=getDB();const today=new Date();
-  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
-  const firstDow=(new Date(calYear,calMonth,1).getDay()+6)%7;
-  const monthName=new Date(calYear,calMonth,1).toLocaleDateString('en-GB',{month:'long',year:'numeric'});
-  let html=`<div class="cal-header"><button class="cal-nav" onclick="calNav(-1)">‹</button><div class="cal-month">${monthName}</div><button class="cal-nav" onclick="calNav(1)">›</button></div>`;
-  html+=`<div class="cal-grid">${['M','T','W','T','F','S','S'].map(d=>`<div class="cal-day-label">${d}</div>`).join('')}`;
-  for(let i=0;i<firstDow;i++)html+=`<div class="cal-cell empty"></div>`;
-  for(let d=1;d<=daysInMonth;d++){
-    const key=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const events=db[key]||[],score=calcDayScore(events);
-    const isToday=key===fmtKey(today),isSel=key===calSelected,hasData=events.length>0;
-    let bg='var(--surface2)',col='var(--text3)';
-    if(score!==null){bg=score>=70?'rgba(122,158,90,0.25)':score>=45?'rgba(196,135,90,0.2)':'rgba(196,90,90,0.2)';col=score>=70?'var(--green)':score>=45?'var(--amber)':'var(--red)';}
-    else if(hasData){bg='var(--surface3)';col='var(--text2)';}
-    html+=`<div class="cal-cell ${isToday?'today':''} ${isSel?'selected':''} ${hasData?'has-data':''}" style="background:${bg};color:${col}" onclick="calSelect('${key}')">${d}${hasData?'<div class="cal-dot"></div>':''}</div>`;
+function renderCalendar() {
+  const container = document.getElementById('calendar-content'); const db = getDB(); const today = new Date();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const firstDow = (new Date(calYear, calMonth, 1).getDay() + 6) % 7;
+  const monthName = new Date(calYear, calMonth, 1).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+  let html = `<div class="cal-header"><button class="cal-nav" onclick="calNav(-1)">‹</button><div class="cal-month">${monthName}</div><button class="cal-nav" onclick="calNav(1)">›</button></div>`;
+  html += `<div class="cal-grid">${['M', 'T', 'W', 'T', 'F', 'S', 'S'].map(d => `<div class="cal-day-label">${d}</div>`).join('')}`;
+  for (let i = 0; i < firstDow; i++) html += `<div class="cal-cell empty"></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const key = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    const events = db[key] || [], score = calcDayScore(events);
+    const isToday = key === fmtKey(today), isSel = key === calSelected, hasData = events.length > 0;
+    let bg = 'var(--surface2)', col = 'var(--text3)';
+    if (score !== null) { bg = score >= 70 ? 'rgba(122,158,90,0.25)' : score >= 45 ? 'rgba(196,135,90,0.2)' : 'rgba(196,90,90,0.2)'; col = score >= 70 ? 'var(--green)' : score >= 45 ? 'var(--amber)' : 'var(--red)'; }
+    else if (hasData) { bg = 'var(--surface3)'; col = 'var(--text2)'; }
+    html += `<div class="cal-cell ${isToday ? 'today' : ''} ${isSel ? 'selected' : ''} ${hasData ? 'has-data' : ''}" style="background:${bg};color:${col}" onclick="calSelect('${key}')">${d}${hasData ? '<div class="cal-dot"></div>' : ''}</div>`;
   }
-  html+=`</div><div class="cal-legend"><div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(122,158,90,0.25)"></div>Good (≥70)</div><div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(196,135,90,0.2)"></div>Ok (45–69)</div><div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(196,90,90,0.2)"></div>Rough (<45)</div><div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--surface3)"></div>Logged</div></div>`;
-  if(calSelected){const events=db[calSelected]||[],score=calcDayScore(events);const d=new Date(calSelected).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});html+=`<div class="cal-detail"><div class="cal-detail-date">${d}${score!==null?` — <span style="color:${score>=70?'var(--green)':score>=45?'var(--amber)':'var(--red)'}">${score}/100</span>`:''}</div>${!events.length?'<div class="cal-detail-empty">Nothing logged.</div>':events.map(e=>renderEventCard(e)).join('')}</div>`;}
-  container.innerHTML=html;
+  html += `</div><div class="cal-legend"><div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(122,158,90,0.25)"></div>Good (≥70)</div><div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(196,135,90,0.2)"></div>Ok (45–69)</div><div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(196,90,90,0.2)"></div>Rough (<45)</div><div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--surface3)"></div>Logged</div></div>`;
+  // FIX: Calendar detail now passes correct dateKey for deletion
+  if (calSelected) {
+    const events = db[calSelected] || [], score = calcDayScore(events);
+    const d = new Date(calSelected).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+    html += `<div class="cal-detail"><div class="cal-detail-date">${d}${score !== null ? ` — <span style="color:${score >= 70 ? 'var(--green)' : score >= 45 ? 'var(--amber)' : 'var(--red)'}">${score}/100</span>` : ''}</div>${!events.length ? '<div class="cal-detail-empty">Nothing logged.</div>' : events.map(e => renderEventCard(e, calSelected)).join('')}</div>`;
+  }
+  container.innerHTML = html;
 }
-function calNav(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
-function calSelect(key){calSelected=calSelected===key?null:key;renderCalendar();}
+function calNav(dir) { calMonth += dir; if (calMonth > 11) { calMonth = 0; calYear++; } if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); }
+function calSelect(key) { calSelected = calSelected === key ? null : key; renderCalendar(); }
 
 // ─── ANALYSIS HELPERS ────────────────────────────────────────────────────────
-function calcStreak(summaries){let s=0;for(let i=summaries.length-1;i>=0;i--){if(summaries[i].score!==null&&summaries[i].score>=60)s++;else break;}return s;}
-function buildWeekdayPattern(summaries){const map={};summaries.forEach(s=>{if(s.score===null)return;const dow=new Date(s.key).getDay();const day=dow===0?7:dow;if(!map[day])map[day]=[];map[day].push(s.score);});return map;}
-function getWeekdayInsight(wdd){const entries=Object.entries(wdd).filter(([,v])=>v.length>0);if(entries.length<2)return'Not enough data yet.';const sorted=entries.map(([d,sc])=>({d:parseInt(d),avg:avg(sc)})).sort((a,b)=>a.avg-b.avg);const names={1:'Monday',2:'Tuesday',3:'Wednesday',4:'Thursday',5:'Friday',6:'Saturday',7:'Sunday'};return`Best: ${names[sorted[sorted.length-1].d]} (avg ${Math.round(sorted[sorted.length-1].avg)}). Worst: ${names[sorted[0].d]} (avg ${Math.round(sorted[0].avg)}).`;}
+function calcStreak(summaries) { let s = 0; for (let i = summaries.length - 1; i >= 0; i--) { if (summaries[i].score !== null && summaries[i].score >= 60) s++; else break; } return s; }
+function buildWeekdayPattern(summaries) { const map = {}; summaries.forEach(s => { if (s.score === null) return; const dow = new Date(s.key).getDay(); const day = dow === 0 ? 7 : dow; if (!map[day]) map[day] = []; map[day].push(s.score); }); return map; }
+function getWeekdayInsight(wdd) { const entries = Object.entries(wdd).filter(([, v]) => v.length > 0); if (entries.length < 2) return 'Not enough data yet.'; const sorted = entries.map(([d, sc]) => ({ d: parseInt(d), avg: avg(sc) })).sort((a, b) => a.avg - b.avg); const names = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday', 7: 'Sunday' }; return `Best: ${names[sorted[sorted.length - 1].d]} (avg ${Math.round(sorted[sorted.length - 1].avg)}). Worst: ${names[sorted[0].d]} (avg ${Math.round(sorted[0].avg)}).`; }
 
-function deepAnalysis(summaries){
-  const insights=[],MIN=5;
+function deepAnalysis(summaries) {
+  const insights = [], MIN = 5;
   // Dairy
-  const dd=summaries.filter(s=>s.hasDairy);
-  if(dd.length>=MIN){const bad=dd.filter(s=>s.badSymptom).length;const pct=Math.round(bad/dd.length*100);insights.push({type:pct>=60?'bad':pct>=35?'warn':'good',title:'Dairy → same-day symptoms',body:`${dd.length} dairy days. <span class="corr-pct ${pct>=60?'r':pct>=35?'a':'g'}">${pct}%</span> had symptoms. ${pct>=60?'Clear lactose reaction.':pct>=35?'Moderate signal.':'Surprisingly low.'}`});}
+  const dd = summaries.filter(s => s.hasDairy);
+  if (dd.length >= MIN) { const bad = dd.filter(s => s.badSymptom).length; const pct = Math.round(bad / dd.length * 100); insights.push({ type: pct >= 60 ? 'bad' : pct >= 35 ? 'warn' : 'good', title: 'Dairy → same-day symptoms', body: `${dd.length} dairy days. <span class="corr-pct ${pct >= 60 ? 'r' : pct >= 35 ? 'a' : 'g'}">${pct}%</span> had symptoms. ${pct >= 60 ? 'Clear lactose reaction.' : pct >= 35 ? 'Moderate signal.' : 'Surprisingly low.'}` }); }
   // Cycle
-  const luteal=summaries.filter(s=>s.phase==='luteal'||s.phase==='menstrual');
-  if(luteal.length>=3){const bad=luteal.filter(s=>s.badSymptom||s.score<50).length;const pct=Math.round(bad/luteal.length*100);insights.push({type:pct>=60?'warn':'info',title:'Cycle phase → gut disruption',body:`Luteal/menstrual days: <span class="corr-pct ${pct>=60?'a':'g'}">${pct}%</span> poor gut. Progesterone slows gut motility — clinically common. Based on ${luteal.length} days.`});}
+  const luteal = summaries.filter(s => s.phase === 'luteal' || s.phase === 'menstrual');
+  if (luteal.length >= 3) { const bad = luteal.filter(s => s.badSymptom || s.score < 50).length; const pct = Math.round(bad / luteal.length * 100); insights.push({ type: pct >= 60 ? 'warn' : 'info', title: 'Cycle phase → gut disruption', body: `Luteal/menstrual days: <span class="corr-pct ${pct >= 60 ? 'a' : 'g'}">${pct}%</span> poor gut. Progesterone slows gut motility — clinically common. Based on ${luteal.length} days.` }); }
   // Exercise
-  const exd=summaries.filter(s=>s.exercised);
-  if(exd.length>=3){const good=exd.filter(s=>s.avgBristol>=3&&s.avgBristol<=4).length;const pct=Math.round(good/exd.length*100);insights.push({type:pct>=50?'good':'info',title:'Exercise → ideal stool',body:`Exercise days: <span class="corr-pct ${pct>=50?'g':'a'}">${pct}%</span> ideal bristol. Movement stimulates peristalsis. Based on ${exd.length} days.`});}
+  const exd = summaries.filter(s => s.exercised);
+  if (exd.length >= 3) { const good = exd.filter(s => s.avgBristol >= 3 && s.avgBristol <= 4).length; const pct = Math.round(good / exd.length * 100); insights.push({ type: pct >= 50 ? 'good' : 'info', title: 'Exercise → ideal stool', body: `Exercise days: <span class="corr-pct ${pct >= 50 ? 'g' : 'a'}">${pct}%</span> ideal bristol. Movement stimulates peristalsis. Based on ${exd.length} days.` }); }
   // Antibiotics
-  const abx=summaries.filter(s=>s.tookAntibiotic);
-  if(abx.length>=1)insights.push({type:'bad',title:'Antibiotic use detected',body:`Logged on ${abx.length} day(s). Antibiotics disrupt the gut microbiome for weeks. Probiotic supplementation alongside is clinically recommended.`});
+  const abx = summaries.filter(s => s.tookAntibiotic);
+  if (abx.length >= 1) insights.push({ type: 'bad', title: 'Antibiotic use detected', body: `Logged on ${abx.length} day(s). Antibiotics disrupt the gut microbiome for weeks. Probiotic supplementation alongside is clinically recommended.` });
   // Stress lag-1
-  if(summaries.length>=MIN){const sps=[];for(let i=1;i<summaries.length;i++)if(summaries[i-1].stressed)sps.push(summaries[i]);if(sps.length>=3){const bad=sps.filter(s=>s.score<55||s.badSymptom).length;const pct=Math.round(bad/sps.length*100);insights.push({type:pct>=50?'warn':'info',title:'Stress → next-day gut (lag-1)',body:`After stressed days: <span class="corr-pct ${pct>=50?'a':'g'}">${pct}%</span> poor gut next day. Cortisol disrupts gut motility. ${sps.length} observations.`});}}
+  if (summaries.length >= MIN) { const sps = []; for (let i = 1; i < summaries.length; i++) if (summaries[i - 1].stressed) sps.push(summaries[i]); if (sps.length >= 3) { const bad = sps.filter(s => s.score < 55 || s.badSymptom).length; const pct = Math.round(bad / sps.length * 100); insights.push({ type: pct >= 50 ? 'warn' : 'info', title: 'Stress → next-day gut (lag-1)', body: `After stressed days: <span class="corr-pct ${pct >= 50 ? 'a' : 'g'}">${pct}%</span> poor gut next day. Cortisol disrupts gut motility. ${sps.length} observations.` }); } }
   // Sleep lag
-  if(summaries.length>=MIN){const sps=[];for(let i=1;i<summaries.length;i++)if(summaries[i-1].sleep==='poor')sps.push(summaries[i]);if(sps.length>=3){const bad=sps.filter(s=>s.score<55||s.badSymptom).length;const pct=Math.round(bad/sps.length*100);insights.push({type:pct>=50?'warn':'info',title:'Poor sleep → next-day gut (lag-1)',body:`After poor sleep: <span class="corr-pct ${pct>=50?'a':'g'}">${pct}%</span> poor gut next day. ${sps.length} observations.`});}}
-  if(!insights.length)insights.push({type:'info',title:'Keep logging',body:`Need ${MIN}+ logged days with output events to detect patterns.`});
+  if (summaries.length >= MIN) { const sps = []; for (let i = 1; i < summaries.length; i++) if (summaries[i - 1].sleep === 'poor') sps.push(summaries[i]); if (sps.length >= 3) { const bad = sps.filter(s => s.score < 55 || s.badSymptom).length; const pct = Math.round(bad / sps.length * 100); insights.push({ type: pct >= 50 ? 'warn' : 'info', title: 'Poor sleep → next-day gut (lag-1)', body: `After poor sleep: <span class="corr-pct ${pct >= 50 ? 'a' : 'g'}">${pct}%</span> poor gut next day. ${sps.length} observations.` }); } }
+  if (!insights.length) insights.push({ type: 'info', title: 'Keep logging', body: `Need ${MIN}+ logged days with output events to detect patterns.` });
   return insights;
 }
 
 // ─── UTILS ───────────────────────────────────────────────────────────────────
-function avg(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;}
-function stddev(arr){if(arr.length<2)return 0;const m=avg(arr);return Math.sqrt(arr.reduce((s,v)=>s+Math.pow(v-m,2),0)/arr.length);}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+function avg(arr) { return arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0; }
+function stddev(arr) { if (arr.length < 2) return 0; const m = avg(arr); return Math.sqrt(arr.reduce((s, v) => s + Math.pow(v - m, 2), 0) / arr.length); }
+function toast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => t.className = 'toast', 2500);
+}
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
-(async function init(){
-  const cfg=getCfg();
-  if(!cfg){document.getElementById('setup-overlay').classList.remove('hidden');return;}
-  if(!cfg.local){document.getElementById('sync-bar').style.display='flex';setSyncState('syncing','loading...');await syncPull();}
-  renderDateBar();renderTimeline();
+(async function init() {
+  const cfg = getCfg();
+  if (!cfg) { document.getElementById('setup-overlay').classList.remove('hidden'); return; }
+  if (!cfg.local) {
+    document.getElementById('sync-bar').style.display = 'flex';
+    setSyncState('syncing', 'loading...');
+    await syncPull();
+  } else {
+    document.getElementById('sync-bar').style.display = 'flex';
+    setSyncState('', 'local only');
+  }
+  renderDateBar(); renderTimeline();
 })();
 </script>
 </body>
