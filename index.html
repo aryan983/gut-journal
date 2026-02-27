@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gut Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0d0b;
+  --surface: #1a1612;
+  --surface2: #241f19;
+  --surface3: #2e2720;
+  --border: #3a3028;
+  --border2: #4a3e35;
+  --text: #e8ddd0;
+  --text2: #9e8e7e;
+  --text3: #6a5e52;
+  --accent-green: #7a9e5a;
+  --accent-green-dim: rgba(122,158,90,0.15);
+  --accent-amber: #c4875a;
+  --accent-amber-dim: rgba(196,135,90,0.15);
+  --accent-red: #c45a5a;
+  --accent-red-dim: rgba(196,90,90,0.15);
+  --accent-blue: #5a8ec4;
+  --accent-blue-dim: rgba(90,142,196,0.12);
+  --pill-h: 42px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* NAV */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15,13,11,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 18px;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+.nav-brand span { color: var(--accent-green); }
+.nav-tabs {
+  display: flex; gap: 2px;
+  background: var(--surface2);
+  border-radius: 22px; padding: 3px;
+  border: 1px solid var(--border);
+}
+.nav-tab {
+  padding: 6px 16px; border-radius: 18px; border: none;
+  cursor: pointer; font-family: 'DM Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  color: var(--text3); background: transparent;
+  transition: all 0.2s; letter-spacing: 0.5px;
+}
+.nav-tab.active { background: var(--surface3); color: var(--text); border: 1px solid var(--border2); }
+
+/* DATE BAR */
+.date-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.date-nav-btn {
+  background: none; border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text2); cursor: pointer; padding: 4px 10px; font-size: 14px;
+  transition: all 0.15s;
+}
+.date-nav-btn:hover { border-color: var(--border2); color: var(--text); }
+.date-center { text-align: center; }
+.date-main {
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--text);
+}
+.date-day { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-top: 1px; }
+
+/* MAIN CONTENT */
+.view { padding: 16px; }
+.view.hidden { display: none; }
+
+/* TIMELINE */
+.timeline-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.timeline-label {
+  font-size: 10px; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.gut-score-badge {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px; color: var(--text2);
+}
+.gut-score-badge span { font-weight: 500; }
+
+.timeline-empty {
+  text-align: center; padding: 50px 20px;
+  color: var(--text3); font-size: 13px; line-height: 1.8;
+}
+
+/* EVENT CARDS */
+.event-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 8px;
+  display: flex; gap: 12px; align-items: flex-start;
+  position: relative;
+}
+.event-card:hover { border-color: var(--border2); }
+.event-type-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  margin-top: 5px; flex-shrink: 0;
+}
+.dot-meal { background: var(--accent-green); }
+.dot-poop { background: var(--accent-amber); }
+.dot-symptom { background: var(--accent-red); }
+.dot-mood { background: var(--accent-blue); }
+.dot-sleep { background: #8e7ab5; }
+.dot-dairy { background: #b5a07a; }
+
+.event-body { flex: 1; }
+.event-type-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px;
+  font-weight: 500; margin-bottom: 5px;
+}
+.label-meal { color: var(--accent-green); }
+.label-poop { color: var(--accent-amber); }
+.label-symptom { color: var(--accent-red); }
+.label-mood { color: var(--accent-blue); }
+.label-sleep { color: #8e7ab5; }
+.label-dairy { color: #b5a07a; }
+
+.event-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.tag {
+  padding: 3px 9px; border-radius: 20px;
+  font-size: 11px; font-weight: 400;
+  background: var(--surface2); color: var(--text2);
+  border: 1px solid var(--border);
+}
+
+.event-detail { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.event-delete {
+  position: absolute; top: 10px; right: 12px;
+  background: none; border: none; cursor: pointer;
+  color: var(--text3); font-size: 14px; opacity: 0;
+  transition: opacity 0.15s;
+}
+.event-card:hover .event-delete { opacity: 1; }
+.event-delete:hover { color: var(--accent-red); }
+
+/* BRISTOL VISUAL */
+.bristol-display {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 5px 10px; margin-top: 6px;
+}
+.bristol-num-big {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px;
+}
+.bristol-desc-small { font-size: 10px; color: var(--text2); max-width: 130px; line-height: 1.3; }
+
+/* ADD BUTTON */
+.fab {
+  position: fixed; bottom: 28px; right: 50%;
+  transform: translateX(50%) translateX(min(224px, 50vw));
+  width: 54px; height: 54px; border-radius: 50%;
+  background: var(--accent-green);
+  border: none; cursor: pointer; font-size: 24px; color: #0f0d0b;
+  box-shadow: 0 4px 24px rgba(122,158,90,0.4);
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 300; line-height: 1;
+  z-index: 50;
+}
+.fab:hover { transform: translateX(50%) translateX(min(224px, 50vw)) scale(1.08); box-shadow: 0 6px 30px rgba(122,158,90,0.5); }
+.fab:active { transform: translateX(50%) translateX(min(224px, 50vw)) scale(0.96); }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  z-index: 200; display: flex; align-items: flex-end;
+  backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--surface);
+  border-top-left-radius: 24px; border-top-right-radius: 24px;
+  border: 1px solid var(--border); border-bottom: none;
+  padding: 20px 16px 36px;
+  width: 100%; max-height: 88vh; overflow-y: auto;
+  transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.34,1.3,0.64,1);
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-handle {
+  width: 36px; height: 3px; background: var(--border2);
+  border-radius: 2px; margin: 0 auto 20px;
+}
+.modal-title {
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px;
+  margin-bottom: 18px; color: var(--text);
+}
+
+/* EVENT TYPE PICKER */
+.type-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px;
+}
+.type-btn {
+  padding: 14px; border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2); cursor: pointer;
+  font-family: 'DM Mono', monospace; font-size: 12px;
+  font-weight: 500; color: var(--text2);
+  text-align: left; transition: all 0.15s;
+  letter-spacing: 0.3px;
+}
+.type-btn:hover, .type-btn.selected {
+  border-color: var(--accent-green); color: var(--accent-green);
+  background: var(--accent-green-dim);
+}
+.type-btn .type-sub { font-size: 10px; color: var(--text3); margin-top: 3px; font-weight: 300; display: block; }
+
+/* FOOD TAGS GRID */
+.food-tags-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
+.food-tag {
+  padding: 8px 14px; border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2); cursor: pointer;
+  font-family: 'DM Mono', monospace; font-size: 12px;
+  color: var(--text2); transition: all 0.15s;
+}
+.food-tag:hover { border-color: var(--border2); color: var(--text); }
+.food-tag.selected { border-color: var(--accent-green); color: var(--accent-green); background: var(--accent-green-dim); }
+
+/* SCALE ROW */
+.scale-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; margin-top: 14px; }
+.scale-row { display: flex; gap: 6px; }
+.scale-opt {
+  flex: 1; padding: 10px 6px; border-radius: 10px;
+  border: 1.5px solid var(--border); background: var(--surface2);
+  cursor: pointer; font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--text2); text-align: center;
+  transition: all 0.15s;
+}
+.scale-opt:hover { border-color: var(--border2); color: var(--text); }
+.scale-opt.sel-green.selected { border-color: var(--accent-green); color: var(--accent-green); background: var(--accent-green-dim); }
+.scale-opt.sel-amber.selected { border-color: var(--accent-amber); color: var(--accent-amber); background: var(--accent-amber-dim); }
+.scale-opt.sel-red.selected { border-color: var(--accent-red); color: var(--accent-red); background: var(--accent-red-dim); }
+
+/* BRISTOL GRID */
+.bristol-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; margin-top: 8px; }
+.b-btn {
+  aspect-ratio: 1; border-radius: 8px;
+  border: 1.5px solid var(--border); background: var(--surface2);
+  cursor: pointer; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1px;
+  transition: all 0.15s;
+}
+.b-num { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--text2); }
+.b-type { font-size: 8px; color: var(--text3); }
+.b-btn:hover { border-color: var(--border2); }
+.b-btn.b-ideal.selected { background: rgba(122,158,90,0.2); border-color: var(--accent-green); }
+.b-btn.b-ideal.selected .b-num { color: var(--accent-green); }
+.b-btn.b-hard.selected { background: rgba(196,135,90,0.2); border-color: var(--accent-amber); }
+.b-btn.b-hard.selected .b-num { color: var(--accent-amber); }
+.b-btn.b-loose.selected { background: rgba(196,90,90,0.2); border-color: var(--accent-red); }
+.b-btn.b-loose.selected .b-num { color: var(--accent-red); }
+
+.bristol-hint { font-size: 10px; color: var(--text3); text-align: center; margin-top: 8px; min-height: 14px; }
+
+/* MODAL ADD BTN */
+.modal-add-btn {
+  width: 100%; padding: 14px; border-radius: 12px;
+  background: var(--accent-green); border: none; cursor: pointer;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
+  color: #0f0d0b; margin-top: 20px; transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.modal-add-btn:hover { filter: brightness(1.1); }
+
+/* SECTION HEADER */
+.section-hdr {
+  font-size: 10px; color: var(--text3); text-transform: uppercase;
+  letter-spacing: 2px; margin: 22px 0 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-hdr::after { content:''; flex:1; height:1px; background: var(--border); }
+
+/* ---- TRENDS ---- */
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 14px;
+}
+.stat-val {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 28px;
+  color: var(--text); line-height: 1;
+}
+.stat-val.green { color: var(--accent-green); }
+.stat-val.amber { color: var(--accent-amber); }
+.stat-val.red { color: var(--accent-red); }
+.stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+.stat-sub { font-size: 11px; color: var(--text2); margin-top: 6px; line-height: 1.5; }
+
+/* CHART */
+.chart-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px; margin-bottom: 8px;
+}
+.chart-title { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; }
+.bar-row { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
+.b-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content: flex-end; }
+.b-bar { width:100%; border-radius: 4px 4px 2px 2px; min-height: 3px; transition: height 0.4s; }
+.b-bar.g { background: var(--accent-green); }
+.b-bar.a { background: var(--accent-amber); }
+.b-bar.r { background: var(--accent-red); }
+.b-bar.dim { background: var(--border2); }
+.b-day { font-size: 9px; color: var(--text3); }
+
+/* INSIGHT */
+.insight {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--border2);
+  border-radius: 12px; padding: 14px; margin-bottom: 8px;
+}
+.insight.good { border-left-color: var(--accent-green); }
+.insight.warn { border-left-color: var(--accent-amber); }
+.insight.bad { border-left-color: var(--accent-red); }
+.insight.info { border-left-color: var(--accent-blue); }
+.insight-title { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 5px; }
+.insight-body { font-size: 11px; color: var(--text2); line-height: 1.7; }
+.corr-pct {
+  display: inline-block;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px;
+  padding: 1px 6px; border-radius: 4px;
+  background: var(--surface2);
+}
+.corr-pct.g { color: var(--accent-green); }
+.corr-pct.a { color: var(--accent-amber); }
+.corr-pct.r { color: var(--accent-red); }
+
+/* WEEKLY GRID */
+.week-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+.wd-col { text-align: center; }
+.wd-label { font-size: 9px; color: var(--text3); text-transform: uppercase; margin-bottom: 5px; }
+.wd-score {
+  aspect-ratio: 1; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px;
+}
+
+/* STREAK */
+.streak-bar { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 8px; }
+.streak-dot {
+  width: 18px; height: 18px; border-radius: 4px;
+}
+
+/* SYNC STATUS */
+.sync-indicator {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; color: var(--text3);
+  padding: 0 16px 10px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  justify-content: flex-end;
+}
+.sync-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--text3); flex-shrink: 0;
+  transition: background 0.3s;
+}
+.sync-dot.syncing { background: var(--accent-amber); animation: pulse 1s infinite; }
+.sync-dot.synced { background: var(--accent-green); }
+.sync-dot.error { background: var(--accent-red); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* SETUP SCREEN */
+.setup-overlay {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.setup-overlay.hidden { display: none; }
+.setup-box {
+  width: 100%; max-width: 400px;
+}
+.setup-title {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 26px;
+  color: var(--text); margin-bottom: 6px;
+}
+.setup-title span { color: var(--accent-green); }
+.setup-sub {
+  font-size: 12px; color: var(--text3); line-height: 1.7; margin-bottom: 28px;
+}
+.setup-field { margin-bottom: 14px; }
+.setup-label {
+  font-size: 10px; color: var(--text3); text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 6px; display: block;
+}
+.setup-input {
+  width: 100%; background: var(--surface);
+  border: 1px solid var(--border2); border-radius: 10px;
+  padding: 12px 14px; color: var(--text);
+  font-family: 'DM Mono', monospace; font-size: 13px;
+  outline: none; transition: border-color 0.15s;
+}
+.setup-input:focus { border-color: var(--accent-green); }
+.setup-input::placeholder { color: var(--text3); }
+.setup-hint {
+  font-size: 10px; color: var(--text3); margin-top: 5px; line-height: 1.6;
+}
+.setup-hint a { color: var(--accent-green); text-decoration: none; }
+.setup-btn {
+  width: 100%; padding: 14px; border-radius: 12px;
+  background: var(--accent-green); border: none; cursor: pointer;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
+  color: #0f0d0b; margin-top: 8px; transition: all 0.2s;
+}
+.setup-btn:hover { filter: brightness(1.1); }
+.setup-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.setup-error {
+  color: var(--accent-red); font-size: 11px; margin-top: 10px;
+  text-align: center; min-height: 16px;
+}
+.setup-skip {
+  background: none; border: none; cursor: pointer;
+  color: var(--text3); font-size: 11px; font-family: 'DM Mono', monospace;
+  text-align: center; width: 100%; margin-top: 12px;
+  text-decoration: underline; padding: 4px;
+}
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 96px; left: 50%;
+  transform: translateX(-50%) translateY(30px);
+  background: var(--surface2); border: 1px solid var(--border2);
+  color: var(--text); padding: 10px 20px; border-radius: 20px;
+  font-size: 12px; z-index: 300; opacity: 0;
+  transition: all 0.3s; white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- SETUP SCREEN -->
+<div class="setup-overlay" id="setup-overlay">
+  <div class="setup-box">
+    <div class="setup-title">gut<span>.</span>journal</div>
+    <div class="setup-sub">
+      Connect a private GitHub repo to sync your data across all devices. Your data lives in a <code style="color:var(--accent-green)">data.json</code> file in the repo — committed automatically on every log entry.
+    </div>
+
+    <div class="setup-field">
+      <label class="setup-label">GitHub username</label>
+      <input class="setup-input" id="cfg-user" placeholder="e.g. aryan" autocomplete="off" autocorrect="off" autocapitalize="off">
+    </div>
+
+    <div class="setup-field">
+      <label class="setup-label">Repo name</label>
+      <input class="setup-input" id="cfg-repo" placeholder="e.g. gut-journal" autocomplete="off" autocorrect="off" autocapitalize="off">
+      <div class="setup-hint">The same repo your <code style="color:var(--accent-green)">index.html</code> lives in. <code style="color:var(--accent-green)">data.json</code> will be created there automatically.</div>
+    </div>
+
+    <div class="setup-field">
+      <label class="setup-label">Personal Access Token (PAT)</label>
+      <input class="setup-input" id="cfg-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+      <div class="setup-hint">
+        Generate at <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens</a> → select <strong>repo</strong> scope only. The token is stored locally on this device only.
+      </div>
+    </div>
+
+    <button class="setup-btn" id="setup-btn" onclick="setupGitHub()">Connect & start logging</button>
+    <div class="setup-error" id="setup-error"></div>
+    <button class="setup-skip" onclick="skipSetup()">Use local storage only (no sync)</button>
+  </div>
+</div>
+
+<div class="nav">
+  <div class="nav-brand">gut<span>.</span>journal</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('today', this)">Today</button>
+    <button class="nav-tab" onclick="switchTab('trends', this)">Trends</button>
+  </div>
+</div>
+
+<!-- SYNC STATUS BAR -->
+<div class="sync-indicator" id="sync-bar" style="display:none">
+  <div class="sync-dot" id="sync-dot"></div>
+  <span id="sync-label">not connected</span>
+  <span style="color:var(--border2)">|</span>
+  <button onclick="openSettings()" style="background:none;border:none;cursor:pointer;color:var(--text3);font-family:'DM Mono',monospace;font-size:10px;padding:0">settings</button>
+</div>
+
+<!-- TODAY VIEW -->
+<div id="view-today">
+  <div class="date-bar">
+    <button class="date-nav-btn" onclick="changeDay(-1)">&#8249;</button>
+    <div class="date-center">
+      <div class="date-main" id="date-main">—</div>
+      <div class="date-day" id="date-day">—</div>
+    </div>
+    <button class="date-nav-btn" onclick="changeDay(1)">&#8250;</button>
+  </div>
+
+  <div class="view">
+    <div class="timeline-header">
+      <div class="timeline-label">Events</div>
+      <div class="gut-score-badge" id="day-score-badge">day score: <span>—</span></div>
+    </div>
+    <div id="timeline-feed"></div>
+  </div>
+</div>
+
+<!-- TRENDS VIEW -->
+<div id="view-trends" class="hidden">
+  <div class="view" id="trends-content"></div>
+</div>
+
+<!-- FAB -->
+<button class="fab" onclick="openModal()" id="fab">+</button>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-handle"></div>
+    <div id="modal-step1">
+      <div class="modal-title">What happened?</div>
+      <div class="type-grid">
+        <button class="type-btn" onclick="selectType('meal', this)">
+          Meal
+          <span class="type-sub">what did you eat?</span>
+        </button>
+        <button class="type-btn" onclick="selectType('poop', this)">
+          Poop
+          <span class="type-sub">bowel movement</span>
+        </button>
+        <button class="type-btn" onclick="selectType('symptom', this)">
+          Symptom
+          <span class="type-sub">bloat, pain, gas</span>
+        </button>
+        <button class="type-btn" onclick="selectType('dairy', this)">
+          Had dairy
+          <span class="type-sub">lactose brute force</span>
+        </button>
+        <button class="type-btn" onclick="selectType('mood', this)">
+          Mood / stress
+          <span class="type-sub">mental state</span>
+        </button>
+        <button class="type-btn" onclick="selectType('sleep', this)">
+          Sleep
+          <span class="type-sub">last night's quality</span>
+        </button>
+      </div>
+    </div>
+    <div id="modal-step2" style="display:none"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Saved</div>
+
+<script>
+// ─── GITHUB SYNC ─────────────────────────────────────────────────────────────
+const GH_DATA_FILE = 'data.json';
+const GH_BRANCH = 'main';
+
+function getCfg() {
+  try { return JSON.parse(localStorage.getItem('gj_cfg') || 'null'); } catch(e) { return null; }
+}
+function saveCfg(cfg) { localStorage.setItem('gj_cfg', JSON.stringify(cfg)); }
+
+function ghHeaders(token) {
+  return {
+    'Authorization': `token ${token}`,
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+  };
+}
+
+async function ghGetFile(cfg) {
+  const url = `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${GH_DATA_FILE}`;
+  const res = await fetch(url, { headers: ghHeaders(cfg.token) });
+  if (res.status === 404) return null; // file doesn't exist yet
+  if (!res.ok) throw new Error(`GitHub fetch failed: ${res.status}`);
+  const json = await res.json();
+  return json; // { content, sha, ... }
+}
+
+async function ghPutFile(cfg, content, sha) {
+  const url = `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${GH_DATA_FILE}`;
+  const body = {
+    message: `gut journal sync ${new Date().toISOString().split('T')[0]}`,
+    content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
+    branch: GH_BRANCH,
+  };
+  if (sha) body.sha = sha;
+  const res = await fetch(url, { method: 'PUT', headers: ghHeaders(cfg.token), body: JSON.stringify(body) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `GitHub write failed: ${res.status}`);
+  }
+  return await res.json();
+}
+
+// In-memory sha cache so we don't refetch on every write
+let _ghSha = null;
+
+async function syncPull() {
+  const cfg = getCfg();
+  if (!cfg?.token) return;
+  setSyncState('syncing', 'pulling...');
+  try {
+    const file = await ghGetFile(cfg);
+    if (file) {
+      _ghSha = file.sha;
+      const decoded = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
+      const remoteDB = JSON.parse(decoded);
+      // Merge remote into local — remote wins on conflict (last write wins per day)
+      const localDB = getLocalDB();
+      const merged = { ...localDB, ...remoteDB };
+      // But keep any local days not in remote
+      Object.keys(localDB).forEach(k => { if (!remoteDB[k]) merged[k] = localDB[k]; });
+      saveLocalDB(merged);
+    }
+    setSyncState('synced', `synced`);
+  } catch(e) {
+    setSyncState('error', 'pull failed');
+    console.error('Sync pull error:', e);
+  }
+}
+
+async function syncPush() {
+  const cfg = getCfg();
+  if (!cfg?.token) return;
+  setSyncState('syncing', 'saving...');
+  try {
+    // If we don't have sha yet, fetch it first
+    if (!_ghSha) {
+      const file = await ghGetFile(cfg);
+      if (file) _ghSha = file.sha;
+    }
+    const db = getLocalDB();
+    await ghPutFile(cfg, db, _ghSha);
+    // Refresh sha after write
+    const updated = await ghGetFile(cfg);
+    if (updated) _ghSha = updated.sha;
+    setSyncState('synced', `synced`);
+  } catch(e) {
+    setSyncState('error', 'sync failed — check connection');
+    console.error('Sync push error:', e);
+  }
+}
+
+function setSyncState(state, label) {
+  const dot = document.getElementById('sync-dot');
+  const lbl = document.getElementById('sync-label');
+  dot.className = 'sync-dot ' + state;
+  lbl.textContent = label;
+}
+
+async function setupGitHub() {
+  const user = document.getElementById('cfg-user').value.trim();
+  const repo = document.getElementById('cfg-repo').value.trim();
+  const token = document.getElementById('cfg-token').value.trim();
+  const errEl = document.getElementById('setup-error');
+  const btn = document.getElementById('setup-btn');
+
+  errEl.textContent = '';
+  if (!user || !repo || !token) { errEl.textContent = 'All fields required.'; return; }
+  if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
+    errEl.textContent = 'Token should start with ghp_ or github_pat_';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Connecting...';
+
+  try {
+    const cfg = { user, repo, token };
+    // Test: check repo exists and token works
+    const url = `https://api.github.com/repos/${user}/${repo}`;
+    const res = await fetch(url, { headers: ghHeaders(token) });
+    if (res.status === 404) throw new Error(`Repo "${user}/${repo}" not found. Create it on GitHub first (make it private).`);
+    if (res.status === 401) throw new Error('Token invalid or expired. Generate a new one with repo scope.');
+    if (!res.ok) throw new Error(`GitHub error: ${res.status}`);
+
+    saveCfg(cfg);
+    document.getElementById('sync-bar').style.display = 'flex';
+    document.getElementById('setup-overlay').classList.add('hidden');
+    await syncPull(); // pull existing data on connect
+    renderDateBar();
+    renderTimeline();
+    toast('Connected to GitHub');
+  } catch(e) {
+    errEl.textContent = e.message;
+    btn.disabled = false;
+    btn.textContent = 'Connect & start logging';
+  }
+}
+
+function skipSetup() {
+  saveCfg({ local: true });
+  document.getElementById('setup-overlay').classList.add('hidden');
+  renderDateBar();
+  renderTimeline();
+}
+
+function openSettings() {
+  const cfg = getCfg();
+  if (cfg?.local) {
+    document.getElementById('setup-overlay').classList.remove('hidden');
+    return;
+  }
+  if (cfg) {
+    document.getElementById('cfg-user').value = cfg.user || '';
+    document.getElementById('cfg-repo').value = cfg.repo || '';
+    document.getElementById('cfg-token').value = cfg.token || '';
+  }
+  document.getElementById('setup-overlay').classList.remove('hidden');
+}
+
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const BRISTOL = {
+  1: { label:'Hard lumps', cat:'hard' },
+  2: { label:'Lumpy sausage', cat:'hard' },
+  3: { label:'Cracked sausage', cat:'ideal' },
+  4: { label:'Smooth, ideal', cat:'ideal' },
+  5: { label:'Soft blobs', cat:'loose' },
+  6: { label:'Mushy pieces', cat:'loose' },
+  7: { label:'Liquid', cat:'loose' },
+};
+
+const FOOD_TAGS = [
+  { id:'salad', label:'Salad / greens' },
+  { id:'sandwich_veg', label:'Sandwich w/ veg' },
+  { id:'sandwich_plain', label:'Sandwich plain' },
+  { id:'home_cooked', label:'Home cooked' },
+  { id:'fast_food', label:'Fast food' },
+  { id:'spicy', label:'Spicy food' },
+  { id:'pizza_takeaway', label:'Pizza / takeaway' },
+  { id:'pasta_noodles', label:'Pasta / noodles' },
+  { id:'heavy_meat', label:'Heavy meat meal' },
+  { id:'fruits', label:'Fruits' },
+  { id:'nuts_seeds', label:'Nuts / seeds' },
+  { id:'sugary', label:'Sugary / dessert' },
+  { id:'soup_stew', label:'Soup / stew' },
+  { id:'rice_lentils', label:'Rice / lentils' },
+  { id:'alcohol', label:'Alcohol' },
+  { id:'coffee', label:'Coffee / caffeine' },
+];
+
+// foods that count toward "fiber-rich"
+const HIGH_FIBER_FOODS = ['salad','sandwich_veg','home_cooked','fruits','nuts_seeds','soup_stew','rice_lentils'];
+const IRRITANT_FOODS = ['spicy','fast_food','pizza_takeaway','alcohol','sugary'];
+
+function getLocalDB() { try { return JSON.parse(localStorage.getItem('gj_events') || '{}'); } catch(e) { return {}; } }
+function saveLocalDB(db) { localStorage.setItem('gj_events', JSON.stringify(db)); }
+
+function getDB() { return getLocalDB(); }
+function saveDB(db) {
+  saveLocalDB(db);
+  // fire-and-forget background push
+  const cfg = getCfg();
+  if (cfg?.token) syncPush();
+}
+
+function todayKey() { return fmtKey(new Date()); }
+function fmtKey(d) { return d.toISOString().split('T')[0]; }
+
+function getEvents(key) {
+  const db = getDB();
+  return db[key] || [];
+}
+function addEvent(key, evt) {
+  const db = getDB();
+  if (!db[key]) db[key] = [];
+  db[key].push({ ...evt, id: Date.now() });
+  saveDB(db);
+}
+function deleteEvent(key, id) {
+  const db = getDB();
+  if (!db[key]) return;
+  db[key] = db[key].filter(e => e.id !== id);
+  saveDB(db);
+}
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let currentDay = new Date();
+let selectedType = null;
+let formState = {};
+
+function currentKey() { return fmtKey(currentDay); }
+
+// ─── TABS ─────────────────────────────────────────────────────────────────────
+function switchTab(tab, btn) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('view-today').classList.toggle('hidden', tab !== 'today');
+  document.getElementById('view-trends').classList.toggle('hidden', tab !== 'trends');
+  document.getElementById('fab').style.display = tab === 'today' ? 'flex' : 'none';
+  if (tab === 'trends') renderTrends();
+}
+
+// ─── DATE ────────────────────────────────────────────────────────────────────
+function changeDay(d) {
+  currentDay.setDate(currentDay.getDate() + d);
+  renderDateBar();
+  renderTimeline();
+}
+function renderDateBar() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const cd = new Date(currentDay); cd.setHours(0,0,0,0);
+  const diff = Math.round((cd - today) / 86400000);
+  document.getElementById('date-main').textContent =
+    diff === 0 ? 'Today' : diff === -1 ? 'Yesterday' :
+    currentDay.toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short' });
+  document.getElementById('date-day').textContent =
+    currentDay.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+}
+
+// ─── TIMELINE ────────────────────────────────────────────────────────────────
+function renderTimeline() {
+  const events = getEvents(currentKey());
+  const feed = document.getElementById('timeline-feed');
+
+  if (!events.length) {
+    feed.innerHTML = `<div class="timeline-empty">No events logged yet.<br>Tap + to add your first entry.</div>`;
+    document.querySelector('#day-score-badge span').textContent = '—';
+    return;
+  }
+
+  const score = calcDayScore(events);
+  const scoreColor = score >= 70 ? 'var(--accent-green)' : score >= 45 ? 'var(--accent-amber)' : 'var(--accent-red)';
+  document.querySelector('#day-score-badge span').textContent = score + '/100';
+  document.getElementById('day-score-badge').style.borderColor = scoreColor;
+
+  feed.innerHTML = events.map(e => renderEventCard(e)).join('');
+}
+
+function renderEventCard(e) {
+  const dotClass = `dot-${e.type}`;
+  const labelClass = `label-${e.type}`;
+  const typeLabel = e.type === 'dairy' ? 'DAIRY' : e.type.toUpperCase();
+
+  let body = '';
+
+  if (e.type === 'meal' && e.foods?.length) {
+    body = `<div class="event-tags">${e.foods.map(f => {
+      const tag = FOOD_TAGS.find(t => t.id === f);
+      return tag ? `<span class="tag">${tag.label}</span>` : '';
+    }).join('')}</div>`;
+  }
+
+  if (e.type === 'poop') {
+    const b = e.bristol;
+    const bInfo = BRISTOL[b];
+    const bColor = bInfo?.cat === 'ideal' ? 'var(--accent-green)' : bInfo?.cat === 'hard' ? 'var(--accent-amber)' : 'var(--accent-red)';
+    body = `<div class="bristol-display">
+      <div class="bristol-num-big" style="color:${bColor}">${b || '—'}</div>
+      <div class="bristol-desc-small">${bInfo ? bInfo.label : 'not recorded'}</div>
+    </div>`;
+    if (e.bloating || e.gas) {
+      body += `<div class="event-tags" style="margin-top:6px">
+        ${e.bloating && e.bloating!=='none' ? `<span class="tag">bloat: ${e.bloating}</span>` : ''}
+        ${e.gas && e.gas!=='none' ? `<span class="tag">gas: ${e.gas}</span>` : ''}
+      </div>`;
+    }
+  }
+
+  if (e.type === 'symptom') {
+    const parts = [];
+    if (e.bloating && e.bloating !== 'none') parts.push(`bloat: ${e.bloating}`);
+    if (e.gas && e.gas !== 'none') parts.push(`gas: ${e.gas}`);
+    if (e.pain && e.pain !== 'none') parts.push(`pain: ${e.pain}`);
+    body = `<div class="event-tags">${parts.map(p => `<span class="tag">${p}</span>`).join('')}</div>`;
+  }
+
+  if (e.type === 'mood') {
+    body = `<div class="event-detail">Stress: <strong>${e.stress}</strong></div>`;
+  }
+
+  if (e.type === 'sleep') {
+    body = `<div class="event-detail">Sleep quality: <strong>${e.sleep}</strong></div>`;
+  }
+
+  if (e.type === 'dairy') {
+    body = `<div class="event-detail" style="color:var(--text3);font-size:11px">lactose brute force logged</div>`;
+  }
+
+  return `<div class="event-card">
+    <div class="event-type-dot ${dotClass}"></div>
+    <div class="event-body">
+      <div class="event-type-label ${labelClass}">${typeLabel}</div>
+      ${body}
+    </div>
+    <button class="event-delete" onclick="removeEvent(${e.id})">✕</button>
+  </div>`;
+}
+
+function removeEvent(id) {
+  deleteEvent(currentKey(), id);
+  renderTimeline();
+  toast('Removed');
+}
+
+// ─── MODAL ────────────────────────────────────────────────────────────────────
+function openModal() {
+  selectedType = null; formState = {};
+  document.getElementById('modal-step2').style.display = 'none';
+  document.getElementById('modal-step1').style.display = 'block';
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+
+function selectType(type, btn) {
+  selectedType = type; formState = { type };
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('modal-step1').style.display = 'none';
+  renderModalStep2(type);
+  document.getElementById('modal-step2').style.display = 'block';
+}
+
+function renderModalStep2(type) {
+  const el = document.getElementById('modal-step2');
+  let html = `<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+    <button onclick="backToStep1()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text2);cursor:pointer;padding:4px 10px;font-size:12px;font-family:'DM Mono',monospace">back</button>
+    <div class="modal-title" style="margin-bottom:0">${
+      type==='meal'?'Log a meal':type==='poop'?'Log a poop':type==='symptom'?'Log symptoms':type==='dairy'?'Dairy logged':type==='mood'?'Log mood/stress':'Log sleep'
+    }</div>
+  </div>`;
+
+  if (type === 'meal') {
+    html += `<div class="section-hdr">What did you have?</div>
+    <div class="food-tags-grid" id="food-tag-grid">
+      ${FOOD_TAGS.map(t => `<button class="food-tag" data-id="${t.id}" onclick="toggleFoodTag(this)">${t.label}</button>`).join('')}
+    </div>`;
+  }
+
+  if (type === 'poop') {
+    html += `<div class="section-hdr">Bristol stool scale</div>
+    <div class="bristol-grid">
+      ${[1,2,3,4,5,6,7].map(n => {
+        const cat = BRISTOL[n].cat;
+        const cls = cat === 'ideal' ? 'b-ideal' : cat === 'hard' ? 'b-hard' : 'b-loose';
+        return `<button class="b-btn ${cls}" data-b="${n}" onclick="selectBristol(this, ${n})">
+          <span class="b-num">${n}</span>
+          <span class="b-type">${n<=2?'hard':n<=4?'ok':n<=6?'soft':'liq'}</span>
+        </button>`;
+      }).join('')}
+    </div>
+    <div class="bristol-hint" id="b-hint">tap a number</div>
+    <div class="section-hdr">Any symptoms with it?</div>
+    <div class="scale-label">Bloating</div>
+    <div class="scale-row">
+      ${['none','mild','bad'].map(v => `<button class="scale-opt sel-red" data-field="bloating" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}
+    </div>
+    <div class="scale-label">Gas / cramps</div>
+    <div class="scale-row">
+      ${['none','some','lots'].map(v => `<button class="scale-opt sel-red" data-field="gas" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}
+    </div>`;
+  }
+
+  if (type === 'symptom') {
+    html += `<div class="section-hdr">What's going on?</div>
+    <div class="scale-label">Bloating</div>
+    <div class="scale-row">
+      ${['none','mild','bad'].map(v => `<button class="scale-opt sel-red" data-field="bloating" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}
+    </div>
+    <div class="scale-label">Gas / cramps</div>
+    <div class="scale-row">
+      ${['none','some','lots'].map(v => `<button class="scale-opt sel-red" data-field="gas" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}
+    </div>
+    <div class="scale-label">Stomach pain</div>
+    <div class="scale-row">
+      ${['none','mild','moderate','bad'].map(v => `<button class="scale-opt sel-red" data-field="pain" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}
+    </div>`;
+  }
+
+  if (type === 'mood') {
+    html += `<div class="section-hdr">Stress level</div>
+    <div class="scale-row">
+      ${[['chill','g'],['mild','a'],['stressed','a'],['chaos','r']].map(([v,c]) =>
+        `<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="stress" data-val="${v}" onclick="pickScale(this)">${v}</button>`
+      ).join('')}
+    </div>`;
+  }
+
+  if (type === 'sleep') {
+    html += `<div class="section-hdr">Sleep quality (last night)</div>
+    <div class="scale-row">
+      ${[['poor','r'],['okay','a'],['good','g']].map(([v,c]) =>
+        `<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="sleep" data-val="${v}" onclick="pickScale(this)">${v}</button>`
+      ).join('')}
+    </div>`;
+  }
+
+  if (type === 'dairy') {
+    html += `<div style="color:var(--text2);font-size:13px;line-height:1.7;margin-bottom:10px">
+      Dairy will be logged for today. Over time we'll track how dairy days correlate with your symptoms.
+    </div>`;
+  }
+
+  html += `<button class="modal-add-btn" onclick="submitEvent()">Add entry</button>`;
+  el.innerHTML = html;
+}
+
+function backToStep1() {
+  document.getElementById('modal-step2').style.display = 'none';
+  document.getElementById('modal-step1').style.display = 'block';
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+}
+
+function toggleFoodTag(btn) {
+  btn.classList.toggle('selected');
+}
+function selectBristol(btn, n) {
+  document.querySelectorAll('.b-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  formState.bristol = n;
+  document.getElementById('b-hint').textContent = `Type ${n} — ${BRISTOL[n].label}`;
+}
+function pickScale(btn) {
+  const field = btn.dataset.field;
+  document.querySelectorAll(`.scale-opt[data-field="${field}"]`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  formState[field] = btn.dataset.val;
+}
+
+function submitEvent() {
+  const evt = { ...formState };
+  if (evt.type === 'meal') {
+    evt.foods = [...document.querySelectorAll('.food-tag.selected')].map(b => b.dataset.id);
+  }
+  addEvent(currentKey(), evt);
+  closeModal();
+  renderTimeline();
+  toast('Logged');
+}
+
+// ─── DAY SCORE ────────────────────────────────────────────────────────────────
+function calcDayScore(events) {
+  let score = 50;
+  events.forEach(e => {
+    if (e.type === 'poop') {
+      if (e.bristol >= 3 && e.bristol <= 4) score += 15;
+      else if (e.bristol <= 2 || e.bristol >= 6) score -= 15;
+      if (e.bloating === 'bad') score -= 8;
+      if (e.gas === 'lots') score -= 5;
+    }
+    if (e.type === 'meal') {
+      const hf = e.foods?.filter(f => HIGH_FIBER_FOODS.includes(f)).length || 0;
+      const ir = e.foods?.filter(f => IRRITANT_FOODS.includes(f)).length || 0;
+      score += hf * 5;
+      score -= ir * 6;
+    }
+    if (e.type === 'symptom') {
+      if (e.bloating === 'bad') score -= 10;
+      else if (e.bloating === 'mild') score -= 5;
+      if (e.pain === 'bad') score -= 15;
+      else if (e.pain === 'moderate') score -= 8;
+      if (e.gas === 'lots') score -= 6;
+    }
+    if (e.type === 'mood') {
+      if (e.stress === 'chill') score += 8;
+      else if (e.stress === 'stressed') score -= 8;
+      else if (e.stress === 'chaos') score -= 14;
+    }
+    if (e.type === 'sleep') {
+      if (e.sleep === 'good') score += 8;
+      else if (e.sleep === 'poor') score -= 12;
+    }
+    if (e.type === 'dairy') score -= 6;
+  });
+  return Math.min(100, Math.max(0, Math.round(score)));
+}
+
+// ─── TRENDS ────────────────────────────────────────────────────────────────────
+function allDaysWithEvents() {
+  const db = getDB();
+  return Object.keys(db).filter(k => db[k]?.length > 0).sort();
+}
+
+function renderTrends() {
+  const days = allDaysWithEvents();
+  const container = document.getElementById('trends-content');
+  if (days.length < 3) {
+    container.innerHTML = `<div class="timeline-empty">Log at least 3 days to see trends.<br><br>The gut has a story.<br>Give it time to tell it.</div>`;
+    return;
+  }
+
+  const recent14 = days.slice(-14);
+  const db = getDB();
+
+  // compute per-day summaries
+  const summaries = recent14.map(k => {
+    const events = db[k] || [];
+    const score = calcDayScore(events);
+    const poops = events.filter(e => e.type === 'poop');
+    const meals = events.filter(e => e.type === 'meal');
+    const symptoms = events.filter(e => e.type === 'symptom' || (e.type === 'poop' && (e.bloating || e.gas)));
+    const allFoods = meals.flatMap(m => m.foods || []);
+    const hasDairy = events.some(e => e.type === 'dairy');
+    const stressEvt = events.find(e => e.type === 'mood');
+    const sleepEvt = events.find(e => e.type === 'sleep');
+    const avgBristol = poops.length ? avg(poops.map(p => p.bristol).filter(Boolean)) : null;
+    const highFiber = allFoods.filter(f => HIGH_FIBER_FOODS.includes(f)).length;
+    const irritants = allFoods.filter(f => IRRITANT_FOODS.includes(f)).length;
+    const badSymptom = symptoms.some(e =>
+      e.bloating === 'bad' || e.pain === 'bad' || e.pain === 'moderate' || e.gas === 'lots'
+    );
+    return { key: k, score, poops, avgBristol, hasDairy, stress: stressEvt?.stress, sleep: sleepEvt?.sleep, highFiber, irritants, badSymptom, allFoods };
+  });
+
+  // ── STREAK ──
+  const streak = calcStreak(summaries);
+
+  // ── AVG SCORE ──
+  const avgScore = Math.round(avg(summaries.map(s => s.score)));
+  const avgBristolAll = avg(summaries.map(s => s.avgBristol).filter(Boolean));
+  const goodPoopDays = summaries.filter(s => s.avgBristol >= 3 && s.avgBristol <= 4).length;
+
+  let html = '';
+
+  // STAT GRID
+  html += `<div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-val ${avgScore>=70?'green':avgScore>=45?'amber':'red'}">${avgScore}</div>
+      <div class="stat-label">Avg gut score</div>
+      <div class="stat-sub">${avgScore>=70?'Pretty solid 💪':avgScore>=45?'Room to grow':'Needs work'}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val ${streak>=5?'green':streak>=2?'amber':'red'}">${streak}</div>
+      <div class="stat-label">Day streak</div>
+      <div class="stat-sub">consecutive good gut days</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">${goodPoopDays}</div>
+      <div class="stat-label">Ideal poops</div>
+      <div class="stat-sub">bristol 3–4 days out of ${summaries.length}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val ${avgBristolAll ? (avgBristolAll>=3&&avgBristolAll<=4?'green':avgBristolAll<=2?'amber':'red') : ''}">${avgBristolAll ? avgBristolAll.toFixed(1) : '—'}</div>
+      <div class="stat-label">Avg bristol</div>
+      <div class="stat-sub">target: 3.0–4.0</div>
+    </div>
+  </div>`;
+
+  // STREAK DOTS
+  html += `<div class="chart-card">
+    <div class="chart-title">Streak — last ${summaries.length} days</div>
+    <div class="streak-bar">
+      ${summaries.map(s => {
+        const bg = s.score >= 70 ? 'var(--accent-green)' : s.score >= 45 ? 'var(--accent-amber)' : 'var(--accent-red)';
+        return `<div class="streak-dot" style="background:${bg}" title="${s.key}: ${s.score}/100"></div>`;
+      }).join('')}
+    </div>
+    <div style="display:flex;gap:14px;margin-top:10px">
+      <span style="font-size:10px;color:var(--accent-green)">● 70+ good</span>
+      <span style="font-size:10px;color:var(--accent-amber)">● 45–69 ok</span>
+      <span style="font-size:10px;color:var(--accent-red)">● <45 rough</span>
+    </div>
+  </div>`;
+
+  // BRISTOL BAR CHART
+  html += `<div class="chart-card">
+    <div class="chart-title">Bristol score (last 7 days)</div>
+    <div class="bar-row">
+      ${summaries.slice(-7).map(s => {
+        const v = s.avgBristol ? Math.round(s.avgBristol) : 0;
+        const pct = v ? (v/7*100) : 0;
+        const cls = v === 0 ? 'dim' : v>=3&&v<=4 ? 'g' : v<=2 ? 'a' : 'r';
+        const day = new Date(s.key).toLocaleDateString('en-GB',{weekday:'short'}).slice(0,2);
+        return `<div class="b-col">
+          <div class="b-bar ${cls}" style="height:${pct}%"></div>
+          <div class="b-day">${day}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+
+  // WEEKLY PATTERN
+  const weekdayData = buildWeekdayPattern(summaries, db);
+  html += `<div class="chart-card">
+    <div class="chart-title">Weekly pattern</div>
+    <div class="week-grid">
+      ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((wd, i) => {
+        const data = weekdayData[i+1] || [];
+        const a = data.length ? Math.round(avg(data)) : null;
+        const bg = a === null ? 'var(--surface2)' : a >= 70 ? 'rgba(122,158,90,0.25)' : a >= 45 ? 'rgba(196,135,90,0.25)' : 'rgba(196,90,90,0.25)';
+        const col = a === null ? 'var(--text3)' : a >= 70 ? 'var(--accent-green)' : a >= 45 ? 'var(--accent-amber)' : 'var(--accent-red)';
+        return `<div class="wd-col">
+          <div class="wd-label">${wd}</div>
+          <div class="wd-score" style="background:${bg};color:${col}">${a !== null ? a : '—'}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="font-size:10px;color:var(--text3);margin-top:10px;line-height:1.6">${getWeekdayInsight(weekdayData)}</div>
+  </div>`;
+
+  // DEEP ANALYSIS
+  html += `<div class="section-hdr">Deep analysis</div>`;
+
+  const insights = deepAnalysis(summaries, db);
+  insights.forEach(ins => {
+    html += `<div class="insight ${ins.type}">
+      <div class="insight-title">${ins.title}</div>
+      <div class="insight-body">${ins.body}</div>
+    </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function calcStreak(summaries) {
+  let streak = 0;
+  for (let i = summaries.length - 1; i >= 0; i--) {
+    if (summaries[i].score >= 60) streak++;
+    else break;
+  }
+  return streak;
+}
+
+function buildWeekdayPattern(summaries, db) {
+  const map = {};
+  summaries.forEach(s => {
+    const dow = new Date(s.key).getDay(); // 0=sun
+    const day = dow === 0 ? 7 : dow; // 1=mon, 7=sun
+    if (!map[day]) map[day] = [];
+    map[day].push(s.score);
+  });
+  return map;
+}
+
+function getWeekdayInsight(wdd) {
+  const entries = Object.entries(wdd).filter(([,v]) => v.length > 0);
+  if (!entries.length) return 'Not enough data yet.';
+  const sorted = entries.map(([d, scores]) => ({ d: parseInt(d), avg: avg(scores) })).sort((a,b) => a.avg - b.avg);
+  const worst = sorted[0];
+  const best = sorted[sorted.length-1];
+  const dayNames = {1:'Monday',2:'Tuesday',3:'Wednesday',4:'Thursday',5:'Friday',6:'Saturday',7:'Sunday'};
+  if (sorted.length < 2) return 'Keep logging to see weekday patterns.';
+  return `Best day: ${dayNames[best.d]} (avg ${Math.round(best.avg)}/100). Worst: ${dayNames[worst.d]} (avg ${Math.round(worst.avg)}/100).`;
+}
+
+// ─── DEEP ANALYSIS ────────────────────────────────────────────────────────────
+function deepAnalysis(summaries, db) {
+  const insights = [];
+
+  // 1. LAG CORRELATION: did yesterday's food affect today's gut?
+  if (summaries.length >= 4) {
+    const lagPairs = [];
+    for (let i = 1; i < summaries.length; i++) {
+      const yesterday = summaries[i-1];
+      const today = summaries[i];
+      lagPairs.push({ prev: yesterday, curr: today });
+    }
+
+    // High irritants yesterday → bad today
+    const irritantPairs = lagPairs.filter(p => p.prev.irritants >= 2);
+    if (irritantPairs.length >= 2) {
+      const badNext = irritantPairs.filter(p => p.curr.badSymptom || p.curr.score < 50).length;
+      const pct = Math.round((badNext / irritantPairs.length) * 100);
+      insights.push({
+        type: pct >= 60 ? 'bad' : pct >= 35 ? 'warn' : 'info',
+        title: 'Lag: junk/spicy food → next-day symptoms',
+        body: `On days following 2+ irritant foods (fast food, spicy, pizza, alcohol): <span class="corr-pct ${pct>=60?'r':pct>=35?'a':'g'}">${pct}%</span> had poor gut scores or symptoms the next day. Gut transit means yesterday's food hits today. ${pct >= 60 ? 'Strong signal — your gut is reacting.' : pct >= 35 ? 'Moderate correlation — worth watching.' : 'Weak signal so far.'} Based on ${irritantPairs.length} days of data.`
+      });
+    }
+
+    // High fiber yesterday → good today
+    const fiberPairs = lagPairs.filter(p => p.prev.highFiber >= 2);
+    if (fiberPairs.length >= 2) {
+      const goodNext = fiberPairs.filter(p => p.curr.avgBristol >= 3 && p.curr.avgBristol <= 4).length;
+      const pct = Math.round((goodNext / fiberPairs.length) * 100);
+      insights.push({
+        type: pct >= 50 ? 'good' : 'info',
+        title: 'Lag: high fiber meals → next-day stool quality',
+        body: `After days with 2+ fiber-rich foods: <span class="corr-pct ${pct>=50?'g':'a'}">${pct}%</span> had ideal bristol (3–4) the following day. ${pct >= 50 ? 'Fiber is doing its job — keep it up.' : 'Effect not strong yet, may need more consistent fiber.'} Based on ${fiberPairs.length} observations.`
+      });
+    }
+  }
+
+  // 2. DAIRY CORRELATION (same day + lag)
+  const dairyDays = summaries.filter(s => s.hasDairy);
+  if (dairyDays.length >= 2) {
+    const dairyBad = dairyDays.filter(s => s.badSymptom).length;
+    const pct = Math.round((dairyBad / dairyDays.length) * 100);
+    insights.push({
+      type: pct >= 60 ? 'bad' : pct >= 35 ? 'warn' : 'good',
+      title: 'Dairy days vs symptoms',
+      body: `${dairyDays.length} dairy days logged. <span class="corr-pct ${pct>=60?'r':pct>=35?'a':'g'}">${pct}%</span> had bad symptoms the same day. ${pct >= 60 ? 'Clear lactose reaction pattern. The brute force is costing her.' : pct >= 35 ? 'Moderate correlation — depends on dairy amount/type?' : 'Surprisingly low — maybe small quantities are okay.'}`
+    });
+  }
+
+  // 3. STRESS → GUT
+  const stressedDays = summaries.filter(s => s.stress === 'stressed' || s.stress === 'chaos');
+  if (stressedDays.length >= 2) {
+    const stressBad = stressedDays.filter(s => s.badSymptom || s.score < 50).length;
+    const pct = Math.round((stressBad / stressedDays.length) * 100);
+    insights.push({
+      type: pct >= 50 ? 'warn' : 'info',
+      title: 'Stress → gut disruption',
+      body: `High-stress days: <span class="corr-pct ${pct>=50?'a':'g'}">${pct}%</span> ended with poor gut. The gut-brain axis is measurably real — cortisol directly affects gut motility. ${pct >= 60 ? 'Big signal here.' : ''} Based on ${stressedDays.length} stressed days.`
+    });
+  }
+
+  // 4. SLEEP → NEXT DAY GUT (lag)
+  if (summaries.length >= 4) {
+    const poorSleepPairs = [];
+    for (let i = 1; i < summaries.length; i++) {
+      if (summaries[i-1].sleep === 'poor') poorSleepPairs.push(summaries[i]);
+    }
+    if (poorSleepPairs.length >= 2) {
+      const badGut = poorSleepPairs.filter(s => s.score < 55 || s.badSymptom).length;
+      const pct = Math.round((badGut / poorSleepPairs.length) * 100);
+      insights.push({
+        type: pct >= 50 ? 'warn' : 'info',
+        title: 'Lag: poor sleep → next-day gut',
+        body: `After poor sleep nights: <span class="corr-pct ${pct>=50?'a':'g'}">${pct}%</span> had below-average gut scores the next day. Sleep deprivation disrupts the gut microbiome and reduces bowel motility. ${pct >= 60 ? 'Strong signal.' : 'Emerging pattern.'} Based on ${poorSleepPairs.length} data points.`
+      });
+    }
+  }
+
+  // 5. COMBO: dairy + spicy/irritant
+  const comboDays = summaries.filter(s => s.hasDairy && s.irritants >= 1);
+  if (comboDays.length >= 2) {
+    const comboKaos = comboDays.filter(s => s.badSymptom).length;
+    const pct = Math.round((comboKaos / comboDays.length) * 100);
+    insights.push({
+      type: pct >= 60 ? 'bad' : 'warn',
+      title: 'Combo trigger: dairy + irritant food',
+      body: `Dairy + spicy/fast food on same day: <span class="corr-pct ${pct>=60?'r':'a'}">${pct}%</span> ended badly. The double-hit combo is harsher than either alone. ${comboDays.length} combo days logged.`
+    });
+  }
+
+  if (!insights.length) {
+    insights.push({ type: 'info', title: 'Keep logging', body: 'Need more data to detect reliable patterns. Aim for 7+ consistent days — the correlations will emerge.' });
+  }
+
+  return insights;
+}
+
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+function avg(arr) { return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0; }
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+(async function init() {
+  const cfg = getCfg();
+  if (!cfg) {
+    // First time — show setup
+    document.getElementById('setup-overlay').classList.remove('hidden');
+    return;
+  }
+  if (cfg.local) {
+    document.getElementById('setup-overlay').classList.add('hidden');
+  } else {
+    document.getElementById('setup-overlay').classList.add('hidden');
+    document.getElementById('sync-bar').style.display = 'flex';
+    setSyncState('syncing', 'loading...');
+    await syncPull();
+  }
+  renderDateBar();
+  renderTimeline();
+})();
+</script>
+</body>
+</html>
