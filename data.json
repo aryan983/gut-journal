@@ -17,6 +17,12 @@
       "phase": "menstrual",
       "cycleday": "1-5",
       "id": 1772186915622
+    },
+    {
+      "type": "caffeine",
+      "cups": "1 cup",
+      "caftype": "tea",
+      "id": 1772209809571
     }
   ],
   "2026-02-26": [],
