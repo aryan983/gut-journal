@@ -1,1 +1,42 @@
-
+{
+  "2026-02-27": [
+    {
+      "type": "poop",
+      "bristol": 2,
+      "bloating": "none",
+      "gas": "none",
+      "id": 1772153470441
+    }
+  ],
+  "2026-02-26": [
+    {
+      "type": "meal",
+      "foods": [
+        "pizza_takeaway"
+      ],
+      "id": 1772153573074
+    }
+  ],
+  "2026-02-28": [
+    {
+      "type": "dairy",
+      "id": 1772154095938
+    },
+    {
+      "type": "water",
+      "glasses": "1",
+      "id": 1772154101957
+    },
+    {
+      "type": "water",
+      "glasses": "1",
+      "id": 1772154105240
+    },
+    {
+      "type": "caffeine",
+      "cups": "1 cup",
+      "caftype": "coffee",
+      "id": 1772154112643
+    }
+  ]
+}
