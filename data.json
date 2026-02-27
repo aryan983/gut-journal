@@ -27,6 +27,15 @@
     {
       "type": "dairy",
       "id": 1772209815625
+    },
+    {
+      "type": "meal",
+      "foods": [
+        "spicy",
+        "heavy_meat",
+        "sugary"
+      ],
+      "id": 1772209841348
     }
   ],
   "2026-02-26": [],
