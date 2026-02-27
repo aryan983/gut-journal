@@ -46,12 +46,6 @@
   ],
   "2026-02-27": [
     {
-      "type": "water",
-      "glasses": "5",
-      "id": 1772156535857,
-      "time": "01:42"
-    },
-    {
       "type": "exercise",
       "intensity": "light",
       "extype": "walk",
