@@ -33,6 +33,17 @@
       "type": "water",
       "glasses": "1",
       "id": 1772154101957
+    },
+    {
+      "type": "water",
+      "glasses": "1",
+      "id": 1772154105240
+    },
+    {
+      "type": "caffeine",
+      "cups": "1 cup",
+      "caftype": "coffee",
+      "id": 1772154112643
     }
   ]
 }
