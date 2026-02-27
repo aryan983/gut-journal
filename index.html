@@ -351,7 +351,7 @@ function renderTimeline(){
 function renderEventCard(e){
   const typeLabel=e.type==='dairy'?'DAIRY':e.type.toUpperCase();
   let body='';
-  if(e.type==='meal'&&e.foods?.length)body=`<div class="event-tags">${e.foods.map(f=>{const t=FOOD_TAGS.find(x=>x.id===f);return t?`<span class="tag">${t.label}`:''}).join('')}</div>`;
+  if(e.type==='meal'&&e.foods?.length)body=`<div class="event-tags">${e.foods.map(f=>{const t=FOOD_TAGS.find(x=>x.id===f);return t?`<span class="tag">${t.label}</span>`:''}).join('')}</div>`;
   if(e.type==='poop'){const b=e.bristol,bi=BRISTOL[b];const bc=bi?.cat==='ideal'?'var(--green)':bi?.cat==='hard'?'var(--amber)':'var(--red)';body=`<div class="bristol-display"><div class="bristol-num-big" style="color:${bc}">${b||'—'}</div><div class="bristol-desc-small">${bi?bi.label:'not recorded'}</div></div>`;if(e.bloating&&e.bloating!=='none'||e.gas&&e.gas!=='none')body+=`<div class="event-tags" style="margin-top:6px">${e.bloating&&e.bloating!=='none'?`<span class="tag">bloat: ${e.bloating}</span>`:''}${e.gas&&e.gas!=='none'?`<span class="tag">gas: ${e.gas}</span>`:''}</div>`;}
   if(e.type==='symptom'){const parts=[];if(e.bloating&&e.bloating!=='none')parts.push(`bloat: ${e.bloating}`);if(e.gas&&e.gas!=='none')parts.push(`gas: ${e.gas}`);if(e.pain&&e.pain!=='none')parts.push(`pain: ${e.pain}`);body=`<div class="event-tags">${parts.map(p=>`<span class="tag">${p}</span>`).join('')}</div>`;}
   if(e.type==='mood')body=`<div class="event-detail">Stress: <strong>${e.stress}</strong></div>`;
