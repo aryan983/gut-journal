@@ -6,6 +6,13 @@
         "heavy_meat"
       ],
       "id": 1772153452941
+    },
+    {
+      "type": "poop",
+      "bristol": 2,
+      "bloating": "none",
+      "gas": "none",
+      "id": 1772153470441
     }
   ]
 }
