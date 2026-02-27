@@ -297,7 +297,29 @@ async function ghPut(cfg,data,sha){const body={message:`gut sync ${new Date().to
 let _sha=null;
 let _syncQueue=Promise.resolve(); // serialize all writes through a single promise chain
 
-async function syncPull(){const cfg=getCfg();if(!cfg?.token)return;setSyncState('syncing','pulling...');try{const f=await ghGet(cfg);if(f){_sha=f.sha;const remote=JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\n/g,'')))));const local=getLocalDB();saveLocalDB({...local,...remote,...Object.fromEntries(Object.keys(local).filter(k=>!remote[k]).map(k=>[k,local[k]]))});}setSyncState('synced','synced');}catch(e){setSyncState('error','pull failed — '+e.message);console.error('syncPull:',e);}}
+async function syncPull(){
+  const cfg=getCfg();if(!cfg?.token)return;
+  setSyncState('syncing','pulling...');
+  try{
+    const f=await ghGet(cfg);
+    if(f){
+      _sha=f.sha;
+      try{
+        const content=f.content.replace(/\n/g,'');
+        if(content&&content!==''){
+          const remote=JSON.parse(decodeURIComponent(escape(atob(content))));
+          const local=getLocalDB();
+          saveLocalDB({...local,...remote,...Object.fromEntries(Object.keys(local).filter(k=>!remote[k]).map(k=>[k,local[k]]))});
+        }
+        // empty file is fine — just means no data yet
+      }catch(parseErr){
+        console.warn('data.json parse failed, starting fresh:',parseErr.message);
+        // Don't crash — local data is preserved, next push will fix the file
+      }
+    }
+    setSyncState('synced','synced');
+  }catch(e){setSyncState('error','pull failed — '+e.message);console.error('syncPull:',e);}
+}
 
 function syncPush(){
   const cfg=getCfg();if(!cfg?.token)return;
