@@ -7,528 +7,240 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0f0d0b;
-  --surface: #1a1612;
-  --surface2: #241f19;
-  --surface3: #2e2720;
-  --border: #3a3028;
-  --border2: #4a3e35;
-  --text: #e8ddd0;
-  --text2: #9e8e7e;
-  --text3: #6a5e52;
-  --accent-green: #7a9e5a;
-  --accent-green-dim: rgba(122,158,90,0.15);
-  --accent-amber: #c4875a;
-  --accent-amber-dim: rgba(196,135,90,0.15);
-  --accent-red: #c45a5a;
-  --accent-red-dim: rgba(196,90,90,0.15);
-  --accent-blue: #5a8ec4;
-  --accent-blue-dim: rgba(90,142,196,0.12);
-  --pill-h: 42px;
+  --bg: #0f0d0b; --surface: #1a1612; --surface2: #241f19; --surface3: #2e2720;
+  --border: #3a3028; --border2: #4a3e35;
+  --text: #e8ddd0; --text2: #9e8e7e; --text3: #6a5e52;
+  --green: #7a9e5a; --green-dim: rgba(122,158,90,0.15);
+  --amber: #c4875a; --amber-dim: rgba(196,135,90,0.15);
+  --red: #c45a5a; --red-dim: rgba(196,90,90,0.15);
+  --blue: #5a8ec4; --blue-dim: rgba(90,142,196,0.12);
+  --pink: #c45a8e; --pink-dim: rgba(196,90,142,0.12);
+  --teal: #5ab4c4; --gold: #c4a55a; --purple: #a07ab5; --mint: #7ab5a0;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; }
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-height:100vh;max-width:480px;margin:0 auto;}
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Mono', monospace;
-  min-height: 100vh;
-  max-width: 480px;
-  margin: 0 auto;
-}
+.nav{position:sticky;top:0;z-index:100;background:rgba(15,13,11,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--text);}
+.nav-brand span{color:var(--green);}
+.nav-tabs{display:flex;gap:2px;background:var(--surface2);border-radius:22px;padding:3px;border:1px solid var(--border);}
+.nav-tab{padding:5px 11px;border-radius:18px;border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:var(--text3);background:transparent;transition:all 0.2s;letter-spacing:0.3px;}
+.nav-tab.active{background:var(--surface3);color:var(--text);border:1px solid var(--border2);}
 
-/* NAV */
-.nav {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(15,13,11,0.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 16px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.nav-brand {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800; font-size: 18px;
-  letter-spacing: -0.5px;
-  color: var(--text);
-}
-.nav-brand span { color: var(--accent-green); }
-.nav-tabs {
-  display: flex; gap: 2px;
-  background: var(--surface2);
-  border-radius: 22px; padding: 3px;
-  border: 1px solid var(--border);
-}
-.nav-tab {
-  padding: 6px 16px; border-radius: 18px; border: none;
-  cursor: pointer; font-family: 'DM Mono', monospace;
-  font-size: 11px; font-weight: 500;
-  color: var(--text3); background: transparent;
-  transition: all 0.2s; letter-spacing: 0.5px;
-}
-.nav-tab.active { background: var(--surface3); color: var(--text); border: 1px solid var(--border2); }
+.sync-bar{display:none;align-items:center;justify-content:flex-end;gap:6px;padding:5px 16px;background:var(--surface);border-bottom:1px solid var(--border);font-size:10px;color:var(--text3);}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--text3);flex-shrink:0;transition:background 0.3s;}
+.sync-dot.syncing{background:var(--amber);animation:pulse 1s infinite;}
+.sync-dot.synced{background:var(--green);}
+.sync-dot.error{background:var(--red);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.sync-settings-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-family:'DM Mono',monospace;font-size:10px;padding:0;text-decoration:underline;}
 
-/* DATE BAR */
-.date-bar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
-}
-.date-nav-btn {
-  background: none; border: 1px solid var(--border); border-radius: 8px;
-  color: var(--text2); cursor: pointer; padding: 4px 10px; font-size: 14px;
-  transition: all 0.15s;
-}
-.date-nav-btn:hover { border-color: var(--border2); color: var(--text); }
-.date-center { text-align: center; }
-.date-main {
-  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--text);
-}
-.date-day { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-top: 1px; }
+.date-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);background:var(--surface);}
+.date-nav-btn{background:none;border:1px solid var(--border);border-radius:8px;color:var(--text2);cursor:pointer;padding:4px 10px;font-size:14px;transition:all 0.15s;}
+.date-nav-btn:hover{border-color:var(--border2);color:var(--text);}
+.date-center{text-align:center;}
+.date-main{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--text);}
+.date-day{font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
 
-/* MAIN CONTENT */
-.view { padding: 16px; }
-.view.hidden { display: none; }
+.view{padding:16px;padding-bottom:80px;}
+.hidden{display:none!important;}
 
-/* TIMELINE */
-.timeline-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 14px;
-}
-.timeline-label {
-  font-size: 10px; color: var(--text3);
-  text-transform: uppercase; letter-spacing: 2px;
-}
-.gut-score-badge {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 4px 12px;
-  font-size: 11px; color: var(--text2);
-}
-.gut-score-badge span { font-weight: 500; }
+.timeline-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.timeline-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;}
+.gut-score-badge{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--text2);}
+.gut-score-badge span{font-weight:500;}
+.timeline-empty{text-align:center;padding:50px 20px;color:var(--text3);font-size:13px;line-height:1.8;}
 
-.timeline-empty {
-  text-align: center; padding: 50px 20px;
-  color: var(--text3); font-size: 13px; line-height: 1.8;
-}
+.event-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;position:relative;}
+.event-card:hover{border-color:var(--border2);}
+.event-type-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.dot-meal{background:var(--green);} .dot-poop{background:var(--amber);} .dot-symptom{background:var(--red);}
+.dot-mood{background:var(--blue);} .dot-sleep{background:#8e7ab5;} .dot-dairy{background:#b5a07a;}
+.dot-water{background:var(--teal);} .dot-caffeine{background:var(--gold);}
+.dot-cycle{background:var(--pink);} .dot-exercise{background:var(--mint);} .dot-meds{background:var(--purple);}
+.event-body{flex:1;}
+.event-type-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;font-weight:500;margin-bottom:5px;}
+.label-meal{color:var(--green);} .label-poop{color:var(--amber);} .label-symptom{color:var(--red);}
+.label-mood{color:var(--blue);} .label-sleep{color:#8e7ab5;} .label-dairy{color:#b5a07a;}
+.label-water{color:var(--teal);} .label-caffeine{color:var(--gold);}
+.label-cycle{color:var(--pink);} .label-exercise{color:var(--mint);} .label-meds{color:var(--purple);}
+.event-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.tag{padding:3px 9px;border-radius:20px;font-size:11px;background:var(--surface2);color:var(--text2);border:1px solid var(--border);}
+.event-detail{font-size:12px;color:var(--text2);line-height:1.5;}
+.event-delete{position:absolute;top:10px;right:12px;background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;opacity:0;transition:opacity 0.15s;}
+.event-card:hover .event-delete{opacity:1;}
+.event-delete:hover{color:var(--red);}
+.bristol-display{display:inline-flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;margin-top:6px;}
+.bristol-num-big{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;}
+.bristol-desc-small{font-size:10px;color:var(--text2);max-width:130px;line-height:1.3;}
 
-/* EVENT CARDS */
-.event-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 8px;
-  display: flex; gap: 12px; align-items: flex-start;
-  position: relative;
-}
-.event-card:hover { border-color: var(--border2); }
-.event-type-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  margin-top: 5px; flex-shrink: 0;
-}
-.dot-meal { background: var(--accent-green); }
-.dot-poop { background: var(--accent-amber); }
-.dot-symptom { background: var(--accent-red); }
-.dot-mood { background: var(--accent-blue); }
-.dot-sleep { background: #8e7ab5; }
-.dot-dairy { background: #b5a07a; }
-.dot-water { background: #5ab4c4; }
-.dot-caffeine { background: #c4a55a; }
-.label-water { color: #5ab4c4; }
-.label-caffeine { color: #c4a55a; }
+/* FAB — truly centered on viewport, never clipped */
+.fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);width:52px;height:52px;border-radius:50%;background:var(--green);border:none;cursor:pointer;font-size:26px;color:#0f0d0b;box-shadow:0 4px 24px rgba(122,158,90,0.45);transition:box-shadow 0.2s,transform 0.15s;display:flex;align-items:center;justify-content:center;z-index:90;line-height:1;}
+.fab:hover{box-shadow:0 6px 30px rgba(122,158,90,0.55);transform:translateX(-50%) scale(1.07);}
+.fab:active{transform:translateX(-50%) scale(0.96);}
 
-.event-body { flex: 1; }
-.event-type-label {
-  font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px;
-  font-weight: 500; margin-bottom: 5px;
-}
-.label-meal { color: var(--accent-green); }
-.label-poop { color: var(--accent-amber); }
-.label-symptom { color: var(--accent-red); }
-.label-mood { color: var(--accent-blue); }
-.label-sleep { color: #8e7ab5; }
-.label-dairy { color: #b5a07a; }
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:200;display:flex;align-items:flex-end;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity 0.22s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--surface);border-top-left-radius:24px;border-top-right-radius:24px;border:1px solid var(--border);border-bottom:none;padding:18px 16px 36px;width:100%;max-height:90vh;overflow-y:auto;transform:translateY(100%);transition:transform 0.28s cubic-bezier(0.34,1.3,0.64,1);}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-handle{width:36px;height:3px;background:var(--border2);border-radius:2px;margin:0 auto 18px;}
+.modal-title{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:16px;color:var(--text);}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:4px;}
+.type-btn{padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface2);cursor:pointer;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--text2);text-align:left;transition:all 0.15s;}
+.type-btn:hover,.type-btn.selected{border-color:var(--green);color:var(--green);background:var(--green-dim);}
+.type-sub{font-size:10px;color:var(--text3);margin-top:3px;font-weight:300;display:block;}
+.food-tags-grid{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;}
+.food-tag{padding:8px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface2);cursor:pointer;font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);transition:all 0.15s;}
+.food-tag:hover{border-color:var(--border2);color:var(--text);}
+.food-tag.selected{border-color:var(--green);color:var(--green);background:var(--green-dim);}
+.scale-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;margin-top:14px;}
+.scale-row{display:flex;gap:5px;flex-wrap:wrap;}
+.scale-opt{flex:1;min-width:55px;padding:10px 4px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface2);cursor:pointer;font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);text-align:center;transition:all 0.15s;}
+.scale-opt:hover{border-color:var(--border2);color:var(--text);}
+.scale-opt.sel-green.selected{border-color:var(--green);color:var(--green);background:var(--green-dim);}
+.scale-opt.sel-amber.selected{border-color:var(--amber);color:var(--amber);background:var(--amber-dim);}
+.scale-opt.sel-red.selected{border-color:var(--red);color:var(--red);background:var(--red-dim);}
+.scale-opt.sel-pink.selected{border-color:var(--pink);color:var(--pink);background:var(--pink-dim);}
+.bristol-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:8px;}
+.b-btn{aspect-ratio:1;border-radius:8px;border:1.5px solid var(--border);background:var(--surface2);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;transition:all 0.15s;}
+.b-num{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--text2);}
+.b-type{font-size:8px;color:var(--text3);}
+.b-btn:hover{border-color:var(--border2);}
+.b-btn.b-ideal.selected{background:rgba(122,158,90,0.2);border-color:var(--green);}
+.b-btn.b-ideal.selected .b-num{color:var(--green);}
+.b-btn.b-hard.selected{background:rgba(196,135,90,0.2);border-color:var(--amber);}
+.b-btn.b-hard.selected .b-num{color:var(--amber);}
+.b-btn.b-loose.selected{background:rgba(196,90,90,0.2);border-color:var(--red);}
+.b-btn.b-loose.selected .b-num{color:var(--red);}
+.bristol-hint{font-size:10px;color:var(--text3);text-align:center;margin-top:8px;min-height:14px;}
+.modal-add-btn{width:100%;padding:14px;border-radius:12px;background:var(--green);border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:#0f0d0b;margin-top:18px;transition:all 0.2s;}
+.modal-add-btn:hover{filter:brightness(1.1);}
+.section-hdr{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;margin:20px 0 10px;display:flex;align-items:center;gap:8px;}
+.section-hdr::after{content:'';flex:1;height:1px;background:var(--border);}
 
-.event-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
-.tag {
-  padding: 3px 9px; border-radius: 20px;
-  font-size: 11px; font-weight: 400;
-  background: var(--surface2); color: var(--text2);
-  border: 1px solid var(--border);
-}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;}
+.stat-val{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--text);line-height:1;}
+.stat-val.green{color:var(--green);} .stat-val.amber{color:var(--amber);} .stat-val.red{color:var(--red);}
+.stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+.stat-sub{font-size:11px;color:var(--text2);margin-top:6px;line-height:1.5;}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:8px;}
+.chart-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;}
+.bar-row{display:flex;align-items:flex-end;gap:4px;height:80px;}
+.b-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;}
+.b-bar{width:100%;border-radius:4px 4px 2px 2px;min-height:3px;transition:height 0.4s;}
+.b-bar.g{background:var(--green);} .b-bar.a{background:var(--amber);} .b-bar.r{background:var(--red);} .b-bar.dim{background:var(--border2);}
+.b-day{font-size:9px;color:var(--text3);}
+.insight{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--border2);border-radius:12px;padding:14px;margin-bottom:8px;}
+.insight.good{border-left-color:var(--green);} .insight.warn{border-left-color:var(--amber);} .insight.bad{border-left-color:var(--red);} .insight.info{border-left-color:var(--blue);}
+.insight-title{font-size:12px;font-weight:500;color:var(--text);margin-bottom:5px;}
+.insight-body{font-size:11px;color:var(--text2);line-height:1.8;}
+.rho-badge{display:inline-flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:3px 8px;margin:3px 0;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;}
+.conf-badge{display:inline-block;padding:2px 6px;border-radius:4px;font-size:9px;text-transform:uppercase;letter-spacing:1px;margin-left:4px;font-family:'DM Mono',monospace;font-weight:400;}
+.conf-sig{background:rgba(122,158,90,0.2);color:var(--green);}
+.conf-insig{background:var(--surface2);color:var(--text3);}
+.corr-pct{display:inline-block;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;padding:1px 6px;border-radius:4px;background:var(--surface2);}
+.corr-pct.g{color:var(--green);} .corr-pct.a{color:var(--amber);} .corr-pct.r{color:var(--red);}
+.streak-bar{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;}
+.streak-dot{width:18px;height:18px;border-radius:4px;}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.wd-col{text-align:center;}
+.wd-label{font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:5px;}
+.wd-score{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;}
+.z-row{display:flex;gap:3px;align-items:flex-end;margin-top:8px;}
+.z-col{flex:1;display:flex;flex-direction:column;align-items:center;}
+.z-bar-wrap{width:100%;display:flex;align-items:center;height:28px;}
+.z-pos{background:var(--green);border-radius:2px;min-width:2px;}
+.z-neg{background:var(--red);border-radius:2px;min-width:2px;}
+.z-day{font-size:8px;color:var(--text3);margin-top:3px;}
+.report-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:8px;}
+.report-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--text);margin-bottom:12px;}
+.report-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
+.report-row:last-child{border-bottom:none;}
+.report-key{font-size:11px;color:var(--text2);}
+.report-val{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;}
 
-.event-detail { font-size: 12px; color: var(--text2); line-height: 1.5; }
-.event-delete {
-  position: absolute; top: 10px; right: 12px;
-  background: none; border: none; cursor: pointer;
-  color: var(--text3); font-size: 14px; opacity: 0;
-  transition: opacity 0.15s;
-}
-.event-card:hover .event-delete { opacity: 1; }
-.event-delete:hover { color: var(--accent-red); }
+/* CALENDAR */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.cal-month{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;}
+.cal-nav{background:none;border:1px solid var(--border);border-radius:8px;color:var(--text2);cursor:pointer;padding:4px 10px;font-size:14px;transition:all 0.15s;}
+.cal-nav:hover{border-color:var(--border2);color:var(--text);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-day-label{font-size:9px;color:var(--text3);text-align:center;padding:4px 0;text-transform:uppercase;}
+.cal-cell{aspect-ratio:1;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-size:11px;font-family:'Syne',sans-serif;font-weight:600;transition:all 0.15s;position:relative;border:1px solid transparent;}
+.cal-cell.empty{opacity:0;pointer-events:none;}
+.cal-cell.today{border-color:var(--border2)!important;}
+.cal-cell.has-data:hover{filter:brightness(1.2);}
+.cal-cell.selected{border-color:white!important;}
+.cal-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.35);margin-top:2px;}
+.cal-legend{display:flex;gap:12px;margin-top:12px;justify-content:center;flex-wrap:wrap;}
+.cal-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text3);}
+.cal-legend-dot{width:10px;height:10px;border-radius:3px;}
+.cal-detail{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-top:12px;}
+.cal-detail-date{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:10px;}
+.cal-detail-empty{font-size:12px;color:var(--text3);}
 
-/* BRISTOL VISUAL */
-.bristol-display {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 8px; padding: 5px 10px; margin-top: 6px;
-}
-.bristol-num-big {
-  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px;
-}
-.bristol-desc-small { font-size: 10px; color: var(--text2); max-width: 130px; line-height: 1.3; }
+/* SETUP */
+.setup-overlay{position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;}
+.setup-overlay.hidden{display:none;}
+.setup-box{width:100%;max-width:400px;}
+.setup-title{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:var(--text);margin-bottom:6px;}
+.setup-title span{color:var(--green);}
+.setup-sub{font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:26px;}
+.setup-field{margin-bottom:13px;}
+.setup-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;display:block;}
+.setup-input{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;transition:border-color 0.15s;}
+.setup-input:focus{border-color:var(--green);}
+.setup-input::placeholder{color:var(--text3);}
+.setup-hint{font-size:10px;color:var(--text3);margin-top:5px;line-height:1.6;}
+.setup-hint a{color:var(--green);text-decoration:none;}
+.setup-btn{width:100%;padding:14px;border-radius:12px;background:var(--green);border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:#0f0d0b;margin-top:6px;transition:all 0.2s;}
+.setup-btn:hover{filter:brightness(1.1);}
+.setup-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.setup-error{color:var(--red);font-size:11px;margin-top:10px;text-align:center;min-height:16px;}
+.setup-skip{background:none;border:none;cursor:pointer;color:var(--text3);font-size:11px;font-family:'DM Mono',monospace;text-align:center;width:100%;margin-top:10px;text-decoration:underline;padding:4px;}
 
-/* ADD BUTTON */
-.fab {
-  position: fixed; bottom: 28px; right: 50%;
-  transform: translateX(50%) translateX(min(224px, 50vw));
-  width: 54px; height: 54px; border-radius: 50%;
-  background: var(--accent-green);
-  border: none; cursor: pointer; font-size: 24px; color: #0f0d0b;
-  box-shadow: 0 4px 24px rgba(122,158,90,0.4);
-  transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 300; line-height: 1;
-  z-index: 50;
-}
-.fab:hover { transform: translateX(50%) translateX(min(224px, 50vw)) scale(1.08); box-shadow: 0 6px 30px rgba(122,158,90,0.5); }
-.fab:active { transform: translateX(50%) translateX(min(224px, 50vw)) scale(0.96); }
-
-/* MODAL */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-  z-index: 200; display: flex; align-items: flex-end;
-  backdrop-filter: blur(4px);
-  opacity: 0; pointer-events: none; transition: opacity 0.25s;
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal {
-  background: var(--surface);
-  border-top-left-radius: 24px; border-top-right-radius: 24px;
-  border: 1px solid var(--border); border-bottom: none;
-  padding: 20px 16px 36px;
-  width: 100%; max-height: 88vh; overflow-y: auto;
-  transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.34,1.3,0.64,1);
-}
-.modal-overlay.open .modal { transform: translateY(0); }
-.modal-handle {
-  width: 36px; height: 3px; background: var(--border2);
-  border-radius: 2px; margin: 0 auto 20px;
-}
-.modal-title {
-  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px;
-  margin-bottom: 18px; color: var(--text);
-}
-
-/* EVENT TYPE PICKER */
-.type-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px;
-}
-.type-btn {
-  padding: 14px; border-radius: 12px;
-  border: 1.5px solid var(--border);
-  background: var(--surface2); cursor: pointer;
-  font-family: 'DM Mono', monospace; font-size: 12px;
-  font-weight: 500; color: var(--text2);
-  text-align: left; transition: all 0.15s;
-  letter-spacing: 0.3px;
-}
-.type-btn:hover, .type-btn.selected {
-  border-color: var(--accent-green); color: var(--accent-green);
-  background: var(--accent-green-dim);
-}
-.type-btn .type-sub { font-size: 10px; color: var(--text3); margin-top: 3px; font-weight: 300; display: block; }
-
-/* FOOD TAGS GRID */
-.food-tags-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
-.food-tag {
-  padding: 8px 14px; border-radius: 20px;
-  border: 1.5px solid var(--border);
-  background: var(--surface2); cursor: pointer;
-  font-family: 'DM Mono', monospace; font-size: 12px;
-  color: var(--text2); transition: all 0.15s;
-}
-.food-tag:hover { border-color: var(--border2); color: var(--text); }
-.food-tag.selected { border-color: var(--accent-green); color: var(--accent-green); background: var(--accent-green-dim); }
-
-/* SCALE ROW */
-.scale-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; margin-top: 14px; }
-.scale-row { display: flex; gap: 6px; }
-.scale-opt {
-  flex: 1; padding: 10px 6px; border-radius: 10px;
-  border: 1.5px solid var(--border); background: var(--surface2);
-  cursor: pointer; font-family: 'DM Mono', monospace;
-  font-size: 11px; color: var(--text2); text-align: center;
-  transition: all 0.15s;
-}
-.scale-opt:hover { border-color: var(--border2); color: var(--text); }
-.scale-opt.sel-green.selected { border-color: var(--accent-green); color: var(--accent-green); background: var(--accent-green-dim); }
-.scale-opt.sel-amber.selected { border-color: var(--accent-amber); color: var(--accent-amber); background: var(--accent-amber-dim); }
-.scale-opt.sel-red.selected { border-color: var(--accent-red); color: var(--accent-red); background: var(--accent-red-dim); }
-
-/* BRISTOL GRID */
-.bristol-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; margin-top: 8px; }
-.b-btn {
-  aspect-ratio: 1; border-radius: 8px;
-  border: 1.5px solid var(--border); background: var(--surface2);
-  cursor: pointer; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 1px;
-  transition: all 0.15s;
-}
-.b-num { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--text2); }
-.b-type { font-size: 8px; color: var(--text3); }
-.b-btn:hover { border-color: var(--border2); }
-.b-btn.b-ideal.selected { background: rgba(122,158,90,0.2); border-color: var(--accent-green); }
-.b-btn.b-ideal.selected .b-num { color: var(--accent-green); }
-.b-btn.b-hard.selected { background: rgba(196,135,90,0.2); border-color: var(--accent-amber); }
-.b-btn.b-hard.selected .b-num { color: var(--accent-amber); }
-.b-btn.b-loose.selected { background: rgba(196,90,90,0.2); border-color: var(--accent-red); }
-.b-btn.b-loose.selected .b-num { color: var(--accent-red); }
-
-.bristol-hint { font-size: 10px; color: var(--text3); text-align: center; margin-top: 8px; min-height: 14px; }
-
-/* MODAL ADD BTN */
-.modal-add-btn {
-  width: 100%; padding: 14px; border-radius: 12px;
-  background: var(--accent-green); border: none; cursor: pointer;
-  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
-  color: #0f0d0b; margin-top: 20px; transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.modal-add-btn:hover { filter: brightness(1.1); }
-
-/* SECTION HEADER */
-.section-hdr {
-  font-size: 10px; color: var(--text3); text-transform: uppercase;
-  letter-spacing: 2px; margin: 22px 0 10px;
-  display: flex; align-items: center; gap: 8px;
-}
-.section-hdr::after { content:''; flex:1; height:1px; background: var(--border); }
-
-/* ---- TRENDS ---- */
-.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-.stat-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 14px; padding: 14px;
-}
-.stat-val {
-  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 28px;
-  color: var(--text); line-height: 1;
-}
-.stat-val.green { color: var(--accent-green); }
-.stat-val.amber { color: var(--accent-amber); }
-.stat-val.red { color: var(--accent-red); }
-.stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
-.stat-sub { font-size: 11px; color: var(--text2); margin-top: 6px; line-height: 1.5; }
-
-/* CHART */
-.chart-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 14px; padding: 16px; margin-bottom: 8px;
-}
-.chart-title { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; }
-.bar-row { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
-.b-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content: flex-end; }
-.b-bar { width:100%; border-radius: 4px 4px 2px 2px; min-height: 3px; transition: height 0.4s; }
-.b-bar.g { background: var(--accent-green); }
-.b-bar.a { background: var(--accent-amber); }
-.b-bar.r { background: var(--accent-red); }
-.b-bar.dim { background: var(--border2); }
-.b-day { font-size: 9px; color: var(--text3); }
-
-/* INSIGHT */
-.insight {
-  background: var(--surface); border: 1px solid var(--border);
-  border-left: 3px solid var(--border2);
-  border-radius: 12px; padding: 14px; margin-bottom: 8px;
-}
-.insight.good { border-left-color: var(--accent-green); }
-.insight.warn { border-left-color: var(--accent-amber); }
-.insight.bad { border-left-color: var(--accent-red); }
-.insight.info { border-left-color: var(--accent-blue); }
-.insight-title { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 5px; }
-.insight-body { font-size: 11px; color: var(--text2); line-height: 1.7; }
-.corr-pct {
-  display: inline-block;
-  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px;
-  padding: 1px 6px; border-radius: 4px;
-  background: var(--surface2);
-}
-.corr-pct.g { color: var(--accent-green); }
-.corr-pct.a { color: var(--accent-amber); }
-.corr-pct.r { color: var(--accent-red); }
-
-/* WEEKLY GRID */
-.week-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
-.wd-col { text-align: center; }
-.wd-label { font-size: 9px; color: var(--text3); text-transform: uppercase; margin-bottom: 5px; }
-.wd-score {
-  aspect-ratio: 1; border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px;
-}
-
-/* STREAK */
-.streak-bar { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 8px; }
-.streak-dot {
-  width: 18px; height: 18px; border-radius: 4px;
-}
-
-/* SYNC STATUS */
-.sync-indicator {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 10px; color: var(--text3);
-  padding: 0 16px 10px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  justify-content: flex-end;
-}
-.sync-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--text3); flex-shrink: 0;
-  transition: background 0.3s;
-}
-.sync-dot.syncing { background: var(--accent-amber); animation: pulse 1s infinite; }
-.sync-dot.synced { background: var(--accent-green); }
-.sync-dot.error { background: var(--accent-red); }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-/* SETUP SCREEN */
-.setup-overlay {
-  position: fixed; inset: 0;
-  background: var(--bg);
-  z-index: 500;
-  display: flex; align-items: center; justify-content: center;
-  padding: 24px;
-}
-.setup-overlay.hidden { display: none; }
-.setup-box {
-  width: 100%; max-width: 400px;
-}
-.setup-title {
-  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 26px;
-  color: var(--text); margin-bottom: 6px;
-}
-.setup-title span { color: var(--accent-green); }
-.setup-sub {
-  font-size: 12px; color: var(--text3); line-height: 1.7; margin-bottom: 28px;
-}
-.setup-field { margin-bottom: 14px; }
-.setup-label {
-  font-size: 10px; color: var(--text3); text-transform: uppercase;
-  letter-spacing: 1.5px; margin-bottom: 6px; display: block;
-}
-.setup-input {
-  width: 100%; background: var(--surface);
-  border: 1px solid var(--border2); border-radius: 10px;
-  padding: 12px 14px; color: var(--text);
-  font-family: 'DM Mono', monospace; font-size: 13px;
-  outline: none; transition: border-color 0.15s;
-}
-.setup-input:focus { border-color: var(--accent-green); }
-.setup-input::placeholder { color: var(--text3); }
-.setup-hint {
-  font-size: 10px; color: var(--text3); margin-top: 5px; line-height: 1.6;
-}
-.setup-hint a { color: var(--accent-green); text-decoration: none; }
-.setup-btn {
-  width: 100%; padding: 14px; border-radius: 12px;
-  background: var(--accent-green); border: none; cursor: pointer;
-  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
-  color: #0f0d0b; margin-top: 8px; transition: all 0.2s;
-}
-.setup-btn:hover { filter: brightness(1.1); }
-.setup-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.setup-error {
-  color: var(--accent-red); font-size: 11px; margin-top: 10px;
-  text-align: center; min-height: 16px;
-}
-.setup-skip {
-  background: none; border: none; cursor: pointer;
-  color: var(--text3); font-size: 11px; font-family: 'DM Mono', monospace;
-  text-align: center; width: 100%; margin-top: 12px;
-  text-decoration: underline; padding: 4px;
-}
-
-/* TOAST */
-.toast {
-  position: fixed; bottom: 96px; left: 50%;
-  transform: translateX(-50%) translateY(30px);
-  background: var(--surface2); border: 1px solid var(--border2);
-  color: var(--text); padding: 10px 20px; border-radius: 20px;
-  font-size: 12px; z-index: 300; opacity: 0;
-  transition: all 0.3s; white-space: nowrap;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%) translateY(30px);background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:10px 20px;border-radius:20px;font-size:12px;z-index:300;opacity:0;transition:all 0.3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.4);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
-<!-- SETUP SCREEN -->
-<div class="setup-overlay" id="setup-overlay">
+<div class="setup-overlay hidden" id="setup-overlay">
   <div class="setup-box">
     <div class="setup-title">gut<span>.</span>journal</div>
-    <div class="setup-sub">
-      Connect a private GitHub repo to sync your data across all devices. Your data lives in a <code style="color:var(--accent-green)">data.json</code> file in the repo — committed automatically on every log entry.
-    </div>
-
-    <div class="setup-field">
-      <label class="setup-label">GitHub username</label>
-      <input class="setup-input" id="cfg-user" placeholder="e.g. aryan" autocomplete="off" autocorrect="off" autocapitalize="off">
-    </div>
-
-    <div class="setup-field">
-      <label class="setup-label">Repo name</label>
-      <input class="setup-input" id="cfg-repo" placeholder="e.g. gut-journal" autocomplete="off" autocorrect="off" autocapitalize="off">
-      <div class="setup-hint">The same repo your <code style="color:var(--accent-green)">index.html</code> lives in. <code style="color:var(--accent-green)">data.json</code> will be created there automatically.</div>
-    </div>
-
-    <div class="setup-field">
-      <label class="setup-label">Personal Access Token (PAT)</label>
-      <input class="setup-input" id="cfg-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
-      <div class="setup-hint">
-        Generate at <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens</a> → select <strong>repo</strong> scope only. The token is stored locally on this device only.
-      </div>
-    </div>
-
+    <div class="setup-sub">Connect your GitHub repo. Logs are committed automatically as <code style="color:var(--green)">data.json</code>.</div>
+    <div class="setup-field"><label class="setup-label">GitHub username</label><input class="setup-input" id="cfg-user" placeholder="e.g. aryan" autocomplete="off" autocorrect="off" autocapitalize="off"></div>
+    <div class="setup-field"><label class="setup-label">Repo name</label><input class="setup-input" id="cfg-repo" placeholder="e.g. gut-journal" autocomplete="off" autocorrect="off" autocapitalize="off"><div class="setup-hint">Same repo as your index.html. data.json created automatically.</div></div>
+    <div class="setup-field"><label class="setup-label">Personal Access Token (PAT)</label><input class="setup-input" id="cfg-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off"><div class="setup-hint">Generate at <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens</a> → repo scope → no expiry.</div></div>
     <button class="setup-btn" id="setup-btn" onclick="setupGitHub()">Connect & start logging</button>
     <div class="setup-error" id="setup-error"></div>
-    <button class="setup-skip" onclick="skipSetup()">Use local storage only (no sync)</button>
+    <button class="setup-skip" onclick="skipSetup()">Use local storage only</button>
   </div>
 </div>
 
 <div class="nav">
   <div class="nav-brand">gut<span>.</span>journal</div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="switchTab('today', this)">Today</button>
-    <button class="nav-tab" onclick="switchTab('trends', this)">Trends</button>
+    <button class="nav-tab active" onclick="switchTab('today',this)">Today</button>
+    <button class="nav-tab" onclick="switchTab('trends',this)">Trends</button>
+    <button class="nav-tab" onclick="switchTab('calendar',this)">Calendar</button>
   </div>
 </div>
 
-<!-- SYNC STATUS BAR -->
-<div class="sync-indicator" id="sync-bar" style="display:none">
+<div class="sync-bar" id="sync-bar">
   <div class="sync-dot" id="sync-dot"></div>
   <span id="sync-label">not connected</span>
   <span style="color:var(--border2)">|</span>
-  <button onclick="openSettings()" style="background:none;border:none;cursor:pointer;color:var(--text3);font-family:'DM Mono',monospace;font-size:10px;padding:0">settings</button>
+  <button class="sync-settings-btn" onclick="openSettings()">settings</button>
 </div>
 
-<!-- TODAY VIEW -->
 <div id="view-today">
   <div class="date-bar">
     <button class="date-nav-btn" onclick="changeDay(-1)">&#8249;</button>
-    <div class="date-center">
-      <div class="date-main" id="date-main">—</div>
-      <div class="date-day" id="date-day">—</div>
-    </div>
+    <div class="date-center"><div class="date-main" id="date-main">—</div><div class="date-day" id="date-day">—</div></div>
     <button class="date-nav-btn" onclick="changeDay(1)">&#8250;</button>
   </div>
-
   <div class="view">
     <div class="timeline-header">
       <div class="timeline-label">Events</div>
@@ -538,53 +250,28 @@ body {
   </div>
 </div>
 
-<!-- TRENDS VIEW -->
-<div id="view-trends" class="hidden">
-  <div class="view" id="trends-content"></div>
-</div>
+<div id="view-trends" class="hidden"><div class="view" id="trends-content"></div></div>
+<div id="view-calendar" class="hidden"><div class="view" id="calendar-content"></div></div>
 
-<!-- FAB -->
-<button class="fab" onclick="openModal()" id="fab">+</button>
+<button class="fab" id="fab" onclick="openModal()">+</button>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
-  <div class="modal" id="modal">
+  <div class="modal">
     <div class="modal-handle"></div>
     <div id="modal-step1">
       <div class="modal-title">What happened?</div>
       <div class="type-grid">
-        <button class="type-btn" onclick="selectType('meal', this)">
-          Meal
-          <span class="type-sub">what did you eat?</span>
-        </button>
-        <button class="type-btn" onclick="selectType('poop', this)">
-          Poop
-          <span class="type-sub">bowel movement</span>
-        </button>
-        <button class="type-btn" onclick="selectType('symptom', this)">
-          Symptom
-          <span class="type-sub">bloat, pain, gas</span>
-        </button>
-        <button class="type-btn" onclick="selectType('dairy', this)">
-          Had dairy
-          <span class="type-sub">lactose brute force</span>
-        </button>
-        <button class="type-btn" onclick="selectType('water', this)">
-          Water
-          <span class="type-sub">glasses drunk</span>
-        </button>
-        <button class="type-btn" onclick="selectType('caffeine', this)">
-          Caffeine
-          <span class="type-sub">coffee / tea / energy</span>
-        </button>
-        <button class="type-btn" onclick="selectType('mood', this)">
-          Mood / stress
-          <span class="type-sub">mental state</span>
-        </button>
-        <button class="type-btn" onclick="selectType('sleep', this)">
-          Sleep
-          <span class="type-sub">last night's quality</span>
-        </button>
+        <button class="type-btn" onclick="selectType('meal',this)">Meal<span class="type-sub">what did you eat?</span></button>
+        <button class="type-btn" onclick="selectType('poop',this)">Poop<span class="type-sub">bowel movement</span></button>
+        <button class="type-btn" onclick="selectType('symptom',this)">Symptom<span class="type-sub">bloat, pain, gas</span></button>
+        <button class="type-btn" onclick="selectType('dairy',this)">Had dairy<span class="type-sub">lactose brute force</span></button>
+        <button class="type-btn" onclick="selectType('water',this)">Water<span class="type-sub">glasses logged</span></button>
+        <button class="type-btn" onclick="selectType('caffeine',this)">Caffeine<span class="type-sub">coffee / tea / energy</span></button>
+        <button class="type-btn" onclick="selectType('mood',this)">Mood / stress<span class="type-sub">mental state</span></button>
+        <button class="type-btn" onclick="selectType('sleep',this)">Sleep<span class="type-sub">last night</span></button>
+        <button class="type-btn" onclick="selectType('cycle',this)">Cycle<span class="type-sub">menstrual phase</span></button>
+        <button class="type-btn" onclick="selectType('exercise',this)">Exercise<span class="type-sub">movement today</span></button>
+        <button class="type-btn" onclick="selectType('meds',this)">Meds / supps<span class="type-sub">pills, probiotics</span></button>
       </div>
     </div>
     <div id="modal-step2" style="display:none"></div>
@@ -594,903 +281,379 @@ body {
 <div class="toast" id="toast">Saved</div>
 
 <script>
-// ─── GITHUB SYNC ─────────────────────────────────────────────────────────────
-const GH_DATA_FILE = 'data.json';
-const GH_BRANCH = 'main';
+// ─── CONSTANTS ───────────────────────────────────────────────────────────────
+const BRISTOL={1:{label:'Hard separate lumps',cat:'hard'},2:{label:'Lumpy sausage',cat:'hard'},3:{label:'Cracked sausage',cat:'ideal'},4:{label:'Smooth & soft — ideal',cat:'ideal'},5:{label:'Soft blobs',cat:'loose'},6:{label:'Mushy pieces',cat:'loose'},7:{label:'Entirely liquid',cat:'loose'}};
+const FOOD_TAGS=[{id:'salad',label:'Salad / greens'},{id:'sandwich_veg',label:'Sandwich w/ veg'},{id:'sandwich_plain',label:'Sandwich plain'},{id:'home_cooked',label:'Home cooked'},{id:'fast_food',label:'Fast food'},{id:'spicy',label:'Spicy food'},{id:'pizza_takeaway',label:'Pizza / takeaway'},{id:'pasta_noodles',label:'Pasta / noodles'},{id:'heavy_meat',label:'Heavy meat meal'},{id:'fruits',label:'Fruits'},{id:'nuts_seeds',label:'Nuts / seeds'},{id:'sugary',label:'Sugary / dessert'},{id:'soup_stew',label:'Soup / stew'},{id:'rice_lentils',label:'Rice / lentils'},{id:'alcohol',label:'Alcohol'},{id:'coffee_drink',label:'Coffee / caffeine'}];
+const HIGH_FIBER=['salad','sandwich_veg','home_cooked','fruits','nuts_seeds','soup_stew','rice_lentils'];
+const IRRITANTS=['spicy','fast_food','pizza_takeaway','alcohol','sugary'];
 
-function getCfg() {
-  try { return JSON.parse(localStorage.getItem('gj_cfg') || 'null'); } catch(e) { return null; }
-}
-function saveCfg(cfg) { localStorage.setItem('gj_cfg', JSON.stringify(cfg)); }
+// ─── GITHUB ──────────────────────────────────────────────────────────────────
+const GH_FILE='data.json';
+function getCfg(){try{return JSON.parse(localStorage.getItem('gj_cfg')||'null');}catch(e){return null;}}
+function saveCfg(c){localStorage.setItem('gj_cfg',JSON.stringify(c));}
+function ghH(t){return{'Authorization':`token ${t}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};}
+async function ghGet(cfg){const r=await fetch(`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${GH_FILE}`,{headers:ghH(cfg.token)});if(r.status===404)return null;if(!r.ok)throw new Error(`gh ${r.status}`);return r.json();}
+async function ghPut(cfg,data,sha){const body={message:`gut sync ${new Date().toISOString().split('T')[0]}`,content:btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2)))),branch:'main'};if(sha)body.sha=sha;const r=await fetch(`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${GH_FILE}`,{method:'PUT',headers:ghH(cfg.token),body:JSON.stringify(body)});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||`gh write ${r.status}`);}return r.json();}
+let _sha=null,_syncTimer=null;
+async function syncPull(){const cfg=getCfg();if(!cfg?.token)return;setSyncState('syncing','pulling...');try{const f=await ghGet(cfg);if(f){_sha=f.sha;const remote=JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\n/g,'')))));const local=getLocalDB();saveLocalDB({...local,...remote,...Object.fromEntries(Object.keys(local).filter(k=>!remote[k]).map(k=>[k,local[k]]))});}setSyncState('synced','synced');}catch(e){setSyncState('error','pull failed');}}
+async function syncPush(){const cfg=getCfg();if(!cfg?.token)return;clearTimeout(_syncTimer);_syncTimer=setTimeout(async()=>{setSyncState('syncing','saving...');try{const f=await ghGet(cfg);if(f)_sha=f.sha;await ghPut(cfg,getLocalDB(),_sha);const f2=await ghGet(cfg);if(f2)_sha=f2.sha;setSyncState('synced','synced');}catch(e){if(e.message?.includes('422')||e.message?.includes('conflict')){try{const f=await ghGet(cfg);if(f)_sha=f.sha;await ghPut(cfg,getLocalDB(),_sha);setSyncState('synced','synced');}catch(e2){setSyncState('error','sync failed');}}else setSyncState('error','sync failed');}},1500);}
+function setSyncState(s,l){document.getElementById('sync-dot').className='sync-dot '+s;document.getElementById('sync-label').textContent=l;}
+async function setupGitHub(){const user=document.getElementById('cfg-user').value.trim(),repo=document.getElementById('cfg-repo').value.trim(),token=document.getElementById('cfg-token').value.trim(),errEl=document.getElementById('setup-error'),btn=document.getElementById('setup-btn');errEl.textContent='';if(!user||!repo||!token){errEl.textContent='All fields required.';return;}btn.disabled=true;btn.textContent='Connecting...';try{const r=await fetch(`https://api.github.com/repos/${user}/${repo}`,{headers:ghH(token)});if(r.status===404)throw new Error(`Repo "${user}/${repo}" not found.`);if(r.status===401)throw new Error('Token invalid or expired.');if(!r.ok)throw new Error(`GitHub error: ${r.status}`);saveCfg({user,repo,token});document.getElementById('sync-bar').style.display='flex';document.getElementById('setup-overlay').classList.add('hidden');await syncPull();renderDateBar();renderTimeline();toast('Connected');}catch(e){errEl.textContent=e.message;btn.disabled=false;btn.textContent='Connect & start logging';}}
+function skipSetup(){saveCfg({local:true});document.getElementById('setup-overlay').classList.add('hidden');renderDateBar();renderTimeline();}
+function openSettings(){const cfg=getCfg();if(cfg&&!cfg.local){document.getElementById('cfg-user').value=cfg.user||'';document.getElementById('cfg-repo').value=cfg.repo||'';document.getElementById('cfg-token').value=cfg.token||'';}document.getElementById('setup-overlay').classList.remove('hidden');}
 
-function ghHeaders(token) {
-  return {
-    'Authorization': `token ${token}`,
-    'Accept': 'application/vnd.github.v3+json',
-    'Content-Type': 'application/json',
-  };
-}
-
-async function ghGetFile(cfg) {
-  const url = `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${GH_DATA_FILE}`;
-  const res = await fetch(url, { headers: ghHeaders(cfg.token) });
-  if (res.status === 404) return null; // file doesn't exist yet
-  if (!res.ok) throw new Error(`GitHub fetch failed: ${res.status}`);
-  const json = await res.json();
-  return json; // { content, sha, ... }
-}
-
-async function ghPutFile(cfg, content, sha) {
-  const url = `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${GH_DATA_FILE}`;
-  const body = {
-    message: `gut journal sync ${new Date().toISOString().split('T')[0]}`,
-    content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
-    branch: GH_BRANCH,
-  };
-  if (sha) body.sha = sha;
-  const res = await fetch(url, { method: 'PUT', headers: ghHeaders(cfg.token), body: JSON.stringify(body) });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || `GitHub write failed: ${res.status}`);
-  }
-  return await res.json();
-}
-
-// In-memory sha cache so we don't refetch on every write
-let _ghSha = null;
-let _syncTimer = null;
-
-async function syncPull() {
-  const cfg = getCfg();
-  if (!cfg?.token) return;
-  setSyncState('syncing', 'pulling...');
-  try {
-    const file = await ghGetFile(cfg);
-    if (file) {
-      _ghSha = file.sha;
-      const decoded = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
-      const remoteDB = JSON.parse(decoded);
-      const localDB = getLocalDB();
-      const merged = { ...localDB, ...remoteDB };
-      Object.keys(localDB).forEach(k => { if (!remoteDB[k]) merged[k] = localDB[k]; });
-      saveLocalDB(merged);
-    }
-    setSyncState('synced', `synced`);
-  } catch(e) {
-    setSyncState('error', 'pull failed');
-    console.error('Sync pull error:', e);
-  }
-}
-
-async function syncPush() {
-  const cfg = getCfg();
-  if (!cfg?.token) return;
-  // Debounce — wait 1.5s after last event before pushing
-  clearTimeout(_syncTimer);
-  _syncTimer = setTimeout(async () => {
-    setSyncState('syncing', 'saving...');
-    try {
-      // Always fetch latest SHA before writing to avoid conflicts
-      const file = await ghGetFile(cfg);
-      if (file) _ghSha = file.sha;
-      const db = getLocalDB();
-      await ghPutFile(cfg, db, _ghSha);
-      // Update SHA after successful write
-      const updated = await ghGetFile(cfg);
-      if (updated) _ghSha = updated.sha;
-      setSyncState('synced', `synced`);
-    } catch(e) {
-      // If it's a SHA conflict (422), refetch and retry once
-      if (e.message?.includes('422') || e.message?.includes('conflict')) {
-        try {
-          const file = await ghGetFile(cfg);
-          if (file) _ghSha = file.sha;
-          const db = getLocalDB();
-          await ghPutFile(cfg, db, _ghSha);
-          setSyncState('synced', 'synced');
-        } catch(e2) {
-          setSyncState('error', 'sync failed — retry soon');
-        }
-      } else {
-        setSyncState('error', 'sync failed — check connection');
-      }
-      console.error('Sync push error:', e);
-    }
-  }, 1500);
-}
-
-function setSyncState(state, label) {
-  const dot = document.getElementById('sync-dot');
-  const lbl = document.getElementById('sync-label');
-  dot.className = 'sync-dot ' + state;
-  lbl.textContent = label;
-}
-
-async function setupGitHub() {
-  const user = document.getElementById('cfg-user').value.trim();
-  const repo = document.getElementById('cfg-repo').value.trim();
-  const token = document.getElementById('cfg-token').value.trim();
-  const errEl = document.getElementById('setup-error');
-  const btn = document.getElementById('setup-btn');
-
-  errEl.textContent = '';
-  if (!user || !repo || !token) { errEl.textContent = 'All fields required.'; return; }
-  if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
-    errEl.textContent = 'Token should start with ghp_ or github_pat_';
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = 'Connecting...';
-
-  try {
-    const cfg = { user, repo, token };
-    // Test: check repo exists and token works
-    const url = `https://api.github.com/repos/${user}/${repo}`;
-    const res = await fetch(url, { headers: ghHeaders(token) });
-    if (res.status === 404) throw new Error(`Repo "${user}/${repo}" not found. Create it on GitHub first (make it private).`);
-    if (res.status === 401) throw new Error('Token invalid or expired. Generate a new one with repo scope.');
-    if (!res.ok) throw new Error(`GitHub error: ${res.status}`);
-
-    saveCfg(cfg);
-    document.getElementById('sync-bar').style.display = 'flex';
-    document.getElementById('setup-overlay').classList.add('hidden');
-    await syncPull(); // pull existing data on connect
-    renderDateBar();
-    renderTimeline();
-    toast('Connected to GitHub');
-  } catch(e) {
-    errEl.textContent = e.message;
-    btn.disabled = false;
-    btn.textContent = 'Connect & start logging';
-  }
-}
-
-function skipSetup() {
-  saveCfg({ local: true });
-  document.getElementById('setup-overlay').classList.add('hidden');
-  renderDateBar();
-  renderTimeline();
-}
-
-function openSettings() {
-  const cfg = getCfg();
-  if (cfg?.local) {
-    document.getElementById('setup-overlay').classList.remove('hidden');
-    return;
-  }
-  if (cfg) {
-    document.getElementById('cfg-user').value = cfg.user || '';
-    document.getElementById('cfg-repo').value = cfg.repo || '';
-    document.getElementById('cfg-token').value = cfg.token || '';
-  }
-  document.getElementById('setup-overlay').classList.remove('hidden');
-}
-
-// ─── DATA ───────────────────────────────────────────────────────────────────
-const BRISTOL = {
-  1: { label:'Hard lumps', cat:'hard' },
-  2: { label:'Lumpy sausage', cat:'hard' },
-  3: { label:'Cracked sausage', cat:'ideal' },
-  4: { label:'Smooth, ideal', cat:'ideal' },
-  5: { label:'Soft blobs', cat:'loose' },
-  6: { label:'Mushy pieces', cat:'loose' },
-  7: { label:'Liquid', cat:'loose' },
-};
-
-const FOOD_TAGS = [
-  { id:'salad', label:'Salad / greens' },
-  { id:'sandwich_veg', label:'Sandwich w/ veg' },
-  { id:'sandwich_plain', label:'Sandwich plain' },
-  { id:'home_cooked', label:'Home cooked' },
-  { id:'fast_food', label:'Fast food' },
-  { id:'spicy', label:'Spicy food' },
-  { id:'pizza_takeaway', label:'Pizza / takeaway' },
-  { id:'pasta_noodles', label:'Pasta / noodles' },
-  { id:'heavy_meat', label:'Heavy meat meal' },
-  { id:'fruits', label:'Fruits' },
-  { id:'nuts_seeds', label:'Nuts / seeds' },
-  { id:'sugary', label:'Sugary / dessert' },
-  { id:'soup_stew', label:'Soup / stew' },
-  { id:'rice_lentils', label:'Rice / lentils' },
-  { id:'alcohol', label:'Alcohol' },
-  { id:'coffee', label:'Coffee / caffeine' },
-];
-
-// foods that count toward "fiber-rich"
-const HIGH_FIBER_FOODS = ['salad','sandwich_veg','home_cooked','fruits','nuts_seeds','soup_stew','rice_lentils'];
-const IRRITANT_FOODS = ['spicy','fast_food','pizza_takeaway','alcohol','sugary'];
-
-function getLocalDB() { try { return JSON.parse(localStorage.getItem('gj_events') || '{}'); } catch(e) { return {}; } }
-function saveLocalDB(db) { localStorage.setItem('gj_events', JSON.stringify(db)); }
-
-function getDB() { return getLocalDB(); }
-function saveDB(db) {
-  saveLocalDB(db);
-  // fire-and-forget background push
-  const cfg = getCfg();
-  if (cfg?.token) syncPush();
-}
-
-function todayKey() { return fmtKey(new Date()); }
-function fmtKey(d) { return d.toISOString().split('T')[0]; }
-
-function getEvents(key) {
-  const db = getDB();
-  return db[key] || [];
-}
-function addEvent(key, evt) {
-  const db = getDB();
-  if (!db[key]) db[key] = [];
-  db[key].push({ ...evt, id: Date.now() });
-  saveDB(db);
-}
-function deleteEvent(key, id) {
-  const db = getDB();
-  if (!db[key]) return;
-  db[key] = db[key].filter(e => e.id !== id);
-  saveDB(db);
-}
+// ─── DB ──────────────────────────────────────────────────────────────────────
+function getLocalDB(){try{return JSON.parse(localStorage.getItem('gj_events')||'{}');}catch(e){return{};}}
+function saveLocalDB(db){localStorage.setItem('gj_events',JSON.stringify(db));}
+function getDB(){return getLocalDB();}
+function saveDB(db){saveLocalDB(db);const cfg=getCfg();if(cfg?.token)syncPush();}
+function todayKey(){return fmtKey(new Date());}
+function fmtKey(d){return d.toISOString().split('T')[0];}
+function getEvents(k){return getDB()[k]||[];}
+function addEvent(k,evt){const db=getDB();if(!db[k])db[k]=[];db[k].push({...evt,id:Date.now()});saveDB(db);}
+function deleteEvent(k,id){const db=getDB();if(!db[k])return;db[k]=db[k].filter(e=>e.id!==id);saveDB(db);}
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
-let currentDay = new Date();
-let selectedType = null;
-let formState = {};
+let currentDay=new Date(),selectedType=null,formState={};
+let calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),calSelected=null;
+function currentKey(){return fmtKey(currentDay);}
 
-function currentKey() { return fmtKey(currentDay); }
-
-// ─── TABS ─────────────────────────────────────────────────────────────────────
-function switchTab(tab, btn) {
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('view-today').classList.toggle('hidden', tab !== 'today');
-  document.getElementById('view-trends').classList.toggle('hidden', tab !== 'trends');
-  document.getElementById('fab').style.display = tab === 'today' ? 'flex' : 'none';
-  if (tab === 'trends') renderTrends();
+// ─── TABS ────────────────────────────────────────────────────────────────────
+function switchTab(tab,btn){
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
+  document.getElementById('view-today').classList.toggle('hidden',tab!=='today');
+  document.getElementById('view-trends').classList.toggle('hidden',tab!=='trends');
+  document.getElementById('view-calendar').classList.toggle('hidden',tab!=='calendar');
+  document.getElementById('fab').style.display=tab==='today'?'flex':'none';
+  if(tab==='trends')renderTrends();
+  if(tab==='calendar')renderCalendar();
 }
 
 // ─── DATE ────────────────────────────────────────────────────────────────────
-function changeDay(d) {
-  currentDay.setDate(currentDay.getDate() + d);
-  renderDateBar();
-  renderTimeline();
-}
-function renderDateBar() {
-  const today = new Date(); today.setHours(0,0,0,0);
-  const cd = new Date(currentDay); cd.setHours(0,0,0,0);
-  const diff = Math.round((cd - today) / 86400000);
-  document.getElementById('date-main').textContent =
-    diff === 0 ? 'Today' : diff === -1 ? 'Yesterday' :
-    currentDay.toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short' });
-  document.getElementById('date-day').textContent =
-    currentDay.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-}
+function changeDay(d){currentDay.setDate(currentDay.getDate()+d);renderDateBar();renderTimeline();}
+function renderDateBar(){const today=new Date();today.setHours(0,0,0,0);const cd=new Date(currentDay);cd.setHours(0,0,0,0);const diff=Math.round((cd-today)/86400000);document.getElementById('date-main').textContent=diff===0?'Today':diff===-1?'Yesterday':currentDay.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});document.getElementById('date-day').textContent=currentDay.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}
 
 // ─── TIMELINE ────────────────────────────────────────────────────────────────
-function renderTimeline() {
-  const events = getEvents(currentKey());
-  const feed = document.getElementById('timeline-feed');
-
-  if (!events.length) {
-    feed.innerHTML = `<div class="timeline-empty">No events logged yet.<br>Tap + to add your first entry.</div>`;
-    document.querySelector('#day-score-badge span').textContent = '—';
-    return;
-  }
-
-  const score = calcDayScore(events);
-  const scoreColor = score >= 70 ? 'var(--accent-green)' : score >= 45 ? 'var(--accent-amber)' : 'var(--accent-red)';
-  document.querySelector('#day-score-badge span').textContent = score + '/100';
-  document.getElementById('day-score-badge').style.borderColor = scoreColor;
-
-  feed.innerHTML = events.map(e => renderEventCard(e)).join('');
+function renderTimeline(){
+  const events=getEvents(currentKey()),feed=document.getElementById('timeline-feed');
+  if(!events.length){feed.innerHTML=`<div class="timeline-empty">No events yet.<br>Tap + to log something.</div>`;document.querySelector('#day-score-badge span').textContent='—';document.getElementById('day-score-badge').style.borderColor='';return;}
+  const score=calcDayScore(events);
+  const sc=score===null?'unscored':score+'/100';
+  const scColor=score===null?'var(--border)':score>=70?'var(--green)':score>=45?'var(--amber)':'var(--red)';
+  document.querySelector('#day-score-badge span').textContent=sc;
+  document.getElementById('day-score-badge').style.borderColor=scColor;
+  const allDays=allDaysExcludeToday();
+  let zBlurb='';
+  if(allDays.length>=5&&score!==null){const db=getDB();const scores=allDays.map(k=>calcDayScore(db[k]||[])).filter(s=>s!==null);const z=calcZScore(score,scores);if(z!==null)zBlurb=`<div style="font-size:10px;color:var(--text3);margin-bottom:12px;">z-score vs your baseline: <strong style="color:${Math.abs(z)>1?'var(--amber)':'var(--text2)'}">${z>0?'+':''}${z.toFixed(2)}σ</strong> ${z>=1.5?' — unusually good':z<=-1.5?' — unusually rough':''}</div>`;}
+  feed.innerHTML=zBlurb+events.map(e=>renderEventCard(e)).join('');
 }
 
-function renderEventCard(e) {
-  const dotClass = `dot-${e.type}`;
-  const labelClass = `label-${e.type}`;
-  const typeLabel = e.type === 'dairy' ? 'DAIRY' : e.type.toUpperCase();
+function renderEventCard(e){
+  const typeLabel=e.type==='dairy'?'DAIRY':e.type.toUpperCase();
+  let body='';
+  if(e.type==='meal'&&e.foods?.length)body=`<div class="event-tags">${e.foods.map(f=>{const t=FOOD_TAGS.find(x=>x.id===f);return t?`<span class="tag">${t.label}`:''}).join('')}</div>`;
+  if(e.type==='poop'){const b=e.bristol,bi=BRISTOL[b];const bc=bi?.cat==='ideal'?'var(--green)':bi?.cat==='hard'?'var(--amber)':'var(--red)';body=`<div class="bristol-display"><div class="bristol-num-big" style="color:${bc}">${b||'—'}</div><div class="bristol-desc-small">${bi?bi.label:'not recorded'}</div></div>`;if(e.bloating&&e.bloating!=='none'||e.gas&&e.gas!=='none')body+=`<div class="event-tags" style="margin-top:6px">${e.bloating&&e.bloating!=='none'?`<span class="tag">bloat: ${e.bloating}</span>`:''}${e.gas&&e.gas!=='none'?`<span class="tag">gas: ${e.gas}</span>`:''}</div>`;}
+  if(e.type==='symptom'){const parts=[];if(e.bloating&&e.bloating!=='none')parts.push(`bloat: ${e.bloating}`);if(e.gas&&e.gas!=='none')parts.push(`gas: ${e.gas}`);if(e.pain&&e.pain!=='none')parts.push(`pain: ${e.pain}`);body=`<div class="event-tags">${parts.map(p=>`<span class="tag">${p}</span>`).join('')}</div>`;}
+  if(e.type==='mood')body=`<div class="event-detail">Stress: <strong>${e.stress}</strong></div>`;
+  if(e.type==='sleep')body=`<div class="event-detail">Sleep: <strong>${e.sleep}</strong></div>`;
+  if(e.type==='dairy')body=`<div class="event-detail" style="color:var(--text3);font-size:11px">lactose brute force logged</div>`;
+  if(e.type==='water')body=`<div class="event-detail">Glasses: <strong style="color:var(--teal)">${e.glasses||'—'}</strong></div>`;
+  if(e.type==='caffeine')body=`<div class="event-detail">${e.cups||'—'}${e.caftype?` · ${e.caftype}`:''}</div>`;
+  if(e.type==='cycle')body=`<div class="event-detail">Phase: <strong style="color:var(--pink)">${e.phase||'—'}</strong>${e.cycleday?` · day ${e.cycleday}`:''}</div>`;
+  if(e.type==='exercise')body=`<div class="event-detail"><strong style="color:var(--mint)">${e.intensity||'—'}</strong>${e.extype?` · ${e.extype}`:''}</div>`;
+  if(e.type==='meds')body=`<div class="event-tags">${(e.items||[]).map(m=>`<span class="tag">${m}</span>`).join('')}</div>`;
+  return `<div class="event-card"><div class="event-type-dot dot-${e.type}"></div><div class="event-body"><div class="event-type-label label-${e.type}">${typeLabel}</div>${body}</div><button class="event-delete" onclick="removeEvent(${e.id})">✕</button></div>`;
+}
+function removeEvent(id){deleteEvent(currentKey(),id);renderTimeline();toast('Removed');}
 
-  let body = '';
+// ─── MODAL ───────────────────────────────────────────────────────────────────
+function openModal(){selectedType=null;formState={};document.getElementById('modal-step2').style.display='none';document.getElementById('modal-step1').style.display='block';document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));document.getElementById('modal-overlay').classList.add('open');}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
+function closeModalOutside(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
+function selectType(type,btn){selectedType=type;formState={type};document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');document.getElementById('modal-step1').style.display='none';renderModalStep2(type);document.getElementById('modal-step2').style.display='block';}
 
-  if (e.type === 'meal' && e.foods?.length) {
-    body = `<div class="event-tags">${e.foods.map(f => {
-      const tag = FOOD_TAGS.find(t => t.id === f);
-      return tag ? `<span class="tag">${tag.label}</span>` : '';
-    }).join('')}</div>`;
-  }
-
-  if (e.type === 'poop') {
-    const b = e.bristol;
-    const bInfo = BRISTOL[b];
-    const bColor = bInfo?.cat === 'ideal' ? 'var(--accent-green)' : bInfo?.cat === 'hard' ? 'var(--accent-amber)' : 'var(--accent-red)';
-    body = `<div class="bristol-display">
-      <div class="bristol-num-big" style="color:${bColor}">${b || '—'}</div>
-      <div class="bristol-desc-small">${bInfo ? bInfo.label : 'not recorded'}</div>
-    </div>`;
-    if (e.bloating || e.gas) {
-      body += `<div class="event-tags" style="margin-top:6px">
-        ${e.bloating && e.bloating!=='none' ? `<span class="tag">bloat: ${e.bloating}</span>` : ''}
-        ${e.gas && e.gas!=='none' ? `<span class="tag">gas: ${e.gas}</span>` : ''}
-      </div>`;
-    }
-  }
-
-  if (e.type === 'symptom') {
-    const parts = [];
-    if (e.bloating && e.bloating !== 'none') parts.push(`bloat: ${e.bloating}`);
-    if (e.gas && e.gas !== 'none') parts.push(`gas: ${e.gas}`);
-    if (e.pain && e.pain !== 'none') parts.push(`pain: ${e.pain}`);
-    body = `<div class="event-tags">${parts.map(p => `<span class="tag">${p}</span>`).join('')}</div>`;
-  }
-
-  if (e.type === 'mood') {
-    body = `<div class="event-detail">Stress: <strong>${e.stress}</strong></div>`;
-  }
-
-  if (e.type === 'sleep') {
-    body = `<div class="event-detail">Sleep quality: <strong>${e.sleep}</strong></div>`;
-  }
-
-  if (e.type === 'dairy') {
-    body = `<div class="event-detail" style="color:var(--text3);font-size:11px">lactose brute force logged</div>`;
-  }
-
-  if (e.type === 'water') {
-    body = `<div class="event-detail">Glasses: <strong style="color:#5ab4c4">${e.glasses || '—'}</strong></div>`;
-  }
-
-  if (e.type === 'caffeine') {
-    body = `<div class="event-detail">${e.cups || '—'}${e.caftype ? ` · ${e.caftype}` : ''}</div>`;
-  }
-
-  return `<div class="event-card">
-    <div class="event-type-dot ${dotClass}"></div>
-    <div class="event-body">
-      <div class="event-type-label ${labelClass}">${typeLabel}</div>
-      ${body}
-    </div>
-    <button class="event-delete" onclick="removeEvent(${e.id})">✕</button>
-  </div>`;
+function renderModalStep2(type){
+  const el=document.getElementById('modal-step2');
+  const titles={meal:'Log a meal',poop:'Log a poop',symptom:'Log symptoms',dairy:'Had dairy',water:'Log water',caffeine:'Log caffeine',mood:'Log mood/stress',sleep:'Log sleep',cycle:'Log cycle',exercise:'Log exercise',meds:'Log meds/supps'};
+  let html=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px"><button onclick="backToStep1()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text2);cursor:pointer;padding:4px 10px;font-size:12px;font-family:'DM Mono',monospace">back</button><div class="modal-title" style="margin-bottom:0">${titles[type]||type}</div></div>`;
+  if(type==='meal')html+=`<div class="section-hdr">What did you have?</div><div class="food-tags-grid">${FOOD_TAGS.map(t=>`<button class="food-tag" data-id="${t.id}" onclick="toggleFoodTag(this)">${t.label}</button>`).join('')}</div>`;
+  if(type==='poop'){html+=`<div class="section-hdr">Bristol stool scale</div><div class="bristol-grid">${[1,2,3,4,5,6,7].map(n=>{const cat=BRISTOL[n].cat;const cls=cat==='ideal'?'b-ideal':cat==='hard'?'b-hard':'b-loose';return`<button class="b-btn ${cls}" data-b="${n}" onclick="selectBristol(this,${n})"><span class="b-num">${n}</span><span class="b-type">${n<=2?'hard':n<=4?'ok':n<=6?'soft':'liq'}</span></button>`;}).join('')}</div><div class="bristol-hint" id="b-hint">tap a number</div>`;html+=`<div class="section-hdr">Symptoms with it?</div><div class="scale-label">Bloating</div><div class="scale-row">${['none','mild','bad'].map(v=>`<button class="scale-opt sel-red" data-field="bloating" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Gas/cramps</div><div class="scale-row">${['none','some','lots'].map(v=>`<button class="scale-opt sel-red" data-field="gas" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;}
+  if(type==='symptom'){html+=`<div class="section-hdr">What's going on?</div><div class="scale-label">Bloating</div><div class="scale-row">${['none','mild','bad'].map(v=>`<button class="scale-opt sel-red" data-field="bloating" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Gas/cramps</div><div class="scale-row">${['none','some','lots'].map(v=>`<button class="scale-opt sel-red" data-field="gas" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Stomach pain</div><div class="scale-row">${['none','mild','moderate','bad'].map(v=>`<button class="scale-opt sel-red" data-field="pain" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;}
+  if(type==='water')html+=`<div class="section-hdr">Glasses today</div><div class="scale-row">${['1','2','3','4','5','6','7','8+'].map(v=>`<button class="scale-opt sel-green" data-field="glasses" data-val="${v}" onclick="pickScale(this)" style="font-size:13px;font-weight:600">${v}</button>`).join('')}</div><div style="font-size:10px;color:var(--text3);margin-top:8px">target: 6–8 glasses/day</div>`;
+  if(type==='caffeine'){html+=`<div class="section-hdr">Amount</div><div class="scale-row">${[['none','g'],['1 cup','a'],['2 cups','a'],['3+ cups','r']].map(([v,c])=>`<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="cups" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Type</div><div class="scale-row">${['coffee','tea','energy drink','other'].map(v=>`<button class="scale-opt sel-amber" data-field="caftype" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;}
+  if(type==='mood')html+=`<div class="section-hdr">Stress level</div><div class="scale-row">${[['chill','g'],['mild','a'],['stressed','a'],['chaos','r']].map(([v,c])=>`<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="stress" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;
+  if(type==='sleep')html+=`<div class="section-hdr">Quality (last night)</div><div class="scale-row">${[['poor','r'],['okay','a'],['good','g']].map(([v,c])=>`<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="sleep" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;
+  if(type==='cycle'){html+=`<div class="section-hdr">Phase</div><div class="scale-row">${['menstrual','follicular','ovulation','luteal'].map(v=>`<button class="scale-opt sel-pink" data-field="phase" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Cycle day (optional)</div><div class="scale-row">${['1-5','6-10','11-15','16-20','21-25','26-30'].map(v=>`<button class="scale-opt sel-pink" data-field="cycleday" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;}
+  if(type==='exercise'){html+=`<div class="section-hdr">Intensity</div><div class="scale-row">${[['none','r'],['light','g'],['moderate','g'],['intense','a']].map(([v,c])=>`<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="intensity" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div><div class="scale-label">Type (optional)</div><div class="scale-row">${['walk','run','gym','yoga','swim','other'].map(v=>`<button class="scale-opt sel-green" data-field="extype" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}</div>`;}
+  if(type==='meds')html+=`<div class="section-hdr">What did you take?</div><div class="food-tags-grid">${['probiotic','prebiotic','ibuprofen','antibiotic','antacid','laxative','iron supplement','vitamin D','magnesium','other'].map(m=>`<button class="food-tag" data-id="${m}" onclick="toggleFoodTag(this)">${m}</button>`).join('')}</div>`;
+  if(type==='dairy')html+=`<div style="color:var(--text2);font-size:13px;line-height:1.7;margin-bottom:10px">Dairy logged for today. Tracked against symptoms over time.</div>`;
+  html+=`<button class="modal-add-btn" onclick="submitEvent()">Add entry</button>`;
+  el.innerHTML=html;
 }
 
-function removeEvent(id) {
-  deleteEvent(currentKey(), id);
-  renderTimeline();
-  toast('Removed');
-}
+function backToStep1(){document.getElementById('modal-step2').style.display='none';document.getElementById('modal-step1').style.display='block';document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));}
+function toggleFoodTag(btn){btn.classList.toggle('selected');}
+function selectBristol(btn,n){document.querySelectorAll('.b-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');formState.bristol=n;document.getElementById('b-hint').textContent=`Type ${n} — ${BRISTOL[n].label}`;}
+function pickScale(btn){const f=btn.dataset.field;document.querySelectorAll(`.scale-opt[data-field="${f}"]`).forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');formState[f]=btn.dataset.val;}
+function submitEvent(){const evt={...formState};if(evt.type==='meal')evt.foods=[...document.querySelectorAll('.food-tag.selected')].map(b=>b.dataset.id);if(evt.type==='meds')evt.items=[...document.querySelectorAll('.food-tag.selected')].map(b=>b.dataset.id);addEvent(currentKey(),evt);closeModal();renderTimeline();toast('Logged');}
 
-// ─── MODAL ────────────────────────────────────────────────────────────────────
-function openModal() {
-  selectedType = null; formState = {};
-  document.getElementById('modal-step2').style.display = 'none';
-  document.getElementById('modal-step1').style.display = 'block';
-  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
-  document.getElementById('modal-overlay').classList.add('open');
-}
-function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
-function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
-
-function selectType(type, btn) {
-  selectedType = type; formState = { type };
-  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  document.getElementById('modal-step1').style.display = 'none';
-  renderModalStep2(type);
-  document.getElementById('modal-step2').style.display = 'block';
-}
-
-function renderModalStep2(type) {
-  const el = document.getElementById('modal-step2');
-  let html = `<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
-    <button onclick="backToStep1()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text2);cursor:pointer;padding:4px 10px;font-size:12px;font-family:'DM Mono',monospace">back</button>
-    <div class="modal-title" style="margin-bottom:0">${
-      type==='meal'?'Log a meal':type==='poop'?'Log a poop':type==='symptom'?'Log symptoms':type==='dairy'?'Dairy logged':type==='mood'?'Log mood/stress':type==='water'?'Log water':type==='caffeine'?'Log caffeine':'Log sleep'
-    }</div>
-  </div>`;
-
-  if (type === 'meal') {
-    html += `<div class="section-hdr">What did you have?</div>
-    <div class="food-tags-grid" id="food-tag-grid">
-      ${FOOD_TAGS.map(t => `<button class="food-tag" data-id="${t.id}" onclick="toggleFoodTag(this)">${t.label}</button>`).join('')}
-    </div>`;
-  }
-
-  if (type === 'poop') {
-    html += `<div class="section-hdr">Bristol stool scale</div>
-    <div class="bristol-grid">
-      ${[1,2,3,4,5,6,7].map(n => {
-        const cat = BRISTOL[n].cat;
-        const cls = cat === 'ideal' ? 'b-ideal' : cat === 'hard' ? 'b-hard' : 'b-loose';
-        return `<button class="b-btn ${cls}" data-b="${n}" onclick="selectBristol(this, ${n})">
-          <span class="b-num">${n}</span>
-          <span class="b-type">${n<=2?'hard':n<=4?'ok':n<=6?'soft':'liq'}</span>
-        </button>`;
-      }).join('')}
-    </div>
-    <div class="bristol-hint" id="b-hint">tap a number</div>
-    <div class="section-hdr">Any symptoms with it?</div>
-    <div class="scale-label">Bloating</div>
-    <div class="scale-row">
-      ${['none','mild','bad'].map(v => `<button class="scale-opt sel-red" data-field="bloating" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}
-    </div>
-    <div class="scale-label">Gas / cramps</div>
-    <div class="scale-row">
-      ${['none','some','lots'].map(v => `<button class="scale-opt sel-red" data-field="gas" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}
-    </div>`;
-  }
-
-  if (type === 'symptom') {
-    html += `<div class="section-hdr">What's going on?</div>
-    <div class="scale-label">Bloating</div>
-    <div class="scale-row">
-      ${['none','mild','bad'].map(v => `<button class="scale-opt sel-red" data-field="bloating" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}
-    </div>
-    <div class="scale-label">Gas / cramps</div>
-    <div class="scale-row">
-      ${['none','some','lots'].map(v => `<button class="scale-opt sel-red" data-field="gas" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}
-    </div>
-    <div class="scale-label">Stomach pain</div>
-    <div class="scale-row">
-      ${['none','mild','moderate','bad'].map(v => `<button class="scale-opt sel-red" data-field="pain" data-val="${v}" onclick="pickScale(this)">${v}</button>`).join('')}
-    </div>`;
-  }
-
-  if (type === 'mood') {
-    html += `<div class="section-hdr">Stress level</div>
-    <div class="scale-row">
-      ${[['chill','g'],['mild','a'],['stressed','a'],['chaos','r']].map(([v,c]) =>
-        `<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="stress" data-val="${v}" onclick="pickScale(this)">${v}</button>`
-      ).join('')}
-    </div>`;
-  }
-
-  if (type === 'sleep') {
-    html += `<div class="section-hdr">Sleep quality (last night)</div>
-    <div class="scale-row">
-      ${[['poor','r'],['okay','a'],['good','g']].map(([v,c]) =>
-        `<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="sleep" data-val="${v}" onclick="pickScale(this)">${v}</button>`
-      ).join('')}
-    </div>`;
-  }
-
-  if (type === 'water') {
-    html += `<div class="section-hdr">Glasses of water today</div>
-    <div class="scale-row">
-      ${['1','2','3','4','5','6','7','8+'].map(v =>
-        `<button class="scale-opt sel-green" data-field="glasses" data-val="${v}" onclick="pickScale(this)" style="font-size:13px;font-weight:600">${v}</button>`
-      ).join('')}
-    </div>
-    <div style="font-size:10px;color:var(--text3);margin-top:8px">target: 6–8 glasses / day</div>`;
-  }
-
-  if (type === 'caffeine') {
-    html += `<div class="section-hdr">What did you have?</div>
-    <div class="scale-row">
-      ${[['none','g'],['1 cup','a'],['2 cups','a'],['3+ cups','r']].map(([v,c]) =>
-        `<button class="scale-opt sel-${c==='g'?'green':c==='a'?'amber':'red'}" data-field="cups" data-val="${v}" onclick="pickScale(this)">${v}</button>`
-      ).join('')}
-    </div>
-    <div class="scale-label" style="margin-top:14px">Type</div>
-    <div class="scale-row">
-      ${['coffee','tea','energy drink','other'].map(v =>
-        `<button class="scale-opt sel-amber" data-field="caftype" data-val="${v}" onclick="pickScale(this)">${v}</button>`
-      ).join('')}
-    </div>`;
-  }
-
-  if (type === 'dairy') {
-    html += `<div style="color:var(--text2);font-size:13px;line-height:1.7;margin-bottom:10px">
-      Dairy will be logged for today. Over time we'll track how dairy days correlate with your symptoms.
-    </div>`;
-  }
-
-  html += `<button class="modal-add-btn" onclick="submitEvent()">Add entry</button>`;
-  el.innerHTML = html;
-}
-
-function backToStep1() {
-  document.getElementById('modal-step2').style.display = 'none';
-  document.getElementById('modal-step1').style.display = 'block';
-  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
-}
-
-function toggleFoodTag(btn) {
-  btn.classList.toggle('selected');
-}
-function selectBristol(btn, n) {
-  document.querySelectorAll('.b-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  formState.bristol = n;
-  document.getElementById('b-hint').textContent = `Type ${n} — ${BRISTOL[n].label}`;
-}
-function pickScale(btn) {
-  const field = btn.dataset.field;
-  document.querySelectorAll(`.scale-opt[data-field="${field}"]`).forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  formState[field] = btn.dataset.val;
-}
-
-function submitEvent() {
-  const evt = { ...formState };
-  if (evt.type === 'meal') {
-    evt.foods = [...document.querySelectorAll('.food-tag.selected')].map(b => b.dataset.id);
-  }
-  addEvent(currentKey(), evt);
-  closeModal();
-  renderTimeline();
-  toast('Logged');
-}
-
-// ─── DAY SCORE ────────────────────────────────────────────────────────────────
-function calcDayScore(events) {
-  let score = 50;
-  events.forEach(e => {
-    if (e.type === 'poop') {
-      if (e.bristol >= 3 && e.bristol <= 4) score += 15;
-      else if (e.bristol <= 2 || e.bristol >= 6) score -= 15;
-      if (e.bloating === 'bad') score -= 8;
-      if (e.gas === 'lots') score -= 5;
-    }
-    if (e.type === 'meal') {
-      const hf = e.foods?.filter(f => HIGH_FIBER_FOODS.includes(f)).length || 0;
-      const ir = e.foods?.filter(f => IRRITANT_FOODS.includes(f)).length || 0;
-      score += hf * 5;
-      score -= ir * 6;
-    }
-    if (e.type === 'symptom') {
-      if (e.bloating === 'bad') score -= 10;
-      else if (e.bloating === 'mild') score -= 5;
-      if (e.pain === 'bad') score -= 15;
-      else if (e.pain === 'moderate') score -= 8;
-      if (e.gas === 'lots') score -= 6;
-    }
-    if (e.type === 'mood') {
-      if (e.stress === 'chill') score += 8;
-      else if (e.stress === 'stressed') score -= 8;
-      else if (e.stress === 'chaos') score -= 14;
-    }
-    if (e.type === 'sleep') {
-      if (e.sleep === 'good') score += 8;
-      else if (e.sleep === 'poor') score -= 12;
-    }
-    if (e.type === 'dairy') score -= 6;
-    if (e.type === 'water') {
-      const g = parseInt(e.glasses) || 0;
-      if (g >= 6) score += 10;
-      else if (g >= 3) score += 4;
-      else score -= 6;
-    }
-    if (e.type === 'caffeine') {
-      if (e.cups === '3+ cups') score -= 10;
-      else if (e.cups === '2 cups') score -= 4;
-      else if (e.cups === 'none') score += 3;
-    }
+// ─── SCORING ─────────────────────────────────────────────────────────────────
+function calcDayScore(events){
+  if(!events?.length)return null;
+  const hasOutput=events.some(e=>e.type==='poop'||e.type==='symptom');
+  if(!hasOutput)return null;
+  let score=50;
+  events.forEach(e=>{
+    if(e.type==='poop'){if(e.bristol>=3&&e.bristol<=4)score+=25;else if(e.bristol&&(e.bristol<=2||e.bristol>=6))score-=25;if(e.bloating==='bad')score-=8;if(e.gas==='lots')score-=5;}
+    if(e.type==='meal'){const hf=e.foods?.filter(f=>HIGH_FIBER.includes(f)).length||0;const ir=e.foods?.filter(f=>IRRITANTS.includes(f)).length||0;score+=hf*4;score-=ir*5;}
+    if(e.type==='symptom'){if(e.bloating==='bad')score-=10;else if(e.bloating==='mild')score-=5;if(e.pain==='bad')score-=15;else if(e.pain==='moderate')score-=8;if(e.gas==='lots')score-=6;}
+    if(e.type==='mood'){if(e.stress==='chill')score+=8;else if(e.stress==='stressed')score-=8;else if(e.stress==='chaos')score-=14;}
+    if(e.type==='sleep'){if(e.sleep==='good')score+=8;else if(e.sleep==='poor')score-=12;}
+    if(e.type==='dairy')score-=6;
+    if(e.type==='water'){const g=parseInt(e.glasses)||0;if(g>=6)score+=10;else if(g>=3)score+=4;else score-=6;}
+    if(e.type==='caffeine'){if(e.cups==='3+ cups')score-=10;else if(e.cups==='2 cups')score-=4;else if(e.cups==='none')score+=3;}
+    if(e.type==='exercise'){if(e.intensity==='light'||e.intensity==='moderate')score+=8;else if(e.intensity==='intense')score+=4;else if(e.intensity==='none')score-=4;}
+    if(e.type==='cycle'){if(e.phase==='luteal')score-=5;if(e.phase==='menstrual')score-=8;}
+    if(e.type==='meds'){if(e.items?.includes('probiotic'))score+=6;if(e.items?.includes('ibuprofen'))score-=5;if(e.items?.includes('antibiotic'))score-=12;}
   });
-  return Math.min(100, Math.max(0, Math.round(score)));
+  return Math.min(100,Math.max(0,Math.round(score)));
 }
 
-// ─── TRENDS ────────────────────────────────────────────────────────────────────
-function allDaysWithEvents() {
-  const db = getDB();
-  const today = todayKey();
-  return Object.keys(db).filter(k => db[k]?.length > 0 && k !== today).sort();
+// ─── STATISTICS ──────────────────────────────────────────────────────────────
+function rankArray(arr){const sorted=[...arr].map((v,i)=>({v,i})).sort((a,b)=>a.v-b.v);const ranks=new Array(arr.length);let i=0;while(i<sorted.length){let j=i;while(j<sorted.length&&sorted[j].v===sorted[i].v)j++;const r=(i+j-1)/2+1;for(let k=i;k<j;k++)ranks[sorted[k].i]=r;i=j;}return ranks;}
+function spearman(xs,ys){if(xs.length!==ys.length||xs.length<5)return null;const rx=rankArray(xs),ry=rankArray(ys);const n=xs.length;const d2=rx.reduce((s,r,i)=>s+Math.pow(r-ry[i],2),0);return 1-(6*d2)/(n*(n*n-1));}
+function isSignificant(rho,n){if(!rho||n<5)return false;const t=Math.abs(rho)*Math.sqrt((n-2)/(1-rho*rho));const tc=n>=30?2.0:n>=20?2.09:n>=14?2.18:n>=10?2.31:2.57;return t>tc;}
+function calcZScore(val,pop){if(pop.length<5)return null;const m=avg(pop),sd=stddev(pop);return sd===0?0:(val-m)/sd;}
+function lagSpearman(summaries,xFn,yFn,maxLag=3){const results=[];for(let lag=1;lag<=maxLag;lag++){const pairs=[];for(let i=lag;i<summaries.length;i++){const x=xFn(summaries[i-lag]),y=yFn(summaries[i]);if(x!==null&&x!==undefined&&y!==null&&y!==undefined)pairs.push({x,y});}if(pairs.length<5){results.push(null);continue;}const rho=spearman(pairs.map(p=>p.x),pairs.map(p=>p.y));results.push({rho,n:pairs.length,sig:isSignificant(rho,pairs.length)});}return results;}
+
+function zSparkline(summaries){
+  const scores=summaries.map(s=>s.score).filter(s=>s!==null);
+  if(scores.length<5)return '';
+  const m=avg(scores),sd=stddev(scores);
+  if(sd===0)return '';
+  const last7=summaries.slice(-7);
+  const cols=last7.map(s=>{
+    const day=new Date(s.key).toLocaleDateString('en-GB',{weekday:'short'}).slice(0,2);
+    if(s.score===null)return`<div class="z-col"><div class="z-bar-wrap"><div style="width:100%;background:var(--border2);height:3px;border-radius:2px"></div></div><div class="z-day">${day}</div></div>`;
+    const z=(s.score-m)/sd,pct=Math.min(100,Math.abs(z)/2.5*100);
+    const bar=z>=0?`<div class="z-pos" style="width:${pct}%;max-width:100%;height:100%"></div>`:`<div class="z-neg" style="width:${pct}%;max-width:100%;height:100%"></div>`;
+    return`<div class="z-col"><div class="z-bar-wrap" style="justify-content:${z>=0?'flex-start':'flex-end'}">${bar}</div><div class="z-day">${day}</div></div>`;
+  }).join('');
+  return`<div class="chart-card"><div class="chart-title">Z-score sparkline — deviation from your baseline (σ)</div><div class="z-row">${cols}</div><div style="font-size:10px;color:var(--text3);margin-top:8px">μ=${m.toFixed(1)} σ=${sd.toFixed(1)} &nbsp;|&nbsp; right = above baseline, left = below. Formula: z = (x − μ) / σ</div></div>`;
 }
 
-function renderTrends() {
-  const days = allDaysWithEvents();
-  const container = document.getElementById('trends-content');
-  if (days.length < 3) {
-    container.innerHTML = `<div class="timeline-empty">Log at least 3 days to see trends.<br><br>The gut has a story.<br>Give it time to tell it.</div>`;
-    return;
-  }
-
-  const recent14 = days.slice(-14);
-  const db = getDB();
-
-  // compute per-day summaries
-  const summaries = recent14.map(k => {
-    const events = db[k] || [];
-    const score = calcDayScore(events);
-    const poops = events.filter(e => e.type === 'poop');
-    const meals = events.filter(e => e.type === 'meal');
-    const symptoms = events.filter(e => e.type === 'symptom' || (e.type === 'poop' && (e.bloating || e.gas)));
-    const allFoods = meals.flatMap(m => m.foods || []);
-    const hasDairy = events.some(e => e.type === 'dairy');
-    const stressEvt = events.find(e => e.type === 'mood');
-    const sleepEvt = events.find(e => e.type === 'sleep');
-    const avgBristol = poops.length ? avg(poops.map(p => p.bristol).filter(Boolean)) : null;
-    const highFiber = allFoods.filter(f => HIGH_FIBER_FOODS.includes(f)).length;
-    const irritants = allFoods.filter(f => IRRITANT_FOODS.includes(f)).length;
-    const badSymptom = symptoms.some(e =>
-      e.bloating === 'bad' || e.pain === 'bad' || e.pain === 'moderate' || e.gas === 'lots'
-    );
-    const waterEvt = events.find(e => e.type === 'water');
-    const cafEvt = events.find(e => e.type === 'caffeine');
-    const glasses = waterEvt ? (parseInt(waterEvt.glasses) || 0) : null;
-    const highCaffeine = cafEvt?.cups === '3+ cups';
-    return { key: k, score, poops, avgBristol, hasDairy, stress: stressEvt?.stress, sleep: sleepEvt?.sleep, highFiber, irritants, badSymptom, allFoods, glasses, highCaffeine };
+// ─── DATA PIPELINE ───────────────────────────────────────────────────────────
+function allDaysExcludeToday(){const db=getDB();const today=todayKey();return Object.keys(db).filter(k=>db[k]?.length>0&&k!==today).sort();}
+function buildSummaries(days){
+  const db=getDB();
+  return days.map(k=>{
+    const ev=db[k]||[];const score=calcDayScore(ev);
+    const poops=ev.filter(e=>e.type==='poop');const meals=ev.filter(e=>e.type==='meal');
+    const symptoms=ev.filter(e=>e.type==='symptom'||(e.type==='poop'&&(e.bloating||e.gas)));
+    const allFoods=meals.flatMap(m=>m.foods||[]);
+    const hasDairy=ev.some(e=>e.type==='dairy');
+    const stressEvt=ev.find(e=>e.type==='mood');const sleepEvt=ev.find(e=>e.type==='sleep');
+    const cycleEvt=ev.find(e=>e.type==='cycle');const waterEvt=ev.find(e=>e.type==='water');
+    const cafEvt=ev.find(e=>e.type==='caffeine');const exEvt=ev.find(e=>e.type==='exercise');
+    const medsEvt=ev.find(e=>e.type==='meds');
+    const avgBristol=poops.length?avg(poops.map(p=>p.bristol).filter(Boolean)):null;
+    const highFiber=allFoods.filter(f=>HIGH_FIBER.includes(f)).length;
+    const irritants=allFoods.filter(f=>IRRITANTS.includes(f)).length;
+    const badSymptom=symptoms.some(e=>e.bloating==='bad'||e.pain==='bad'||e.pain==='moderate'||e.gas==='lots');
+    const glasses=waterEvt?(parseInt(waterEvt.glasses)||0):null;
+    const highCaffeine=cafEvt?.cups==='3+ cups';
+    const stressed=stressEvt?.stress==='stressed'||stressEvt?.stress==='chaos';
+    const phase=cycleEvt?.phase||null;
+    const exercised=exEvt?.intensity==='light'||exEvt?.intensity==='moderate'||exEvt?.intensity==='intense';
+    const tookAntibiotic=medsEvt?.items?.includes('antibiotic');
+    const stressNum=stressEvt?{'chill':1,'mild':2,'stressed':3,'chaos':4}[stressEvt.stress]||null:null;
+    const sleepNum=sleepEvt?{'poor':1,'okay':2,'good':3}[sleepEvt.sleep]||null:null;
+    const cafNum=cafEvt?{'none':0,'1 cup':1,'2 cups':2,'3+ cups':3}[cafEvt.cups]??null:null;
+    return{key:k,score,poops,avgBristol,hasDairy,stress:stressEvt?.stress,sleep:sleepEvt?.sleep,highFiber,irritants,badSymptom,allFoods,glasses,highCaffeine,stressed,phase,exercised,tookAntibiotic,stressNum,sleepNum,cafNum};
   });
+}
 
-  // ── STREAK ──
-  const streak = calcStreak(summaries);
+// ─── TRENDS ──────────────────────────────────────────────────────────────────
+function renderTrends(){
+  const days=allDaysExcludeToday();const container=document.getElementById('trends-content');
+  if(days.length<3){container.innerHTML=`<div class="timeline-empty">Log at least 3 past days.<br><br>The gut has a story.<br>Give it time to tell it.</div>`;return;}
+  const recent14=days.slice(-14),summaries=buildSummaries(recent14);
+  const scoredDays=summaries.filter(s=>s.score!==null);
+  const avgScore=scoredDays.length?Math.round(avg(scoredDays.map(s=>s.score))):null;
+  const avgBristolAll=avg(summaries.map(s=>s.avgBristol).filter(Boolean));
+  const goodPoopDays=summaries.filter(s=>s.avgBristol>=3&&s.avgBristol<=4).length;
+  const streak=calcStreak(summaries);
+  let html='';
 
-  // ── AVG SCORE ──
-  const avgScore = Math.round(avg(summaries.map(s => s.score)));
-  const avgBristolAll = avg(summaries.map(s => s.avgBristol).filter(Boolean));
-  const goodPoopDays = summaries.filter(s => s.avgBristol >= 3 && s.avgBristol <= 4).length;
-
-  let html = '';
-
-  // STAT GRID
-  html += `<div class="stat-grid">
-    <div class="stat-card">
-      <div class="stat-val ${avgScore>=70?'green':avgScore>=45?'amber':'red'}">${avgScore}</div>
-      <div class="stat-label">Avg gut score</div>
-      <div class="stat-sub">${avgScore>=70?'Pretty solid 💪':avgScore>=45?'Room to grow':'Needs work'}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-val ${streak>=5?'green':streak>=2?'amber':'red'}">${streak}</div>
-      <div class="stat-label">Day streak</div>
-      <div class="stat-sub">consecutive good gut days</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-val">${goodPoopDays}</div>
-      <div class="stat-label">Ideal poops</div>
-      <div class="stat-sub">bristol 3–4 days out of ${summaries.length}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-val ${avgBristolAll ? (avgBristolAll>=3&&avgBristolAll<=4?'green':avgBristolAll<=2?'amber':'red') : ''}">${avgBristolAll ? avgBristolAll.toFixed(1) : '—'}</div>
-      <div class="stat-label">Avg bristol</div>
-      <div class="stat-sub">target: 3.0–4.0</div>
-    </div>
+  // STATS
+  html+=`<div class="stat-grid">
+    <div class="stat-card"><div class="stat-val ${avgScore>=70?'green':avgScore>=45?'amber':'red'}">${avgScore||'—'}</div><div class="stat-label">Avg gut score</div><div class="stat-sub">${avgScore>=70?'Solid 💪':avgScore>=45?'Room to grow':'Needs work'}</div></div>
+    <div class="stat-card"><div class="stat-val ${streak>=5?'green':streak>=2?'amber':'red'}">${streak}</div><div class="stat-label">Day streak</div><div class="stat-sub">consecutive scored days ≥60</div></div>
+    <div class="stat-card"><div class="stat-val">${goodPoopDays}</div><div class="stat-label">Ideal stool days</div><div class="stat-sub">bristol 3–4 / ${summaries.length} days</div></div>
+    <div class="stat-card"><div class="stat-val ${avgBristolAll?(avgBristolAll>=3&&avgBristolAll<=4?'green':avgBristolAll<=2?'amber':'red'):''}">${avgBristolAll?avgBristolAll.toFixed(1):'—'}</div><div class="stat-label">Avg bristol</div><div class="stat-sub">target: 3.0–4.0</div></div>
   </div>`;
+
+  // Z SPARKLINE
+  html+=zSparkline(summaries);
 
   // STREAK DOTS
-  html += `<div class="chart-card">
-    <div class="chart-title">Streak — last ${summaries.length} days</div>
-    <div class="streak-bar">
-      ${summaries.map(s => {
-        const bg = s.score >= 70 ? 'var(--accent-green)' : s.score >= 45 ? 'var(--accent-amber)' : 'var(--accent-red)';
-        return `<div class="streak-dot" style="background:${bg}" title="${s.key}: ${s.score}/100"></div>`;
-      }).join('')}
-    </div>
-    <div style="display:flex;gap:14px;margin-top:10px">
-      <span style="font-size:10px;color:var(--accent-green)">● 70+ good</span>
-      <span style="font-size:10px;color:var(--accent-amber)">● 45–69 ok</span>
-      <span style="font-size:10px;color:var(--accent-red)">● <45 rough</span>
-    </div>
-  </div>`;
+  html+=`<div class="chart-card"><div class="chart-title">Gut score history — ${summaries.length} days</div><div class="streak-bar">${summaries.map(s=>{const bg=s.score===null?'var(--border2)':s.score>=70?'var(--green)':s.score>=45?'var(--amber)':'var(--red)';return`<div class="streak-dot" style="background:${bg}" title="${s.key}: ${s.score!==null?s.score+'/100':'unscored'}"></div>`;}).join('')}</div><div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap"><span style="font-size:10px;color:var(--green)">● 70+ good</span><span style="font-size:10px;color:var(--amber)">● 45–69 ok</span><span style="font-size:10px;color:var(--red)">● <45 rough</span><span style="font-size:10px;color:var(--text3)">● unscored</span></div></div>`;
 
-  // BRISTOL BAR CHART
-  html += `<div class="chart-card">
-    <div class="chart-title">Bristol score (last 7 days)</div>
-    <div class="bar-row">
-      ${summaries.slice(-7).map(s => {
-        const v = s.avgBristol ? Math.round(s.avgBristol) : 0;
-        const pct = v ? (v/7*100) : 0;
-        const cls = v === 0 ? 'dim' : v>=3&&v<=4 ? 'g' : v<=2 ? 'a' : 'r';
-        const day = new Date(s.key).toLocaleDateString('en-GB',{weekday:'short'}).slice(0,2);
-        return `<div class="b-col">
-          <div class="b-bar ${cls}" style="height:${pct}%"></div>
-          <div class="b-day">${day}</div>
-        </div>`;
-      }).join('')}
-    </div>
-  </div>`;
+  // BRISTOL CHART
+  html+=`<div class="chart-card"><div class="chart-title">Bristol score (last 7 days)</div><div class="bar-row">${summaries.slice(-7).map(s=>{const v=s.avgBristol?Math.round(s.avgBristol):0;const pct=v?(v/7*100):0;const cls=v===0?'dim':v>=3&&v<=4?'g':v<=2?'a':'r';const day=new Date(s.key).toLocaleDateString('en-GB',{weekday:'short'}).slice(0,2);return`<div class="b-col"><div class="b-bar ${cls}" style="height:${pct}%"></div><div class="b-day">${day}</div></div>`;}).join('')}</div></div>`;
 
   // WEEKLY PATTERN
-  const weekdayData = buildWeekdayPattern(summaries, db);
-  html += `<div class="chart-card">
-    <div class="chart-title">Weekly pattern</div>
-    <div class="week-grid">
-      ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((wd, i) => {
-        const data = weekdayData[i+1] || [];
-        const a = data.length ? Math.round(avg(data)) : null;
-        const bg = a === null ? 'var(--surface2)' : a >= 70 ? 'rgba(122,158,90,0.25)' : a >= 45 ? 'rgba(196,135,90,0.25)' : 'rgba(196,90,90,0.25)';
-        const col = a === null ? 'var(--text3)' : a >= 70 ? 'var(--accent-green)' : a >= 45 ? 'var(--accent-amber)' : 'var(--accent-red)';
-        return `<div class="wd-col">
-          <div class="wd-label">${wd}</div>
-          <div class="wd-score" style="background:${bg};color:${col}">${a !== null ? a : '—'}</div>
-        </div>`;
-      }).join('')}
-    </div>
-    <div style="font-size:10px;color:var(--text3);margin-top:10px;line-height:1.6">${getWeekdayInsight(weekdayData)}</div>
-  </div>`;
+  const wdd=buildWeekdayPattern(summaries);
+  html+=`<div class="chart-card"><div class="chart-title">Weekly pattern</div><div class="week-grid">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((wd,i)=>{const data=wdd[i+1]||[];const a=data.length?Math.round(avg(data)):null;const bg=a===null?'var(--surface2)':a>=70?'rgba(122,158,90,0.25)':a>=45?'rgba(196,135,90,0.25)':'rgba(196,90,90,0.25)';const col=a===null?'var(--text3)':a>=70?'var(--green)':a>=45?'var(--amber)':'var(--red)';return`<div class="wd-col"><div class="wd-label">${wd}</div><div class="wd-score" style="background:${bg};color:${col}">${a!==null?a:'—'}</div></div>`;}).join('')}</div><div style="font-size:10px;color:var(--text3);margin-top:10px;line-height:1.6">${getWeekdayInsight(wdd)}</div></div>`;
 
-  // DEEP ANALYSIS
-  html += `<div class="section-hdr">Deep analysis</div>`;
+  // SPEARMAN TABLE
+  html+=`<div class="section-hdr">Spearman ρ correlations</div>`;
+  html+=renderSpearmanTable(summaries);
 
-  const insights = deepAnalysis(summaries, db);
-  insights.forEach(ins => {
-    html += `<div class="insight ${ins.type}">
-      <div class="insight-title">${ins.title}</div>
-      <div class="insight-body">${ins.body}</div>
-    </div>`;
+  // LAG-K
+  html+=`<div class="section-hdr">Lag-k analysis — what hits when?</div>`;
+  html+=renderLagAnalysis(summaries);
+
+  // PATTERN INSIGHTS
+  html+=`<div class="section-hdr">Pattern insights</div>`;
+  deepAnalysis(summaries).forEach(ins=>{html+=`<div class="insight ${ins.type}"><div class="insight-title">${ins.title}</div><div class="insight-body">${ins.body}</div></div>`;});
+
+  // WEEKLY REPORT
+  const dow=new Date().getDay();
+  if(dow===6||days.length>=7){html+=`<div class="section-hdr">Weekly report</div>`;html+=renderWeeklyReport(summaries);}
+
+  container.innerHTML=html;
+}
+
+function renderSpearmanTable(summaries){
+  const scored=summaries.filter(s=>s.score!==null);
+  if(scored.length<5)return`<div class="insight info"><div class="insight-body">Need 5+ scored days for Spearman correlations. (Days need a poop or symptom logged to be scored.)</div></div>`;
+  const ys=scored.map(s=>s.score);
+  const pairs=[
+    {label:'Fiber intake → gut score',xs:scored.map(s=>s.highFiber)},
+    {label:'Irritant foods → gut score',xs:scored.map(s=>s.irritants),inv:true},
+    {label:'Stress → gut score',xs:scored.map(s=>s.stressNum).filter((_,i)=>scored[i].stressNum!==null),ys_:scored.filter(s=>s.stressNum!==null).map(s=>s.score),inv:true},
+    {label:'Sleep → gut score',xs:scored.map(s=>s.sleepNum).filter((_,i)=>scored[i].sleepNum!==null),ys_:scored.filter(s=>s.sleepNum!==null).map(s=>s.score)},
+    {label:'Water intake → gut score',xs:scored.map(s=>s.glasses).filter((_,i)=>scored[i].glasses!==null),ys_:scored.filter(s=>s.glasses!==null).map(s=>s.score)},
+    {label:'Caffeine → gut score',xs:scored.map(s=>s.cafNum).filter((_,i)=>scored[i].cafNum!==null),ys_:scored.filter(s=>s.cafNum!==null).map(s=>s.score),inv:true},
+  ];
+  let html=`<div class="chart-card"><div class="chart-title">Variable → gut score (n=${scored.length} scored days)</div>`;
+  pairs.forEach(p=>{
+    const xs=p.xs,ys_=p.ys_||ys;
+    const valid=xs.map((x,i)=>({x,y:ys_[i]})).filter(v=>v.x!==null&&v.x!==undefined&&v.y!==null);
+    if(valid.length<5){html+=`<div class="report-row"><div class="report-key">${p.label}</div><div class="report-val" style="color:var(--text3)">n&lt;5</div></div>`;return;}
+    const rho=spearman(valid.map(v=>v.x),valid.map(v=>v.y));
+    if(rho===null){html+=`<div class="report-row"><div class="report-key">${p.label}</div><div class="report-val" style="color:var(--text3)">—</div></div>`;return;}
+    const sig=isSignificant(rho,valid.length);
+    const positive=(rho>0&&!p.inv)||(rho<0&&p.inv);
+    const col=Math.abs(rho)>0.3?(positive?'var(--green)':'var(--red)'):'var(--text2)';
+    html+=`<div class="report-row"><div class="report-key">${p.label}</div><div><div class="rho-badge" style="color:${col}">${rho>0?'↑':'↓'} ρ=${rho.toFixed(2)}<span class="conf-badge ${sig?'conf-sig':'conf-insig'}">${sig?'sig':'n.s.'}</span></div></div></div>`;
   });
-
-  container.innerHTML = html;
+  html+=`<div style="font-size:10px;color:var(--text3);margin-top:10px;line-height:1.7">Spearman ρ: rank-based correlation, robust to non-normal data. ρ∈[−1,+1]. <em>sig</em> = p&lt;0.05 via t-approximation. Minimum n=5 per variable.</div></div>`;
+  return html;
 }
 
-function calcStreak(summaries) {
-  let streak = 0;
-  for (let i = summaries.length - 1; i >= 0; i--) {
-    if (summaries[i].score >= 60) streak++;
-    else break;
-  }
-  return streak;
+function renderLagAnalysis(summaries){
+  if(summaries.length<6)return`<div class="insight info"><div class="insight-body">Need 6+ days for lag analysis.</div></div>`;
+  const irritantLags=lagSpearman(summaries,s=>s.irritants,s=>s.score,3);
+  const fiberLags=lagSpearman(summaries,s=>s.highFiber,s=>s.score,3);
+  const bestIL=irritantLags.reduce((b,r,i)=>{if(!r)return b;if(b===null||Math.abs(r.rho)>Math.abs(irritantLags[b]?.rho||0))return i;return b;},null);
+  const bestFL=fiberLags.reduce((b,r,i)=>{if(!r)return b;if(b===null||Math.abs(r.rho)>Math.abs(fiberLags[b]?.rho||0))return i;return b;},null);
+
+  const renderLagTable=(lags,best,color,label)=>{
+    let h=`<div class="chart-card"><div class="chart-title">${label} (lag 1–3 days, Spearman ρ)</div>`;
+    lags.forEach((r,i)=>{
+      if(!r){h+=`<div class="report-row"><div class="report-key">Lag ${i+1}d</div><div class="report-val" style="color:var(--text3)">n&lt;5</div></div>`;return;}
+      const isBest=i===best;
+      h+=`<div class="report-row" style="${isBest?`background:${color}0a;border-radius:6px;padding:8px;`:''}">`+
+        `<div class="report-key">T−${i+1} day${i>0?'s':''} ${isBest?'← strongest':''}</div>`+
+        `<div><div class="rho-badge" style="color:${Math.abs(r.rho)>0.3?color:'var(--text2)'}">ρ=${r.rho.toFixed(2)}<span class="conf-badge ${r.sig?'conf-sig':'conf-insig'}">${r.sig?'sig':'n.s.'}</span></div></div></div>`;
+    });
+    if(best!==null&&lags[best]){const r=lags[best];h+=`<div style="font-size:10px;color:var(--text3);margin-top:8px;line-height:1.6">Strongest signal at T−${best+1}. This food impacts her gut most around <strong>${best+1} day${best>0?'s':''} later</strong>. ${r.sig?'Statistically significant.':'Not yet significant.'}</div>`;}
+    h+=`</div>`;return h;
+  };
+  return renderLagTable(irritantLags,bestIL,'rgba(196,90,90,1)','Irritant food → gut score lag-k')+renderLagTable(fiberLags,bestFL,'rgba(122,158,90,1)','Fiber intake → gut score lag-k');
 }
 
-function buildWeekdayPattern(summaries, db) {
-  const map = {};
-  summaries.forEach(s => {
-    const dow = new Date(s.key).getDay(); // 0=sun
-    const day = dow === 0 ? 7 : dow; // 1=mon, 7=sun
-    if (!map[day]) map[day] = [];
-    map[day].push(s.score);
-  });
-  return map;
+function renderWeeklyReport(summaries){
+  const last7=summaries.slice(-7);
+  if(!last7.length)return'';
+  const scored=last7.filter(s=>s.score!==null);
+  const avgSc=scored.length?Math.round(avg(scored.map(s=>s.score))):null;
+  const avgBr=avg(last7.map(s=>s.avgBristol).filter(Boolean));
+  const dairyDays=last7.filter(s=>s.hasDairy).length;
+  const stressDays=last7.filter(s=>s.stressed).length;
+  const exDays=last7.filter(s=>s.exercised).length;
+  const goodWater=last7.filter(s=>s.glasses>=6).length;
+  const from=new Date(last7[0].key).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  const to=new Date(last7[last7.length-1].key).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  const col=s=>s>=70?'var(--green)':s>=45?'var(--amber)':'var(--red)';
+  return`<div class="report-card"><div class="report-title">${from} — ${to}</div>${avgSc!==null?`<div class="report-row"><div class="report-key">Avg gut score</div><div class="report-val" style="color:${col(avgSc)}">${avgSc}/100</div></div>`:''} ${avgBr?`<div class="report-row"><div class="report-key">Avg bristol</div><div class="report-val" style="color:${avgBr>=3&&avgBr<=4?'var(--green)':'var(--amber)'}">${avgBr.toFixed(1)}</div></div>`:''}<div class="report-row"><div class="report-key">Dairy days</div><div class="report-val" style="color:${dairyDays>3?'var(--red)':'var(--text2)'}">${dairyDays}/7</div></div><div class="report-row"><div class="report-key">Stressed days</div><div class="report-val" style="color:${stressDays>3?'var(--amber)':'var(--text2)'}">${stressDays}/7</div></div><div class="report-row"><div class="report-key">Exercise days</div><div class="report-val" style="color:${exDays>=4?'var(--green)':'var(--text2)'}">${exDays}/7</div></div><div class="report-row"><div class="report-key">Good hydration days (6+ glasses)</div><div class="report-val" style="color:${goodWater>=5?'var(--green)':'var(--text2)'}">${goodWater}/7</div></div></div>`;
 }
 
-function getWeekdayInsight(wdd) {
-  const entries = Object.entries(wdd).filter(([,v]) => v.length > 0);
-  if (!entries.length) return 'Not enough data yet.';
-  const sorted = entries.map(([d, scores]) => ({ d: parseInt(d), avg: avg(scores) })).sort((a,b) => a.avg - b.avg);
-  const worst = sorted[0];
-  const best = sorted[sorted.length-1];
-  const dayNames = {1:'Monday',2:'Tuesday',3:'Wednesday',4:'Thursday',5:'Friday',6:'Saturday',7:'Sunday'};
-  if (sorted.length < 2) return 'Keep logging to see weekday patterns.';
-  return `Best day: ${dayNames[best.d]} (avg ${Math.round(best.avg)}/100). Worst: ${dayNames[worst.d]} (avg ${Math.round(worst.avg)}/100).`;
+// ─── CALENDAR ────────────────────────────────────────────────────────────────
+function renderCalendar(){
+  const container=document.getElementById('calendar-content');const db=getDB();const today=new Date();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const firstDow=(new Date(calYear,calMonth,1).getDay()+6)%7;
+  const monthName=new Date(calYear,calMonth,1).toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+  let html=`<div class="cal-header"><button class="cal-nav" onclick="calNav(-1)">‹</button><div class="cal-month">${monthName}</div><button class="cal-nav" onclick="calNav(1)">›</button></div>`;
+  html+=`<div class="cal-grid">${['M','T','W','T','F','S','S'].map(d=>`<div class="cal-day-label">${d}</div>`).join('')}`;
+  for(let i=0;i<firstDow;i++)html+=`<div class="cal-cell empty"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const key=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const events=db[key]||[],score=calcDayScore(events);
+    const isToday=key===fmtKey(today),isSel=key===calSelected,hasData=events.length>0;
+    let bg='var(--surface2)',col='var(--text3)';
+    if(score!==null){bg=score>=70?'rgba(122,158,90,0.25)':score>=45?'rgba(196,135,90,0.2)':'rgba(196,90,90,0.2)';col=score>=70?'var(--green)':score>=45?'var(--amber)':'var(--red)';}
+    else if(hasData){bg='var(--surface3)';col='var(--text2)';}
+    html+=`<div class="cal-cell ${isToday?'today':''} ${isSel?'selected':''} ${hasData?'has-data':''}" style="background:${bg};color:${col}" onclick="calSelect('${key}')">${d}${hasData?'<div class="cal-dot"></div>':''}</div>`;
+  }
+  html+=`</div><div class="cal-legend"><div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(122,158,90,0.25)"></div>Good (≥70)</div><div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(196,135,90,0.2)"></div>Ok (45–69)</div><div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(196,90,90,0.2)"></div>Rough (<45)</div><div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--surface3)"></div>Logged</div></div>`;
+  if(calSelected){const events=db[calSelected]||[],score=calcDayScore(events);const d=new Date(calSelected).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});html+=`<div class="cal-detail"><div class="cal-detail-date">${d}${score!==null?` — <span style="color:${score>=70?'var(--green)':score>=45?'var(--amber)':'var(--red)'}">${score}/100</span>`:''}</div>${!events.length?'<div class="cal-detail-empty">Nothing logged.</div>':events.map(e=>renderEventCard(e)).join('')}</div>`;}
+  container.innerHTML=html;
 }
+function calNav(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
+function calSelect(key){calSelected=calSelected===key?null:key;renderCalendar();}
 
-// ─── DEEP ANALYSIS ────────────────────────────────────────────────────────────
-function deepAnalysis(summaries, db) {
-  const insights = [];
+// ─── ANALYSIS HELPERS ────────────────────────────────────────────────────────
+function calcStreak(summaries){let s=0;for(let i=summaries.length-1;i>=0;i--){if(summaries[i].score!==null&&summaries[i].score>=60)s++;else break;}return s;}
+function buildWeekdayPattern(summaries){const map={};summaries.forEach(s=>{if(s.score===null)return;const dow=new Date(s.key).getDay();const day=dow===0?7:dow;if(!map[day])map[day]=[];map[day].push(s.score);});return map;}
+function getWeekdayInsight(wdd){const entries=Object.entries(wdd).filter(([,v])=>v.length>0);if(entries.length<2)return'Not enough data yet.';const sorted=entries.map(([d,sc])=>({d:parseInt(d),avg:avg(sc)})).sort((a,b)=>a.avg-b.avg);const names={1:'Monday',2:'Tuesday',3:'Wednesday',4:'Thursday',5:'Friday',6:'Saturday',7:'Sunday'};return`Best: ${names[sorted[sorted.length-1].d]} (avg ${Math.round(sorted[sorted.length-1].avg)}). Worst: ${names[sorted[0].d]} (avg ${Math.round(sorted[0].avg)}).`;}
 
-  // 1. LAG CORRELATION: did yesterday's food affect today's gut?
-  if (summaries.length >= 4) {
-    const lagPairs = [];
-    for (let i = 1; i < summaries.length; i++) {
-      const yesterday = summaries[i-1];
-      const today = summaries[i];
-      lagPairs.push({ prev: yesterday, curr: today });
-    }
-
-    // High irritants yesterday → bad today
-    const irritantPairs = lagPairs.filter(p => p.prev.irritants >= 2);
-    if (irritantPairs.length >= 2) {
-      const badNext = irritantPairs.filter(p => p.curr.badSymptom || p.curr.score < 50).length;
-      const pct = Math.round((badNext / irritantPairs.length) * 100);
-      insights.push({
-        type: pct >= 60 ? 'bad' : pct >= 35 ? 'warn' : 'info',
-        title: 'Lag: junk/spicy food → next-day symptoms',
-        body: `On days following 2+ irritant foods (fast food, spicy, pizza, alcohol): <span class="corr-pct ${pct>=60?'r':pct>=35?'a':'g'}">${pct}%</span> had poor gut scores or symptoms the next day. Gut transit means yesterday's food hits today. ${pct >= 60 ? 'Strong signal — your gut is reacting.' : pct >= 35 ? 'Moderate correlation — worth watching.' : 'Weak signal so far.'} Based on ${irritantPairs.length} days of data.`
-      });
-    }
-
-    // High fiber yesterday → good today
-    const fiberPairs = lagPairs.filter(p => p.prev.highFiber >= 2);
-    if (fiberPairs.length >= 2) {
-      const goodNext = fiberPairs.filter(p => p.curr.avgBristol >= 3 && p.curr.avgBristol <= 4).length;
-      const pct = Math.round((goodNext / fiberPairs.length) * 100);
-      insights.push({
-        type: pct >= 50 ? 'good' : 'info',
-        title: 'Lag: high fiber meals → next-day stool quality',
-        body: `After days with 2+ fiber-rich foods: <span class="corr-pct ${pct>=50?'g':'a'}">${pct}%</span> had ideal bristol (3–4) the following day. ${pct >= 50 ? 'Fiber is doing its job — keep it up.' : 'Effect not strong yet, may need more consistent fiber.'} Based on ${fiberPairs.length} observations.`
-      });
-    }
-  }
-
-  // 2. DAIRY CORRELATION (same day + lag)
-  const dairyDays = summaries.filter(s => s.hasDairy);
-  if (dairyDays.length >= 2) {
-    const dairyBad = dairyDays.filter(s => s.badSymptom).length;
-    const pct = Math.round((dairyBad / dairyDays.length) * 100);
-    insights.push({
-      type: pct >= 60 ? 'bad' : pct >= 35 ? 'warn' : 'good',
-      title: 'Dairy days vs symptoms',
-      body: `${dairyDays.length} dairy days logged. <span class="corr-pct ${pct>=60?'r':pct>=35?'a':'g'}">${pct}%</span> had bad symptoms the same day. ${pct >= 60 ? 'Clear lactose reaction pattern. The brute force is costing her.' : pct >= 35 ? 'Moderate correlation — depends on dairy amount/type?' : 'Surprisingly low — maybe small quantities are okay.'}`
-    });
-  }
-
-  // 3. STRESS → GUT
-  const stressedDays = summaries.filter(s => s.stress === 'stressed' || s.stress === 'chaos');
-  if (stressedDays.length >= 2) {
-    const stressBad = stressedDays.filter(s => s.badSymptom || s.score < 50).length;
-    const pct = Math.round((stressBad / stressedDays.length) * 100);
-    insights.push({
-      type: pct >= 50 ? 'warn' : 'info',
-      title: 'Stress → gut disruption',
-      body: `High-stress days: <span class="corr-pct ${pct>=50?'a':'g'}">${pct}%</span> ended with poor gut. The gut-brain axis is measurably real — cortisol directly affects gut motility. ${pct >= 60 ? 'Big signal here.' : ''} Based on ${stressedDays.length} stressed days.`
-    });
-  }
-
-  // 4. SLEEP → NEXT DAY GUT (lag)
-  if (summaries.length >= 4) {
-    const poorSleepPairs = [];
-    for (let i = 1; i < summaries.length; i++) {
-      if (summaries[i-1].sleep === 'poor') poorSleepPairs.push(summaries[i]);
-    }
-    if (poorSleepPairs.length >= 2) {
-      const badGut = poorSleepPairs.filter(s => s.score < 55 || s.badSymptom).length;
-      const pct = Math.round((badGut / poorSleepPairs.length) * 100);
-      insights.push({
-        type: pct >= 50 ? 'warn' : 'info',
-        title: 'Lag: poor sleep → next-day gut',
-        body: `After poor sleep nights: <span class="corr-pct ${pct>=50?'a':'g'}">${pct}%</span> had below-average gut scores the next day. Sleep deprivation disrupts the gut microbiome and reduces bowel motility. ${pct >= 60 ? 'Strong signal.' : 'Emerging pattern.'} Based on ${poorSleepPairs.length} data points.`
-      });
-    }
-  }
-
-  // 5. COMBO: dairy + spicy/irritant
-  const comboDays = summaries.filter(s => s.hasDairy && s.irritants >= 1);
-  if (comboDays.length >= 2) {
-    const comboKaos = comboDays.filter(s => s.badSymptom).length;
-    const pct = Math.round((comboKaos / comboDays.length) * 100);
-    insights.push({
-      type: pct >= 60 ? 'bad' : 'warn',
-      title: 'Combo trigger: dairy + irritant food',
-      body: `Dairy + spicy/fast food on same day: <span class="corr-pct ${pct>=60?'r':'a'}">${pct}%</span> ended badly. The double-hit combo is harsher than either alone. ${comboDays.length} combo days logged.`
-    });
-  }
-
-  // 6. LOW WATER → constipation
-  const lowWaterDays = summaries.filter(s => s.glasses !== null && s.glasses <= 3);
-  if (lowWaterDays.length >= 2) {
-    const constipated = lowWaterDays.filter(s => s.avgBristol && s.avgBristol <= 2).length;
-    const pct = Math.round((constipated / lowWaterDays.length) * 100);
-    insights.push({
-      type: pct >= 40 ? 'warn' : 'info',
-      title: 'Low water → constipation',
-      body: `On days with 3 or fewer glasses: <span class="corr-pct ${pct>=40?'a':'g'}">${pct}%</span> had hard stool (bristol 1–2). Colon needs water to move things. Based on ${lowWaterDays.length} low-hydration days.`
-    });
-  }
-
-  // 7. HIGH CAFFEINE → loose stools
-  const highCafDays = summaries.filter(s => s.highCaffeine);
-  if (highCafDays.length >= 2) {
-    const loose = highCafDays.filter(s => s.avgBristol && s.avgBristol >= 5).length;
-    const pct = Math.round((loose / highCafDays.length) * 100);
-    insights.push({
-      type: pct >= 40 ? 'warn' : 'info',
-      title: '3+ caffeine cups → loose stool',
-      body: `On heavy caffeine days: <span class="corr-pct ${pct>=40?'a':'g'}">${pct}%</span> had loose stool (bristol 5+). Caffeine stimulates gut motility — too much accelerates transit. Based on ${highCafDays.length} high-caffeine days.`
-    });
-  }
-
-  if (!insights.length) {
-    insights.push({ type: 'info', title: 'Keep logging', body: 'Need more data to detect reliable patterns. Aim for 7+ consistent days — the correlations will emerge.' });
-  }
-
+function deepAnalysis(summaries){
+  const insights=[],MIN=5;
+  // Dairy
+  const dd=summaries.filter(s=>s.hasDairy);
+  if(dd.length>=MIN){const bad=dd.filter(s=>s.badSymptom).length;const pct=Math.round(bad/dd.length*100);insights.push({type:pct>=60?'bad':pct>=35?'warn':'good',title:'Dairy → same-day symptoms',body:`${dd.length} dairy days. <span class="corr-pct ${pct>=60?'r':pct>=35?'a':'g'}">${pct}%</span> had symptoms. ${pct>=60?'Clear lactose reaction.':pct>=35?'Moderate signal.':'Surprisingly low.'}`});}
+  // Cycle
+  const luteal=summaries.filter(s=>s.phase==='luteal'||s.phase==='menstrual');
+  if(luteal.length>=3){const bad=luteal.filter(s=>s.badSymptom||s.score<50).length;const pct=Math.round(bad/luteal.length*100);insights.push({type:pct>=60?'warn':'info',title:'Cycle phase → gut disruption',body:`Luteal/menstrual days: <span class="corr-pct ${pct>=60?'a':'g'}">${pct}%</span> poor gut. Progesterone slows gut motility — clinically common. Based on ${luteal.length} days.`});}
+  // Exercise
+  const exd=summaries.filter(s=>s.exercised);
+  if(exd.length>=3){const good=exd.filter(s=>s.avgBristol>=3&&s.avgBristol<=4).length;const pct=Math.round(good/exd.length*100);insights.push({type:pct>=50?'good':'info',title:'Exercise → ideal stool',body:`Exercise days: <span class="corr-pct ${pct>=50?'g':'a'}">${pct}%</span> ideal bristol. Movement stimulates peristalsis. Based on ${exd.length} days.`});}
+  // Antibiotics
+  const abx=summaries.filter(s=>s.tookAntibiotic);
+  if(abx.length>=1)insights.push({type:'bad',title:'Antibiotic use detected',body:`Logged on ${abx.length} day(s). Antibiotics disrupt the gut microbiome for weeks. Probiotic supplementation alongside is clinically recommended.`});
+  // Stress lag-1
+  if(summaries.length>=MIN){const sps=[];for(let i=1;i<summaries.length;i++)if(summaries[i-1].stressed)sps.push(summaries[i]);if(sps.length>=3){const bad=sps.filter(s=>s.score<55||s.badSymptom).length;const pct=Math.round(bad/sps.length*100);insights.push({type:pct>=50?'warn':'info',title:'Stress → next-day gut (lag-1)',body:`After stressed days: <span class="corr-pct ${pct>=50?'a':'g'}">${pct}%</span> poor gut next day. Cortisol disrupts gut motility. ${sps.length} observations.`});}}
+  // Sleep lag
+  if(summaries.length>=MIN){const sps=[];for(let i=1;i<summaries.length;i++)if(summaries[i-1].sleep==='poor')sps.push(summaries[i]);if(sps.length>=3){const bad=sps.filter(s=>s.score<55||s.badSymptom).length;const pct=Math.round(bad/sps.length*100);insights.push({type:pct>=50?'warn':'info',title:'Poor sleep → next-day gut (lag-1)',body:`After poor sleep: <span class="corr-pct ${pct>=50?'a':'g'}">${pct}%</span> poor gut next day. ${sps.length} observations.`});}}
+  if(!insights.length)insights.push({type:'info',title:'Keep logging',body:`Need ${MIN}+ logged days with output events to detect patterns.`});
   return insights;
 }
 
-// ─── UTILS ────────────────────────────────────────────────────────────────────
-function avg(arr) { return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0; }
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
-}
+// ─── UTILS ───────────────────────────────────────────────────────────────────
+function avg(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;}
+function stddev(arr){if(arr.length<2)return 0;const m=avg(arr);return Math.sqrt(arr.reduce((s,v)=>s+Math.pow(v-m,2),0)/arr.length);}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
-(async function init() {
-  const cfg = getCfg();
-  if (!cfg) {
-    // First time — show setup
-    document.getElementById('setup-overlay').classList.remove('hidden');
-    return;
-  }
-  if (cfg.local) {
-    document.getElementById('setup-overlay').classList.add('hidden');
-  } else {
-    document.getElementById('setup-overlay').classList.add('hidden');
-    document.getElementById('sync-bar').style.display = 'flex';
-    setSyncState('syncing', 'loading...');
-    await syncPull();
-  }
-  renderDateBar();
-  renderTimeline();
+(async function init(){
+  const cfg=getCfg();
+  if(!cfg){document.getElementById('setup-overlay').classList.remove('hidden');return;}
+  if(!cfg.local){document.getElementById('sync-bar').style.display='flex';setSyncState('syncing','loading...');await syncPull();}
+  renderDateBar();renderTimeline();
 })();
 </script>
 </body>
