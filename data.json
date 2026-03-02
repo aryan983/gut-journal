@@ -69,6 +69,31 @@
       "type": "sleep",
       "sleep": "good",
       "id": 1772476003038
+    },
+    {
+      "type": "water",
+      "glasses": "3",
+      "id": 1772476007318
+    }
+  ],
+  "2026-03-01": [
+    {
+      "type": "meal",
+      "foods": [
+        "home_cooked",
+        "spicy",
+        "fruits",
+        "sugary",
+        "coffee_drink"
+      ],
+      "id": 1772476048546
+    },
+    {
+      "type": "poop",
+      "bristol": 5,
+      "bloating": "none",
+      "gas": "none",
+      "id": 1772476065195
     }
   ]
 }
