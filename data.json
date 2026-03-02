@@ -59,6 +59,11 @@
       "bloating": "none",
       "gas": "none",
       "id": 1772475976606
+    },
+    {
+      "type": "cycle",
+      "cycleday": "6-10",
+      "id": 1772475991944
     }
   ]
 }
