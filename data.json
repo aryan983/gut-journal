@@ -52,6 +52,13 @@
         "coffee_drink"
       ],
       "id": 1772475961284
+    },
+    {
+      "type": "poop",
+      "bristol": 5,
+      "bloating": "none",
+      "gas": "none",
+      "id": 1772475976606
     }
   ]
 }
